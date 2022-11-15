@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [".eslintrc.cjs", "src", "jest.config.js"],
+  "include": [".eslintrc.cjs", "src", "jest.config.cjs"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
