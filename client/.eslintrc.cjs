@@ -4,7 +4,14 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['airbnb', 'airbnb-typescript', 'airbnb/hooks', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -12,11 +19,13 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
-    indent: ['error', 'tab'],
-		'linebreak-style': 'off',
+    indent: ['error', 2],
+    'linebreak-style': 'off',
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
+    'react/react-in-jsx-scope': 0,
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
   },
 };
