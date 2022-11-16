@@ -1,0 +1,43 @@
+name: 버그 리포트
+description: 기능 개선을 위해 버그를 제보해주세요.
+title: "fix: "
+labels: ["bug"]
+body: 
+- type: textarea
+  attributes: 
+    label: 버그 설명
+    description: 경험한 문제에 대해 상세히 적어주세요. (가능하다면 스크린샷도 함께 첨부해주세요)
+  validations:
+    required: true
+- type: textarea
+  attributes: 
+    label: 기대 동작 설명
+    description: 기대했던 동작 및 반응에 대해 상세히 적어주세요.
+  validations:
+    required: true
+- type: textarea
+  attributes: 
+    label: 버그 재현법
+    description: 문제를 재현하기 위한 방법을 적어주세요.
+    placeholder: |
+      1. Go to '...'
+      2. Click on '....'
+      3. Scroll down to '....'
+      4. See error
+  validations:
+    required: false
+- type: textarea
+  attributes: 
+    label: 실행 환경
+    description: 문제가 발생했던 실행 환경을 적어주세요.
+    placeholder: |
+      - OS: [e.g. iOS]
+      - Browser [e.g. chrome, safari]
+      - Version [e.g. 22]
+  validations:
+    required: false
+- type: textarea
+  attributes: 
+    label: 기타 참고 사항
+  validations:
+    required: false
