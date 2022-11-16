@@ -1,4 +1,4 @@
-name: 버그 리포트
+name: 버그 리포트 템플릿
 description: 기능 개선을 위해 버그를 제보해주세요.
 title: "fix: "
 labels: ["bug"]

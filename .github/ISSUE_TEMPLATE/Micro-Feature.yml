@@ -1,0 +1,11 @@
+name: 마이크로 피처 템플릿
+description: 피처 구현을 위한 소규모 태스크를 작성하세요.
+title: "micro feat: "
+labels: ["micro feature"]
+body: 
+- type: textarea
+  attributes: 
+    label: 마이크로 피처 설명
+    description: 작업할 마이크로 피처에 대해서 자세한 설명이 필요한 경우 추가로 작성해주세요.
+  validations:
+    required: false
