@@ -1,0 +1,29 @@
+name: 피처 템플릿
+description: 피처 구현을 위한 이슈를 작성하세요.
+title: "feat: "
+labels: ["feature"]
+body: 
+- type: textarea
+  attributes: 
+    label: 피처 개요
+    description: 필요한 피처에 대해서 간단히 설명해주세요.
+  validations:
+    required: true
+- type: textarea
+  attributes: 
+    label: 피처 설명
+    description: 필요한 피처에 대해서 자세히 설명해주세요.
+  validations:
+    required: false
+- type: textarea
+  attributes: 
+    label: 체크리스트
+    description: 작업에 필요한 마이크로 피처들을 작성해 이슈를 링크해주세요.
+  validations:
+    required: false
+- type: input
+  attributes: 
+    label: 관련 정보
+    description: 관련된 Project Wiki 페이지가 있다면 링크해주세요.
+  validations:
+    required: false
