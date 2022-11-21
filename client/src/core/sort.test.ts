@@ -44,7 +44,7 @@ const validateImminenceImportance = (todoList: Array<Todo>): boolean => {
 };
 
 const validateDeadline = (todoList: Array<Todo>): boolean => {
-  return todoList.reduce((subAcc, todo, i, arr) => subAcc && (i === 0 || todo.until >= arr[i - 1].until), true);
+  return todoList.reduce((acc, el, i, arr) => acc && (i === 0 || el.until >= arr[i - 1].until), true);
 };
 
 const validateAll = (todoList: Array<Todo>): boolean => {
