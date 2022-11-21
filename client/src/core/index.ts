@@ -25,7 +25,7 @@ export interface RawData {
   // (필수) 입력값 및 기본 데이터
   title: string; // VARCHAR(255), 할일의 이름
   content: string; // TEXT, 할일의 상세 내용
-  priority: number; // INT or ENUM, 할일의 우선순위 레벨
+  importance: number; // INT or ENUM, 할일의 우선순위 레벨
   until: string; // string, 할일의 마감기한
   from: string; // string, 할일의 시작기한
 }
