@@ -1,6 +1,6 @@
 import { uuid } from 'uuidv4';
-import { Todo } from '.';
-import controlInput from './data.test';
+import { Todo } from '..';
+import controlInput from './sort.data';
 
 const today = new Date();
 const WEEK = 7 * 24 * 60 * 60 * 1000;
