@@ -29,3 +29,7 @@ export interface RawData {
   until: string; // string, 할일의 마감기한
   from: string; // string, 할일의 시작기한
 }
+
+export const testFun = (num: number) => {
+  return num + 1;
+};

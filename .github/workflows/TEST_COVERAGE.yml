@@ -1,0 +1,27 @@
+name: test
+on:
+  pull_request:
+    branches:
+      - main
+      - release
+    paths:
+      - "client/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+      - name: Install & Test
+        run: |
+          cd client
+          yarn
+          yarn test
+      - name: Code Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests # optional
