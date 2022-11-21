@@ -11,10 +11,10 @@ export interface Todo {
   next: Array<Todo>; // or Array<string>, 본 할일 이후에 실행되어야 하는 할일 id 배열
 
   // (필수) 할일의 상태값
-  isDone: boolean; // 할일이 완료되었는지 여부
-  isReady: boolean; // 할일이 시행할 준비가 되었는지 여부 (from, isAllPrevDone 체크)
+  isDone?: boolean; // 할일이 완료되었는지 여부
+  isReady?: boolean; // 할일이 시행할 준비가 되었는지 여부 (from, isAllPrevDone 체크)
 
-  isAllPrevDone: boolean; // 선행해야하는 할일이 모두 완료되었는지 여부, prev를 Array<Todo>로 관리시 불필요
+  isAllPrevDone?: boolean; // 선행해야하는 할일이 모두 완료되었는지 여부, prev를 Array<Todo>로 관리시 불필요
 
   // (선택) 메타데이터
   spentTime?: Date; // 총 할일 수행 시간, default = 0

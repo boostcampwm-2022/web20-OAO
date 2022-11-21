@@ -18,15 +18,47 @@ const generateRandomTodo = (): Todo => ({
 
 const generateRandomTodoList = (): Array<Todo> => Array.from({ length: 100 }, () => generateRandomTodo());
 
+const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+const sort = (todoList: Array<Todo>): Array<Todo> => {
+  return [...todoList];
+};
+
+const validateImminence = (todoList: Array<Todo>): boolean => {
+  const todayOnlyDate = onlyDate(today);
+  return todoList
+    .map((el, i) => ({ index: i, todo: el }))
+    .filter((el) => todayOnlyDate === onlyDate(el.todo.until))
+    .reduce((acc, el, i) => acc && el.index === i, true);
+};
+
+const validateImportance = (todoList: Array<Todo>): boolean => {
+  return false;
+};
+
+const validateDeadline = (todoList: Array<Todo>): boolean => {
+  return false;
+};
+
 describe('기본 정렬 테스트', () => {
+  let todoList: Array<Todo>;
+  beforeEach(() => {
+    todoList = generateRandomTodoList();
+  });
   describe('Imminence 정렬', () => {
-    it('다른 조건이 모두 동일하다면, Imminent Todo가 Active된다.', () => {});
+    it('다른 조건이 모두 동일하다면, Imminent Todo가 Active된다.', () => {
+      expect(validateImminence(sort(todoList))).toBe(true);
+    });
   });
   describe('Importance 정렬', () => {
-    it('다른 조건이 모두 동일하다면, Importance가 높은 Todo가 Active된다.', () => {});
+    it('다른 조건이 모두 동일하다면, Importance가 높은 Todo가 Active된다.', () => {
+      expect(validateImportance(sort(todoList))).toBe(true);
+    });
   });
   describe('EDF 정렬', () => {
-    it('다른 조건이 모두 동일하고, Deadline이 빠른 Todo가 Active된다.', () => {});
+    it('다른 조건이 모두 동일하고, Deadline이 빠른 Todo가 Active된다.', () => {
+      expect(validateDeadline(sort(todoList))).toBe(true);
+    });
   });
   describe('Imminence + Importance 정렬', () => {
     it('Imminence 정렬이 Importance 정렬보다 우선한다.', () => {});
