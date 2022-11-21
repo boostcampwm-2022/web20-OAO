@@ -18,7 +18,6 @@ jobs:
           node-version: "18.x"
       - name: Install & Test
         run: |
-          cd client
           yarn
           yarn test
       - name: Code Coverage
