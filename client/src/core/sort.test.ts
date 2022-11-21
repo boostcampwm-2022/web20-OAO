@@ -1,5 +1,6 @@
 import { uuid } from 'uuidv4';
 import { Todo } from '.';
+import controlInput from './data.test';
 
 const today = new Date();
 const WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -20,15 +21,16 @@ const generateRandomTodoList = (): Array<Todo> => Array.from({ length: 100 }, ()
 
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
+const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+
 const sort = (todoList: Array<Todo>): Array<Todo> => {
   return [...todoList];
 };
 
 const validateImminence = (todoList: Array<Todo>): boolean => {
-  const todayOnlyDate = onlyDate(today);
   return todoList
     .map((el, i) => ({ index: i, todo: el }))
-    .filter((el) => todayOnlyDate === onlyDate(el.todo.until))
+    .filter((el) => isEqualDate(today, el.todo.until))
     .reduce((acc, el, i) => acc && el.index === i, true);
 };
 
@@ -37,9 +39,9 @@ const validateImportance = (todoList: Array<Todo>): boolean =>
 
 const validateImminenceImportance = (todoList: Array<Todo>): boolean => {
   if (!validateImminence(todoList)) return false;
-  const todayOnlyDate = onlyDate(today);
-  const imminentTodoList = todoList.filter((el) => todayOnlyDate === onlyDate(el.until));
-  const distantTodoList = todoList.filter((el) => todayOnlyDate !== onlyDate(el.until));
+  const imminentTodoList = todoList.filter((el) => isEqualDate(today, el.until));
+  const distantTodoList = todoList.filter((el) => !isEqualDate(today, el.until));
+
   return validateImportance(imminentTodoList) && validateImportance(distantTodoList);
 };
 
@@ -57,18 +59,38 @@ const validateAll = (todoList: Array<Todo>): boolean => {
     { imminence: false, importance: 2 },
     { imminence: false, importance: 1 },
   ];
-  const todayOnlyDate = onlyDate(today);
+
   return properties.reduce(
     (acc, el) =>
       acc &&
       validateDeadline(
-        todoList.filter(
-          (todo) => el.imminence === (todayOnlyDate === onlyDate(todo.until)) && el.importance === todo.importance,
-        ),
+        todoList.filter((todo) => el.imminence === isEqualDate(today, todo.until) && el.importance === todo.importance),
       ),
     true,
   );
 };
+
+describe('검증 알고리즘 테스트', () => {
+  let todoList: Array<Todo>;
+  beforeEach(() => {
+    todoList = controlInput;
+  });
+  describe('Imminence 정렬', () => {
+    it('다른 조건이 모두 동일하다면, Imminent Todo가 Active된다.', () => {
+      expect(validateImminence(sort(todoList))).toBe(true);
+    });
+  });
+  describe('Imminence + Importance 정렬', () => {
+    it('Imminence 정렬이 Importance 정렬보다 우선한다.', () => {
+      expect(validateImminenceImportance(sort(todoList))).toBe(true);
+    });
+  });
+  describe('Imminence + Importance + EDF', () => {
+    it('Imminence 정렬이 Importance 정렬보다 우선하며, Importance 정렬이 EDF 정렬보다 우선한다.', () => {
+      expect(validateAll(sort(todoList))).toBe(true);
+    });
+  });
+});
 
 describe('기본 정렬 테스트', () => {
   let todoList: Array<Todo>;
