@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import { RawData, Todo } from '.';
+import { RawData, Todo } from '..';
 
 const rawData: Array<RawData> = [
   {
