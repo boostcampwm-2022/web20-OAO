@@ -1,0 +1,28 @@
+name: client build
+on:
+  pull_request:
+    branches:
+      - main
+      - release
+    paths:
+      - "client/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+      - name: Install & Test
+        run: |
+          cd client
+          yarn
+          yarn build
+      - name: web docker build and push
+        run: |
+        echo ${{ secrets.DOCKER_ACCESS_TOKEN }} | docker login https://ghcr.io/ -u outsideris --password-stdin
+        docker build --platform linux/amd64 -t ghcr.io/kumsil1006/oao .
+        docker push ghcr.io/kumsil1006/oao
