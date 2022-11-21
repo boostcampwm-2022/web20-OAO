@@ -1,4 +1,8 @@
-import { Todo, RawData } from '.';
+import { Todo, RawData, testFun } from '.';
+
+test('sample', () => {
+  expect(testFun(1)).toBe(2);
+});
 
 const data1: Array<RawData> = [
   {
