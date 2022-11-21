@@ -4,7 +4,7 @@ export interface Todo {
   title: string; // VARCHAR(255), 할일의 이름
   content: string; // TEXT, 할일의 상세 내용
   owner: string; // UUIDv4, 할일 소유자의 id
-  priority: number; // INT or ENUM, 할일의 우선순위 레벨
+  importance: number; // INT or ENUM, 할일의 우선순위 레벨
   until: Date; // DATE, 할일의 마감기한
   from: Date; // DATE, 할일의 시작기한
   prev: Array<Todo>; // or Array<string>, 이전에 반드시 완료되어야 하는 할일 id 배열
