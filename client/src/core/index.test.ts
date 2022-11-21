@@ -1,7 +1,11 @@
 import { Todo, RawData, testFun } from '.';
 
-test('sample', () => {
+test('sample1', () => {
   expect(testFun(1)).toBe(2);
+});
+
+test('sample2', () => {
+  expect(testFun(2)).toBe(3);
 });
 
 const data1: Array<RawData> = [
