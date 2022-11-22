@@ -49,5 +49,5 @@ jobs:
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao:oao-server
             docker pull ghcr.io/kumsil1006/oao:oao-proxy
-            docker compose up -d
+            docker-compose up -d
             docker image prune
