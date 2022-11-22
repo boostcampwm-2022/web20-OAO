@@ -11,8 +11,8 @@ const sort = (todoList: Array<TestTodo>): Array<TestTodo> => {
   return [...todoList];
 };
 
-const testCase = rawTestCase.data.map((el: any) => toTestTodo(el));
-const testToday = new Date(rawTestCase.today);
+const testCase = rawTestCase[0].data.map((el: any) => toTestTodo(el));
+const testToday = new Date(rawTestCase[0].today);
 
 describe('검증 알고리즘 테스트', () => {
   let todoList: Array<TestTodo>;
