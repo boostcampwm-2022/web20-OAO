@@ -1,7 +1,7 @@
 import { uuid } from 'uuidv4';
-import { RawData, Todo } from '..';
+import { TestTodo, toTestTodo } from './type';
 
-const rawData: Array<RawData> = [
+const rawData: Array<any> = [
   {
     title: '팬들은 아티스트가 진행 중인 실시간 영상을 볼 수 있다. ',
     importance: 3,
@@ -424,14 +424,16 @@ const formatStringToDate = (str: string): Date => {
   return new Date(...(arr as [number, number, number, number, number]));
 };
 
-const controlInput: Array<Todo> = rawData.map((el) => ({
-  ...el,
-  id: uuid(),
-  owner: '',
-  from: formatStringToDate(el.from),
-  until: formatStringToDate(el.until),
-  prev: [],
-  next: [],
-}));
+const controlInput: Array<TestTodo> = rawData.map((el) =>
+  toTestTodo({
+    ...el,
+    id: uuid(),
+    owner: '',
+    from: formatStringToDate(el.from),
+    until: formatStringToDate(el.until),
+    prev: [],
+    next: [],
+  }),
+);
 
 export default controlInput;
