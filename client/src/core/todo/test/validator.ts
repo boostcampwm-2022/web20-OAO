@@ -1,8 +1,5 @@
 import { TestTodo } from './type';
 
-const importanceArr = [1, 2, 3];
-const imminenceArr = [true, false];
-
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
 
@@ -20,28 +17,35 @@ const validateImportance = (todoList: Array<TestTodo>): boolean =>
 
 const validateImportanceSort = (todoList: Array<TestTodo>, testToday: Date): boolean => {
   if (!validateImminenceSort(todoList, testToday)) return false;
-  const imminentTodoList = todoList.filter((el) => isEqualDate(testToday, el.until));
-  const distantTodoList = todoList.filter((el) => !isEqualDate(testToday, el.until));
-  return validateImportance(imminentTodoList) && validateImportance(distantTodoList);
+  const divider = todoList.filter((el) => isEqualDate(testToday, el.until)).length;
+  return validateImportance(todoList.slice(0, divider)) && validateImportance(todoList.slice(divider));
 };
 
-const validateDeadline = (todoList: Array<TestTodo>): boolean => {
-  return todoList.reduce((acc, el, i, arr) => acc && (i === 0 || el.until >= arr[i - 1].until), true);
+const equalForImportanceSort = (todo1: TestTodo, todo2: TestTodo): boolean => {
+  return todo1.importance === todo2.importance;
 };
 
 const validateDeadlineSort = (todoList: Array<TestTodo>, testToday: Date): boolean => {
   if (!validateImportanceSort(todoList, testToday)) return false;
-  const properties = imminenceArr.flatMap((el1) => importanceArr.map((el2) => ({ imminence: el1, importance: el2 })));
-  return properties.reduce(
-    (acc, el) =>
-      acc &&
-      validateDeadline(
-        todoList.filter(
-          (todo) => el.imminence === isEqualDate(testToday, todo.until) && el.importance === todo.importance,
-        ),
-      ),
+  todoList.reduce(
+    (acc, el, i, arr) => i === 0 || (acc && (equalForImportanceSort(el, arr[i - 1]) || el.until >= arr[i - 1].until)),
     true,
   );
+  return true;
 };
 
-export { validateImminenceSort, validateImportanceSort, validateDeadlineSort };
+const equalForDeadlineSort = (todo1: TestTodo, todo2: TestTodo): boolean => {
+  return todo1.importance === todo2.importance && todo1.until.getTime() === todo2.until.getTime();
+};
+
+const validateLastPostponedSort = (todoList: Array<TestTodo>, testToday: Date): boolean => {
+  if (!validateDeadlineSort(todoList, testToday)) return false;
+  todoList.reduce(
+    (acc, el, i, arr) =>
+      i === 0 || (acc && (equalForDeadlineSort(el, arr[i - 1]) || el.lastPostponed >= arr[i - 1].lastPostponed)),
+    true,
+  );
+  return true;
+};
+
+export { validateImminenceSort, validateImportanceSort, validateDeadlineSort, validateLastPostponedSort };
