@@ -37,8 +37,6 @@ jobs:
 
       - name: Run Docker Compose on the Server
         uses: appleboy/ssh-action@master
-        env:
-          TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
         with:
           host: ${{ secrets.ANOTHER_HOST }}
           username: ${{ secrets.ANOTHER_USERNAME }}
@@ -46,8 +44,8 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           envs: TOKEN
           script: |
-            docker login https://ghcr.io -u kumsil1006 -p "$TOKEN"
-            cd project4
+            echo ${{secret.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
+            cd client
             docker pull ghcr.io/kumsil1006/oao:oao-client
             docker compose up -d
             docker image prune
