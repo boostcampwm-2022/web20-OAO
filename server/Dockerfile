@@ -1,7 +1,11 @@
 FROM node:18-alpine
+
 WORKDIR /server
-COPY package.json yarn.lock tsconfig.json ./
-RUN yarn install --immutable --immutable-cache --check-cache
-EXPOSE 8080
-RUN yarn build
+
+COPY package.json /server/package.json
+COPY yarn.lock /server/yarn.lock
+COPY ./dist /server/dist
+
+RUN yarn
+
 ENTRYPOINT [ "yarn", "server" ]
