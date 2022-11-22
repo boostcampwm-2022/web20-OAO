@@ -27,11 +27,12 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        working-directory: "./server"
+        working-directory: "./client"
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Client build
+        working-directory: "./client"
         run: yarn build
 
       - name: Login to GitHub Container Registry
