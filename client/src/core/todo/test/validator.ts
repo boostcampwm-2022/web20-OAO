@@ -60,4 +60,18 @@ const validateRTL = (todoList: Array<TestTodo>, testToday: Date): boolean =>
       true,
     );
 
-export { validateImminenceSort, validateImportanceSort, validateDeadlineSort, validateLastPostponedSort, validateRTL };
+const validateWTL = (todoList: Array<TestTodo>, testToday: Date): boolean =>
+  todoList
+    .filter((el) => el.state === 'WAIT')
+    .reduce(
+      (acc, el, i, arr) => i === 0 || (acc && !isFromBeforeToday(testToday, el.from)) || !isAllPrevDone(el, arr),
+      true,
+    );
+export {
+  validateImminenceSort,
+  validateImportanceSort,
+  validateDeadlineSort,
+  validateLastPostponedSort,
+  validateRTL,
+  validateWTL,
+};
