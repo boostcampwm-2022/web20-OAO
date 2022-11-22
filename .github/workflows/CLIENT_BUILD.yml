@@ -31,4 +31,6 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.2.0
         with:
+          push: true
+          tags: ghcr.io/kumsil1006/oao:latest
           context: ./client
