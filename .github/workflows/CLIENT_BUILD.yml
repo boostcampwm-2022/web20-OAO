@@ -32,5 +32,5 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ghcr.io/kumsil1006/oao:latest
+          tags: ghcr.io/kumsil1006/oao-client:latest
           context: ./client
