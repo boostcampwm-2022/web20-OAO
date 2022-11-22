@@ -1,6 +1,11 @@
 import * as rawTestCase from './data.json';
 import { TestTodo, toTestTodo } from './type';
-import { validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
+import {
+  validateImminenceSort,
+  validateImportanceSort,
+  validateDeadlineSort,
+  validateLastPostponedSort,
+} from './validator';
 
 const sort = (todoList: Array<TestTodo>): Array<TestTodo> => {
   return [...todoList];
@@ -15,18 +20,23 @@ describe('검증 알고리즘 테스트', () => {
     todoList = testCase;
   });
   describe('Imminence 정렬', () => {
-    it('다른 조건이 모두 동일하다면, Imminent Todo가 Active된다.', () => {
+    it('Imminent Todo는 언제나 Distant Todo보다 우선순위가 높다', () => {
       expect(validateImminenceSort(sort(todoList), testToday)).toBe(true);
     });
   });
-  describe('Imminence + Importance 정렬', () => {
-    it('Imminence 정렬이 Importance 정렬보다 우선한다.', () => {
+  describe('Importance 정렬', () => {
+    it('Imminence 정렬 조건 아래에서, Importance가 큰 Todo가 낮은 Todo보다 우선순위가 높다.', () => {
       expect(validateImportanceSort(sort(todoList), testToday)).toBe(true);
     });
   });
-  describe('Imminence + Importance + EDF', () => {
-    it('Imminence 정렬이 Importance 정렬보다 우선하며, Importance 정렬이 EDF 정렬보다 우선한다.', () => {
+  describe('Deadline 정렬', () => {
+    it('Imminence와 Importance 정렬 조건 아래에서, Deadline이 가까운 Todo가 먼 Todo보다 우선순위가 높다.', () => {
       expect(validateDeadlineSort(sort(todoList), testToday)).toBe(true);
+    });
+  });
+  describe('Last Postponed 정렬 ', () => {
+    it('Imminence, Importance, Deadline 정렬 조건 아래에서, Last Postponed가 가장 예전인 Todo가 현재에 가까운 Todo보다 우선순위가 높다.', () => {
+      expect(validateLastPostponedSort(sort(todoList), testToday)).toBe(true);
     });
   });
 });
