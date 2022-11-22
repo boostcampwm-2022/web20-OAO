@@ -56,10 +56,11 @@ const getRandomState = (): 'READY' | 'DONE' | 'WAIT' =>
   // eslint-disable-next-line no-nested-ternary
   Math.random() < 0.5 ? 'DONE' : Math.random() < 0.5 ? 'READY' : 'WAIT';
 
-const generateRandomTodo = (): TestTodo => {
+const generateRandomTodo = (id: string | undefined): TestTodo => {
   const from = getRandomDate(START, END);
   const until = getDistantDate(from);
   return toTestTodo({
+    id,
     from,
     until,
     state: getRandomState(),
@@ -78,7 +79,7 @@ const getTodoIdFromNextElement = (
   if (index + numNext >= length) return { next: [], idx: [] };
 
   const idx = Array.from({ length: numNext }, () => getRandomIndex(length, index, numNext))
-    .sort()
+    .sort((a, b) => a - b)
     .map((el, i) => el + i + index);
 
   const next = idx.map((el) => arr[el].id);
@@ -98,9 +99,14 @@ const generateRandomNumber = (p: number, max: number) => {
 };
 
 const generateTodoListForUpdateTest = (length: number): Array<TestTodo> => {
-  const todos: Array<TestTodo> = Array.from({ length }, () => generateRandomTodo());
+  const todos: Array<TestTodo> = Array.from({ length }, (el, i) => generateRandomTodo(i.toString()));
   todos.forEach((el, i) => {
-    const { idx, next } = getTodoIdFromNextElement(length, i, generateRandomNumber(0.2, length - i), todos);
+    const { idx, next } = getTodoIdFromNextElement(
+      length,
+      i,
+      generateRandomNumber(0.5, Math.min(length - i, 5)),
+      todos,
+    );
     todos[i].next = next;
     idx.forEach((nextIdx) => {
       todos[nextIdx].prev.push(todos[i].id);
