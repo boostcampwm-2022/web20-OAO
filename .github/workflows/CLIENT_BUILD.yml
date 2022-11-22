@@ -11,12 +11,6 @@ jobs:
   build-image:
     name: client image
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: ./client/Dockerfile
-            image: nagyeong/test
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
@@ -37,5 +31,4 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.2.0
         with:
-          context: .
-          file: ./client/Dockerfile
+          context: ./client
