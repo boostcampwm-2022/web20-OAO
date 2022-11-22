@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon --exec node --loader ts-node/esm index.ts",
     "build": "tsc -p .",
-    "start": "node dist/index.js"
+    "server": "node dist/index.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
