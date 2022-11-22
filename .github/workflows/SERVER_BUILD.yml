@@ -18,9 +18,9 @@ jobs:
         with:
           node-version: "18.x"
       - name: compile Typescript files
-        working-directory: './server'
+        working-directory: "./server"
         env:
-          CI: "",
+          CI: ""
         run: |
           yarn install --immutable --immutable-cache --check-cache
           yan build
