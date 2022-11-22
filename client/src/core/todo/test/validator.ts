@@ -48,4 +48,16 @@ const validateLastPostponedSort = (todoList: Array<TestTodo>, testToday: Date): 
   return true;
 };
 
-export { validateImminenceSort, validateImportanceSort, validateDeadlineSort, validateLastPostponedSort };
+const isFromBeforeToday = (testToday: Date, from: Date): boolean => from.getTime() <= testToday.getTime();
+const isAllPrevDone = (todo: TestTodo, todoList: Array<TestTodo>): boolean =>
+  todo.prev.reduce((acc, id) => acc && todoList[todoList.findIndex((el) => el.id === id)].state === 'DONE', true);
+
+const validateRTL = (todoList: Array<TestTodo>, testToday: Date): boolean =>
+  todoList
+    .filter((el) => el.state === 'READY')
+    .reduce(
+      (acc, el, i, arr) => i === 0 || (acc && isFromBeforeToday(testToday, el.from) && isAllPrevDone(el, arr)),
+      true,
+    );
+
+export { validateImminenceSort, validateImportanceSort, validateDeadlineSort, validateLastPostponedSort, validateRTL };
