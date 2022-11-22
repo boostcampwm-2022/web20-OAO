@@ -44,7 +44,7 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           envs: TOKEN
           script: |
-            echo ${{secret.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
+            echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             cd client
             docker pull ghcr.io/kumsil1006/oao:oao-client
             docker compose up -d
