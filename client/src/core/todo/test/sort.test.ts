@@ -1,4 +1,4 @@
-import { TestTodo, generateTodoListForSortTest, testToday } from './type';
+import { TestTodo, generateTodoListForSortTest } from './type';
 import { validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
 
 const sort = (todoList: Array<TestTodo>): Array<TestTodo> => {
