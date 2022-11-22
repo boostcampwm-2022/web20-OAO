@@ -15,6 +15,7 @@ export type TestTodo = {
   prev: Array<string>; // or Array<string>, 이전에 반드시 완료되어야 하는 할일 id 배열
   next: Array<string>; // or Array<string>, 본 할일 이후에 실행되어야 하는 할일 id 배열
   lastPostponed: Date;
+  state: 'READY' | 'DONE' | 'WAIT';
 };
 
 const toTestTodo = (todo: any): TestTodo => ({
@@ -28,6 +29,7 @@ const toTestTodo = (todo: any): TestTodo => ({
   prev: todo.prev || [],
   next: todo.next || [],
   lastPostponed: todo.lastPostponed ? new Date(todo.lastPostponed) : new Date(),
+  state: todo.state || 'READY',
 });
 
 const generateTodoForSortTest = (): TestTodo =>
@@ -41,6 +43,71 @@ const generateTodoForSortTest = (): TestTodo =>
 const generateTodoListForSortTest = (length: number): Array<TestTodo> =>
   Array.from({ length }, () => generateTodoForSortTest());
 
-const generateTodoListForUpdateTest = () => {};
+// update
+const START = new Date('2022-8-31');
+const END = new Date('2022-12-31');
+
+const getRandomDate = (start: Date, end: Date): Date =>
+  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+
+const getDistantDate = (date: Date): Date => new Date(date.getTime() + Math.floor(Math.random() * WEEK));
+
+const getRandomState = (): 'READY' | 'DONE' | 'WAIT' =>
+  // eslint-disable-next-line no-nested-ternary
+  Math.random() < 0.5 ? 'DONE' : Math.random() < 0.5 ? 'READY' : 'WAIT';
+
+const generateRandomTodo = (): TestTodo => {
+  const from = getRandomDate(START, END);
+  const until = getDistantDate(from);
+  return toTestTodo({
+    from,
+    until,
+    state: getRandomState(),
+  });
+};
+
+const getRandomIndex = (length: number, index: number, numNext: number): number =>
+  Math.ceil(Math.random() * (length - index - numNext));
+
+const getTodoIdFromNextElement = (
+  length: number,
+  index: number,
+  numNext: number,
+  arr: Array<TestTodo>,
+): { idx: Array<number>; next: Array<string> } => {
+  if (index + numNext >= length) return { next: [], idx: [] };
+
+  const idx = Array.from({ length: numNext }, () => getRandomIndex(length, index, numNext))
+    .sort()
+    .map((el, i) => el + i + index);
+
+  const next = idx.map((el) => arr[el].id);
+  return { idx, next };
+};
+
+const generateRandomNumber = (p: number, max: number) => {
+  let num = 0;
+  const addNextNum = () => {
+    if (num < max && Math.random() > p) {
+      num += 1;
+      addNextNum();
+    }
+  };
+  addNextNum();
+  return num;
+};
+
+const generateTodoListForUpdateTest = (length: number): Array<TestTodo> => {
+  const todos: Array<TestTodo> = Array.from({ length }, () => generateRandomTodo());
+  todos.forEach((el, i) => {
+    const { idx, next } = getTodoIdFromNextElement(length, i, generateRandomNumber(0.2, length - i), todos);
+    todos[i].next = next;
+    idx.forEach((nextIdx) => {
+      todos[nextIdx].prev.push(todos[i].id);
+    });
+  });
+
+  return todos;
+};
 
 export { toTestTodo, testToday, generateTodoListForSortTest, generateTodoListForUpdateTest };
