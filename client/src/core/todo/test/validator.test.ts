@@ -1,14 +1,15 @@
-import { TestTodo, generateTodoListForSortTest, testToday } from './type';
+import { TestTodo } from './type';
 import { validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
+import controlInput from './validator.data';
 
 const sort = (todoList: Array<TestTodo>): Array<TestTodo> => {
   return [...todoList];
 };
 
-describe('기본 정렬 테스트', () => {
+describe('검증 알고리즘 테스트', () => {
   let todoList: Array<TestTodo>;
   beforeEach(() => {
-    todoList = generateTodoListForSortTest(100);
+    todoList = controlInput;
   });
   describe('Imminence 정렬', () => {
     it('다른 조건이 모두 동일하다면, Imminent Todo가 Active된다.', () => {
