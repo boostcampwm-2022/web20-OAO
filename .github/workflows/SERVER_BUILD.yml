@@ -47,20 +47,19 @@ jobs:
           source: "docker-compose.yml"
           target: "oao"
 
-        - name: Run Docker Compose on the Server
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.ANOTHER_HOST }}
-            username: ${{ secrets.ANOTHER_USERNAME }}
-            password: ${{ secrets.ANOTHER_PASSWORD }}
-            port: ${{ secrets.ANOTHER_PORT }}
+      - name: Run Docker Compose on the Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ANOTHER_HOST }}
+          username: ${{ secrets.ANOTHER_USERNAME }}
+          password: ${{ secrets.ANOTHER_PASSWORD }}
+          port: ${{ secrets.ANOTHER_PORT }}
+          script: |
+            echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
+            docker pull ghcr.io/kumsil1006/oao:oao-server
+            docker pull ghcr.io/kumsil1006/oao:oao-proxy
 
-            script: |
-              echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-              docker pull ghcr.io/kumsil1006/oao:oao-server
-              docker pull ghcr.io/kumsil1006/oao:oao-proxy
+            cd oao
 
-              cd oao
-
-              docker-compose up -d
-              docker image prune
+            docker-compose up -d
+            docker image prune
