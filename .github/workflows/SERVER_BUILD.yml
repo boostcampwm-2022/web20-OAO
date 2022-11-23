@@ -1,4 +1,4 @@
-name: server build
+name: release-server CI/CD
 on:
   push:
     branches:
@@ -8,17 +8,17 @@ on:
 
 jobs:
   build-image:
-    name: Server image build & Compose & Run on Server
+    name: release-server CI/CD
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Node 설정
         uses: actions/setup-node@v1
         with:
           node-version: "18.x"
 
-      - name: Compile Typescript files
+      - name: Typescript 파일들 compile
         working-directory: "./server"
         env:
           CI: ""
@@ -26,7 +26,7 @@ jobs:
           yarn install --immutable --immutable-cache --check-cache
           yarn build
 
-      - name: Login to GitHub Container Registry
+      - name: GitHub Container Registry 로그인
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -39,14 +39,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker images
+      - name: Docker images build 및 GitHub Container Registry로 push
         uses: docker/build-push-action@v3.2.0
         with:
           context: ./server
           push: true
           tags: ghcr.io/kumsil1006/oao-server:${{ steps.tag_version.outputs.previous_tag }},ghcr.io/kumsil1006/oao-server:latest
 
-      - name: Copy Docker Compose into the Server
+      - name: Docker Compose 파일 운영 서버로 복사
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.ANOTHER_HOST }}
@@ -56,7 +56,7 @@ jobs:
           source: "docker-compose.yml"
           target: "oao"
 
-      - name: Run Docker Compose on the Server
+      - name: 운영 서버에서 Docker Compose 실행
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.ANOTHER_HOST }}
@@ -73,13 +73,13 @@ jobs:
             docker-compose up -d
             docker image prune
 
-      - name: Send slack when failed
+      - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
         uses: ./.github/actions/slack-notify
         with:
           slack_incoming_url: ${{ secrets.SLACK_INCOMING_URL }}
 
-      - name: Send slack if completed
+      - name: 성공시 슬랙 메시지 전송
         if: ${{ success() }}
         uses: ./.github/actions/slack-notify
         with:
