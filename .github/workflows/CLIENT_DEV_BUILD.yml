@@ -2,7 +2,7 @@ name: client build
 on:
   push:
     branches:
-      - release
+      - main
     paths:
       - "client/**"
 
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ghcr.io/kumsil1006/oao-client
+          tags: ghcr.io/kumsil1006/oao-dev-client
           context: ./client
 
       - name: Copy Docker Compose into the Server
@@ -67,8 +67,8 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-            docker pull ghcr.io/kumsil1006/oao-client
-            docker pull ghcr.io/kumsil1006/oao-proxy
+            docker pull ghcr.io/kumsil1006/oao-dev-client
+            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 

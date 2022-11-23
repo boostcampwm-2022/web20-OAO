@@ -2,7 +2,6 @@ name: server build
 on:
   push:
     branches:
-      - main
       - release
     paths:
       - "server/**"
@@ -39,7 +38,7 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ghcr.io/kumsil1006/oao:oao-server
+          tags: ghcr.io/kumsil1006/oao-server
 
       - name: Copy Docker Compose into the Server
         uses: appleboy/scp-action@master
@@ -60,8 +59,8 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-            docker pull ghcr.io/kumsil1006/oao:oao-server
-            docker pull ghcr.io/kumsil1006/oao:oao-proxy
+            docker pull ghcr.io/kumsil1006/oao-server
+            docker pull ghcr.io/kumsil1006/oao-proxy
 
             cd oao
 

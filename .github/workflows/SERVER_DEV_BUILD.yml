@@ -1,14 +1,14 @@
-name: client build
+name: server build
 on:
   push:
     branches:
-      - release
+      - main
     paths:
-      - "client/**"
+      - "server/**"
 
 jobs:
   build-image:
-    name: Client image build & Compose & Run on Server
+    name: Server image build & Compose & Run on Server
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,21 +18,13 @@ jobs:
         with:
           node-version: "18.x"
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: "**/client/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
-
-      - name: Install dependencies
-        working-directory: "./client"
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
-
-      - name: Client build
-        working-directory: "./client"
-        run: yarn build
+      - name: Compile Typescript files
+        working-directory: "./server"
+        env:
+          CI: ""
+        run: |
+          yarn install --immutable --immutable-cache --check-cache
+          yarn build
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -44,9 +36,9 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.2.0
         with:
+          context: ./server
           push: true
-          tags: ghcr.io/kumsil1006/oao-client
-          context: ./client
+          tags: ghcr.io/kumsil1006/oao-dev-server
 
       - name: Copy Docker Compose into the Server
         uses: appleboy/scp-action@master
@@ -67,8 +59,8 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-            docker pull ghcr.io/kumsil1006/oao-client
-            docker pull ghcr.io/kumsil1006/oao-proxy
+            docker pull ghcr.io/kumsil1006/oao-dev-server
+            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 
