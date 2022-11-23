@@ -2,7 +2,7 @@ name: release-client CI/CD
 on:
   push:
     branches:
-      - release
+      - 42-env-docker-및-remote-server-설정
     paths:
       - "client/**"
 
@@ -41,11 +41,17 @@ jobs:
           username: kumsil1006
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Github Release 최신 tag 받아오기
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Docker images build 및 GitHub Container Registry로 push
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ghcr.io/kumsil1006/oao-client
+          tags: ghcr.io/kumsil1006/oao-client:${{ steps.tag_version.outputs.previous_tag }},ghcr.io/kumsil1006/oao-client:latest
           context: ./client
 
       - name: Docker Compose 파일 운영 서버로 복사

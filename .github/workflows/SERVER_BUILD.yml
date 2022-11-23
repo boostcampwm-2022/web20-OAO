@@ -33,12 +33,18 @@ jobs:
           username: kumsil1006
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Github Release 최신 tag 받아오기
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.2.0
         with:
           context: ./server
           push: true
-          tags: ghcr.io/kumsil1006/oao-server
+          tags: ghcr.io/kumsil1006/oao-server:${{ steps.tag_version.outputs.previous_tag }},ghcr.io/kumsil1006/oao-server:latest
 
       - name: Copy Docker Compose into the Server
         uses: appleboy/scp-action@master
