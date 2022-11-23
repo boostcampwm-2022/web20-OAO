@@ -38,3 +38,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+client/src/core/todo/test/temp.ts
