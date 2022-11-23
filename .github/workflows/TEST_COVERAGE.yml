@@ -27,7 +27,8 @@ jobs:
           cd client        
           yarn -s test
 
-      - name: Code Coverage
+      - name: Code Coverage 리포트
+        if: always()
         uses: codecov/codecov-action@v3
         with:
           flags: unittests # optional
