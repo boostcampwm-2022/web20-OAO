@@ -16,11 +16,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "18.x"
-      - name: Install & Test
+          
+      - name: Install
         run: |
           cd client
           yarn
-          yarn test
+
+      - name: 테스트 코드 실행
+        run: |
+          yarn -s test
+
       - name: Code Coverage
         uses: codecov/codecov-action@v3
         with:
