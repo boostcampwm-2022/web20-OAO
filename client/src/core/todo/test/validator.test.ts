@@ -1,6 +1,6 @@
 import * as sortRawTestCase from './sort.data.json';
 import * as updateRawTestCase from './update.data.json';
-import { TestTodo, toTestTodo } from './type';
+import { toTestTodo } from './type';
 import {
   validateImminenceSort,
   validateImportanceSort,
@@ -9,14 +9,6 @@ import {
   validateRTL,
   validateWTL,
 } from './validator';
-
-const sort = (todoList: Array<TestTodo>): Array<TestTodo> => {
-  return [...todoList];
-};
-
-const update = (todoList: Array<TestTodo>): Array<TestTodo> => {
-  return [...todoList];
-};
 
 const sortTestCase = sortRawTestCase.map((el) => ({
   tag: el.tag,
@@ -37,17 +29,17 @@ describe('검증 알고리즘 테스트', () => {
   });
   describe('Importance 정렬', () => {
     test.each(sortTestCase)('$tag', ({ today, data }) => {
-      expect(validateImminenceSort(data, today)).toBe(true);
+      expect(validateImportanceSort(data, today)).toBe(true);
     });
   });
   describe('Deadline 정렬', () => {
     test.each(sortTestCase)('$tag', ({ today, data }) => {
-      expect(validateImminenceSort(data, today)).toBe(true);
+      expect(validateDeadlineSort(data, today)).toBe(true);
     });
   });
   describe('Last Postponed 정렬 ', () => {
     test.each(sortTestCase)('$tag', ({ today, data }) => {
-      expect(validateImminenceSort(data, today)).toBe(true);
+      expect(validateLastPostponedSort(data, today)).toBe(true);
     });
   });
 });
