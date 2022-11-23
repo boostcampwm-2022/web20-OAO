@@ -2,7 +2,7 @@ name: release-client CI/CD
 on:
   push:
     branches:
-      - 42-env-docker-및-remote-server-설정
+      - release
     paths:
       - "client/**"
 

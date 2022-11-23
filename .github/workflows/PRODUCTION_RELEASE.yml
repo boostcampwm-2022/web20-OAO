@@ -2,7 +2,7 @@ name: Release Github Application Version
 on:
   pull_request:
     branches:
-      - main
+      - release
 
 jobs:
   release-application:
