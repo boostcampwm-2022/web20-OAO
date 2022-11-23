@@ -8,20 +8,36 @@ on:
       - "client/**"
 
 jobs:
-  build:
+  Code-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: "18.x"
+
       - name: Install & Test
         run: |
           cd client
           yarn
           yarn test
+
       - name: Code Coverage
         uses: codecov/codecov-action@v3
         with:
           flags: unittests # optional
+
+      - name: Send slack when failed
+        if: ${{ failure() }}
+        uses: ./.github/actions/slack-notify
+        with:
+          slack_incoming_url: ${{ secrets.SLACK_INCOMING_URL }}
+
+      - name: Send slack if completed
+        if: ${{ success() }}
+        uses: ./.github/actions/slack-notify
+        with:
+          status: success
+          slack_incoming_url: ${{ secrets.SLACK_INCOMING_URL }}

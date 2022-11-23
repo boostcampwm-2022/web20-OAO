@@ -1,0 +1,22 @@
+name: Release Github Application Version
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  release-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Release 최신 tag 받아오기
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: GitHub project release 업데이트
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
