@@ -32,6 +32,13 @@ const toTestTodo = (todo: any): TestTodo => ({
   state: todo.state || 'READY',
 });
 
+const toComparableTestTodo = (todo: TestTodo) => ({
+  ...todo,
+  until: todo.until.toString(),
+  from: todo.from.toString(),
+  lastPostponed: todo.lastPostponed.toString(),
+});
+
 const generateTodoForSortTest = (): TestTodo =>
   toTestTodo({
     id: uuid(),
@@ -116,4 +123,4 @@ const generateTodoListForUpdateTest = (length: number): Array<TestTodo> => {
   return todos;
 };
 
-export { toTestTodo, testToday, generateTodoListForSortTest, generateTodoListForUpdateTest };
+export { toTestTodo, toComparableTestTodo, testToday, generateTodoListForSortTest, generateTodoListForUpdateTest };
