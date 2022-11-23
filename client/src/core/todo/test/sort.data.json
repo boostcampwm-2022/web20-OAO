@@ -1,5 +1,6 @@
 [
   {
+    "tag": "sort/1",
     "today": "Mon Nov 21 2022 00:00:00 GMT+0900",
     "data": [
       {
@@ -418,6 +419,7 @@
     ]
   },
   {
+    "tag": "sort/2",
     "today": "Thu Nov 10 2022 00:00:00 GMT+0900",
     "data": [
       {
@@ -1060,6 +1062,7 @@
     ]
   },
   {
+    "tag": "sort/3",
     "today": "Mon Nov 14 2022 00:00:00 GMT+0900",
     "data": [
       {
