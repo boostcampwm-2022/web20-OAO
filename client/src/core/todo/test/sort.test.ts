@@ -1,6 +1,6 @@
-import { TestTodo, generateTodoListForSortTest, testToday, toTestTodo, toComparableTestTodo } from './type';
+import { TestTodo, toTestTodo, toComparableTestTodo } from './type';
 import { validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
-import { generateSortTestSet } from './generator';
+import { testToday, generateTodoListForSortTest, generateSortTestSet } from './generator';
 import * as sortRawTestCase from './sort.data.json';
 
 const sortTestCase = sortRawTestCase.map((el) => ({

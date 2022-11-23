@@ -1,6 +1,6 @@
-import { TestTodo, generateTodoListForUpdateTest, testToday, toTestTodo, toComparableTestTodo } from './type';
+import { TestTodo, toTestTodo, toComparableTestTodo } from './type';
 import { validateRTL, validateWTL } from './validator';
-import { generateSortTestSet } from './generator';
+import { testToday, generateTodoListForUpdateTest, generateUpdateTestSet } from './generator';
 import * as updateRawTestCase from './sort.data.json';
 
 const updateTestCase = updateRawTestCase.map((el) => ({
@@ -30,7 +30,7 @@ describe('업데이트 테스트', () => {
   });
 });
 
-const macroUnitTestCases = generateSortTestSet(updateTestCase, 5);
+const macroUnitTestCases = generateUpdateTestSet(updateTestCase, 5);
 
 describe('업데이트 대단위 테스트', () => {
   describe.each(macroUnitTestCases)('$tag', ({ problem, today, answer }) => {
