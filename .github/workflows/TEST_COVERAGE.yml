@@ -24,6 +24,7 @@ jobs:
 
       - name: 테스트 코드 실행
         run: |
+          cd client        
           yarn -s test
 
       - name: Code Coverage
