@@ -1,4 +1,4 @@
-import { Todo, TodoList } from '../todoList';
+import { Todo } from '../todoList';
 import { validateRTL, validateWTL } from './validator';
 import { testToday, generateTodoListForUpdateTest, generateUpdateTestSet } from './generator';
 import * as updateRawTestCase from './update.data.json';
@@ -6,7 +6,7 @@ import * as updateRawTestCase from './update.data.json';
 const updateTestCase = updateRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map((todo) => new Todo({...todo, state: todo.state as "DONE" | "READY" | "WAIT"})),
+  data: el.data.map((todo) => new Todo({ ...todo, state: todo.state as 'DONE' | 'READY' | 'WAIT' })),
 }));
 
 const update = (todoList: Todo[], today: Date): Todo[] => {

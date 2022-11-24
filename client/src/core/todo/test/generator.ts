@@ -1,5 +1,4 @@
-import { uuid } from 'uuidv4';
-import { Todo, TodoList } from '../todoList';
+import { Todo } from '../todoList';
 
 const testToday = new Date();
 const DAY = 24 * 60 * 60 * 1000;
