@@ -58,16 +58,25 @@ class Todo {
   static compare(a: Todo, b: Todo): number {
     return 1;
   }
+
+  clone(): Todo {
+    return {
+      ...this,
+      from: new Date(this.from),
+      until: new Date(this.until),
+      lastPostponed: new Date(this.lastPostponed),
+    };
+  }
 }
 
 export class TodoList {
-  todoList: Todo[];
+  private readonly todoList: Todo[];
   constructor() {
     this.todoList = [];
   }
 
   getRTL(): Todo[] {
-    return [];
+    return this.todoList.filter((el) => el.state === 'READY').map((el) => el.clone());
   }
 
   getWTL(): Todo[] {
