@@ -1,5 +1,7 @@
 import { uuid } from 'uuidv4';
 
+const DAY = 24 * 60 * 60 * 1000;
+
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
 export interface InputTodo {
@@ -49,9 +51,11 @@ export class Todo implements InputTodo {
     this.lastPostponed = new Date();
   }
 
-  postponeDeadline(): void {}
+  postponeDeadline(): void {
+    this.until = new Date(this.until.getTime() + DAY);
+  }
 
-  postponeFor(): void {}
+  postponeForToday(): void {}
 
   lowerImportance(): void {}
 
@@ -132,16 +136,17 @@ export class TodoList {
     return new TodoList(this.todoList);
   }
 
-  postponeDeadline(): Todo[] {
-    return [];
+  postponeDeadline(): TodoList {
+    this.getActiveTodo().postponeDeadline();
+    return new TodoList(this.todoList);
   }
 
-  postponeFor(): Todo[] {
-    return [];
+  postponeForToday(): TodoList {
+    return new TodoList(this.todoList);
   }
 
-  lowerImportance(): Todo[] {
-    return [];
+  lowerImportance(): TodoList {
+    return new TodoList(this.todoList);
   }
 
   setDone(): Todo[] {
