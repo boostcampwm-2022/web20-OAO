@@ -80,7 +80,7 @@ export class TodoList {
   }
 
   getWTL(): Todo[] {
-    return [];
+    return this.todoList.filter((el) => el.state === 'WAIT').map((el) => el.clone());
   }
 
   getDTL(): Todo[] {
