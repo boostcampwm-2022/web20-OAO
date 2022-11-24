@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import { TestTodo, toTestTodo } from './type';
+import { Todo, TodoList } from '../todoList';
 
 const testToday = new Date();
 const DAY = 24 * 60 * 60 * 1000;
@@ -8,19 +8,26 @@ const WEEK = 7 * DAY;
 interface TestData {
   today: Date;
   tag: string;
-  data: TestTodo[];
+  data: Todo[];
+}
+interface StrictCompareTestData {
+  today: Date;
+  tag: string;
+  problem: Todo[];
+  answer: Todo[];
 }
 
-const generateTodoForSortTest = (): TestTodo =>
-  toTestTodo({
-    id: uuid(),
+const generateTodoForSortTest = (): Todo =>
+  new Todo({
+    owner: 'default owner',
+    title: 'default title',
     importance: Math.ceil(Math.random() * 3),
     until: new Date(testToday.getTime() + Math.floor(Math.random() * WEEK)),
     from: new Date(1994, 10, 5),
+    state: 'READY',
   });
 
-const generateTodoListForSortTest = (length: number): TestTodo[] =>
-  Array.from({ length }, () => generateTodoForSortTest());
+const generateTodoListForSortTest = (length: number): Todo[] => Array.from({ length }, () => generateTodoForSortTest());
 
 // update
 const START = new Date('2022-8-31');
@@ -35,10 +42,13 @@ const getRandomState = (): 'READY' | 'DONE' | 'WAIT' =>
   // eslint-disable-next-line no-nested-ternary
   Math.random() < 0.5 ? 'DONE' : Math.random() < 0.5 ? 'READY' : 'WAIT';
 
-const generateRandomTodo = (id: string | undefined): TestTodo => {
+const generateRandomTodo = (id: string | undefined): Todo => {
   const from = getRandomDate(START, END);
   const until = getDistantDate(from);
-  return toTestTodo({
+  return new Todo({
+    owner: 'default owner',
+    title: 'default title',
+    importance: 1,
     id,
     from,
     until,
@@ -53,7 +63,7 @@ const getTodoIdFromNextElement = (
   length: number,
   index: number,
   numNext: number,
-  arr: TestTodo[],
+  arr: Todo[],
 ): { idx: number[]; next: string[] } => {
   if (index + numNext >= length) return { next: [], idx: [] };
 
@@ -77,8 +87,8 @@ const generateRandomNumber = (p: number, max: number): number => {
   return num;
 };
 
-const generateTodoListForUpdateTest = (length: number): TestTodo[] => {
-  const todos: TestTodo[] = Array.from({ length }, (el, i) => generateRandomTodo(i.toString()));
+const generateTodoListForUpdateTest = (length: number): Todo[] => {
+  const todos: Todo[] = Array.from({ length }, (el, i) => generateRandomTodo(i.toString()));
   todos.forEach((el, i) => {
     const { idx, next } = getTodoIdFromNextElement(
       length,
@@ -95,26 +105,30 @@ const generateTodoListForUpdateTest = (length: number): TestTodo[] => {
   return todos;
 };
 
-const generateSortTestProblem = (answer: TestTodo[]): TestTodo[] => {
-  const problem = JSON.parse(JSON.stringify(answer)).map((el: any) => toTestTodo(el));
+const generateSortTestProblem = (answer: Todo[]): Todo[] => {
+  const problem = JSON.parse(JSON.stringify(answer)).map((el: any) => new Todo(el));
   problem.sort(() => Math.random() - 0.5);
   return problem;
 };
 
-const changeTodoStateRandomly = (todo: TestTodo, p: number): TestTodo => {
+const changeTodoStateRandomly = (todo: Todo, p: number): Todo => {
   if (todo.state === 'DONE' || Math.random() < p) return todo;
-  if (todo.state === 'READY') return { ...todo, state: 'WAIT' };
-  return { ...todo, state: 'READY' };
+  if (todo.state === 'READY') return new Todo({ ...todo, state: 'WAIT' });
+  return new Todo({ ...todo, state: 'READY' });
 };
 
-const generateUpdateTestProblem = (answer: TestTodo[]): TestTodo[] => {
+const generateUpdateTestProblem = (answer: Todo[]): Todo[] => {
   const problem = JSON.parse(JSON.stringify(answer))
-    .map((el: any) => toTestTodo(el))
-    .map((el: TestTodo) => changeTodoStateRandomly(el, 0.8));
+    .map((el: any) => new Todo(el))
+    .map((el: Todo) => changeTodoStateRandomly(el, 0.8));
   return problem;
 };
 
-const generateTestCases = (answerObject: TestData, generator: (answer: TestTodo[]) => TestTodo[], num: number): any[] =>
+const generateTestCases = (
+  answerObject: TestData,
+  generator: (answer: Todo[]) => Todo[],
+  num: number,
+): StrictCompareTestData[] =>
   new Array(num).fill(0).map((el, i) => ({
     today: answerObject.today,
     tag: `answer: ${answerObject.tag}, problem:${i}`,
@@ -122,13 +136,16 @@ const generateTestCases = (answerObject: TestData, generator: (answer: TestTodo[
     answer: answerObject.data,
   }));
 
-const generateTestSet = (data: TestData[], generator: (answer: TestTodo[]) => TestTodo[], multiplier: number): any[] =>
-  data.flatMap((el) => generateTestCases(el, generator, multiplier));
+const generateTestSet = (
+  data: TestData[],
+  generator: (answer: Todo[]) => Todo[],
+  multiplier: number,
+): StrictCompareTestData[] => data.flatMap((el) => generateTestCases(el, generator, multiplier));
 
-const generateSortTestSet = (data: TestData[], multiplier: number): any[] =>
+const generateSortTestSet = (data: TestData[], multiplier: number): StrictCompareTestData[] =>
   generateTestSet(data, generateSortTestProblem, multiplier);
 
-const generateUpdateTestSet = (data: TestData[], multiplier: number): any[] =>
+const generateUpdateTestSet = (data: TestData[], multiplier: number): StrictCompareTestData[] =>
   generateTestSet(data, generateUpdateTestProblem, multiplier);
 
 export {

@@ -8,16 +8,16 @@ export interface InputTodo {
   content?: string; // TEXT, 할일의 상세 내용
   owner: string; // UUIDv4, 할일 소유자의 id
   importance: number; // INT or ENUM, 할일의 우선순위 레벨
-  until: Date; // DATE, 할일의 마감기한
-  from?: Date; // DATE, 할일의 시작기한
+  until: Date | string; // DATE, 할일의 마감기한
+  from?: Date | string; // DATE, 할일의 시작기한
   prev?: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
   next?: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
   elapsedTime?: number;
-  lastPostponed: Date;
+  lastPostponed?: Date | string;
   state: 'READY' | 'DONE' | 'WAIT';
 }
 
-class Todo {
+export class Todo {
   id: string;
   title: string;
   content: string;
@@ -76,11 +76,20 @@ class Todo {
   }
 
   clone(): Todo {
-    return {
+    return new Todo({
       ...this,
       from: new Date(this.from),
       until: new Date(this.until),
       lastPostponed: new Date(this.lastPostponed),
+    });
+  }
+
+  toComparableTodo(): any {
+    return {
+      ...this,
+      until: this.until.getTime(),
+      from: this.from.getTime(),
+      lastPostponed: this.lastPostponed.getTime(),
     };
   }
 }

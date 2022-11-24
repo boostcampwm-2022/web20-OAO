@@ -1,6 +1,6 @@
 import * as sortRawTestCase from './sort.data.json';
 import * as updateRawTestCase from './update.data.json';
-import { toTestTodo } from './type';
+import { Todo } from '../todoList';
 import {
   validateImminenceSort,
   validateImportanceSort,
@@ -13,12 +13,14 @@ import {
 const sortTestCase = sortRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map((todo) => toTestTodo(todo)),
+  data: el.data.map(
+    (todo) => new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }),
+  ),
 }));
 const updateTestCase = updateRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map((todo) => toTestTodo(todo)),
+  data: el.data.map((todo) => new Todo({ ...todo, state: todo.state as 'DONE' | 'READY' | 'WAIT' })),
 }));
 
 describe('검증 알고리즘 테스트', () => {
