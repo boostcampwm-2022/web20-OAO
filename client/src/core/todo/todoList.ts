@@ -60,7 +60,9 @@ export class Todo implements InputTodo {
     this.from = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
   }
 
-  lowerImportance(): void {}
+  lowerImportance(): void {
+    this.importance = Math.max(this.importance - 1, 1);
+  }
 
   setDone(): void {}
 
@@ -150,6 +152,7 @@ export class TodoList {
   }
 
   lowerImportance(): TodoList {
+    this.getActiveTodo().lowerImportance();
     return new TodoList(this.todoList);
   }
 
