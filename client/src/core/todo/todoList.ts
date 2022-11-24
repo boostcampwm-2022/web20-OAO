@@ -1,5 +1,7 @@
 import { uuid } from 'uuidv4';
 
+const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
 export interface InputTodo {
   id?: string; // UUIDv4, 할일의 고유 id
   title: string; // VARCHAR(255), 할일의 이름
@@ -55,8 +57,22 @@ class Todo {
 
   updateElapsedTime(): void {}
 
-  static compare(a: Todo, b: Todo): number {
-    return 1;
+  static compare(today: Date): (a: Todo, b: Todo) => number {
+    return (a: Todo, b: Todo): number => {
+      const imminenceDiff = Number(isEqualDate(today, b.until)) - Number(isEqualDate(today, a.until));
+      if (imminenceDiff !== 0) return imminenceDiff;
+
+      const importanceDiff = b.importance - a.importance;
+      if (importanceDiff !== 0) return importanceDiff;
+
+      const deadlineDiff = a.until.getTime() - b.until.getTime();
+      if (deadlineDiff !== 0) return deadlineDiff;
+
+      const lastPostponedDiff = a.lastPostponed.getTime() - b.lastPostponed.getTime();
+      if (lastPostponedDiff !== 0) return lastPostponedDiff;
+
+      return 0;
+    };
   }
 
   clone(): Todo {
@@ -71,8 +87,8 @@ class Todo {
 
 export class TodoList {
   private readonly todoList: Todo[];
-  constructor() {
-    this.todoList = [];
+  constructor(todoList: InputTodo[]) {
+    this.todoList = todoList.map((el) => new Todo(el));
   }
 
   getRTL(): Todo[] {
@@ -89,6 +105,10 @@ export class TodoList {
 
   getActiveTodo(): Todo {
     return this.todoList[0].clone();
+  }
+
+  getSortedRTL(today: Date): Todo[] {
+    return this.getRTL().sort(Todo.compare(today));
   }
 
   sort(): Todo[] {
