@@ -33,7 +33,16 @@ const GlobalStyle = createGlobalStyle`
   p {
     font-size: 1rem;
   }
-  button {background: inherit ; border:none; box-shadow:none; border-radius:0; padding:0; overflow:visible;
+  button {
+    background: inherit ;
+    border:none;
+    box-shadow:none;
+    border-radius:0;
+    padding:0;
+    overflow:visible;
+  }
+  button:hover {
+    cursor: pointer;
   }
 `;
 

@@ -1,10 +1,14 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
+
 import Button from '../components/Button';
 import Text from '../components/Text';
-import LongLogo from '../components/LongLogo';
+import LongLogo from '../images/LongLogo.svg';
+
 import { useAtom } from 'jotai';
 import { loginStateAtom } from '../util/GlobalState';
+import { useNavigate } from 'react-router-dom';
+// import { goHome } from '../util/Common';
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,11 +25,15 @@ const FlexGrow3 = styled.div`
 
 const Header = (): ReactElement => {
   const [login, setUserLogin] = useAtom(loginStateAtom);
+  const navigate = useNavigate();
 
+  const goHome = (): void => {
+    navigate('/');
+  };
   return (
     <Wrapper>
       <FlexGrow3>
-        <Button context={<LongLogo />} />
+        <Button context={<img src={LongLogo} />} onClick={goHome} />
       </FlexGrow3>
       {!login && (
         <Button

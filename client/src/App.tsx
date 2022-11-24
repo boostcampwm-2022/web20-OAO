@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
-import { RouterProvider } from 'react-router-dom';
-import { router } from './Router';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Provider } from 'jotai';
 import styled from 'styled-components';
+
 import Header from './container/Header';
 import Menubar from './container/Menubar';
-import { Provider } from 'jotai';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -12,15 +12,18 @@ const Wrapper = styled.div`
 
 const App = (): ReactElement => {
   return (
-    <>
-      <Provider>
+    <Provider>
+      <BrowserRouter>
         <Menubar />
         <Wrapper>
           <Header />
-          <RouterProvider router={router} />
+          <Routes>
+            <Route path="/" element={<div>main</div>}></Route>
+            <Route path="/table" element={<div>table</div>}></Route>
+          </Routes>
         </Wrapper>
-      </Provider>
-    </>
+      </BrowserRouter>
+    </Provider>
   );
 };
 
