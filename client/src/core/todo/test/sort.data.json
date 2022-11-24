@@ -5,413 +5,413 @@
     "data": [
       {
         "title": "각 티켓의 D-Day를 통해 남은 기한을 확인할 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-14T02:53:11"
       },
       {
         "title": "아티스트와 팬은 미팅방과 같은 방식으로 실시간 채팅을 사용할 수 있다. ",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T02:00:00",
         "lastPostponed": "2022-11-14T02:05:15"
       },
       {
         "title": "아티스트와 팬은 아티스트의 비디오를 볼 수 있다. ",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T02:00:00",
         "lastPostponed": "2022-11-19T01:26:13"
       },
       {
         "title": "아티스트는 실시간 영상 버튼을 클릭하면 실시간 영상페이지로 넘어가게 된다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T04:00:00",
         "lastPostponed": "2022-11-18T10:26:36"
       },
       {
         "title": "팬이 기록 버튼을 누르면 녹화 중단 버튼으로 바뀌며 녹화가 시작하게 된다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-18T02:14:57"
       },
       {
         "title": "댓글 작성 시 팬의 닉네임, 작성 날짜, 댓글 내용을 볼 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-19T07:45:19"
       },
       {
         "title": "티켓의 마감일이 1일 보다 적게 남았을 경우 시로 나타내준다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T02:00:00",
         "lastPostponed": "2022-11-19T06:53:37"
       },
       {
         "title": "작성한 댓글을 삭제할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T04:00:00",
         "lastPostponed": "2022-11-14T06:33:47"
       },
       {
         "title": "팬이 녹화 중단 버튼을 누르면 해당 영상을 추후 확인할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T04:00:00",
         "lastPostponed": "2022-11-15T02:25:17"
       },
       {
         "title": "사용자는 아티스트가 입력한 채팅과 사용자가 입력한 채팅의 색을 구분하여 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-13T07:54:21"
       },
       {
         "title": "미팅 시작 날짜와 시간을 정할 수 있다. ",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-14T03:57:03"
       },
       {
         "title": "티켓 판매 수량과 개당 가격(붕어빵)을 설정할 수 있다. ",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-15T08:58:59"
       },
       {
         "title": "사용자는 자신의 비디오(카메라)를 다른 사람과 실시간으로 공유 할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T00:00:00",
         "lastPostponed": "2022-11-15T11:05:44"
       },
       {
         "title": "티켓을 클릭하면 티켓 정보 페이지로 이동한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T02:00:00",
         "lastPostponed": "2022-11-13T06:55:09"
       },
       {
         "title": "사용자는 자신의 음성과 비디오를 조절할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T04:00:00",
         "lastPostponed": "2022-11-15T11:54:42"
       },
       {
         "title": "소셜 로그인(네이버, 구글) 로직 이후 회원 여부 확인하기",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T06:00:00",
         "lastPostponed": "2022-11-14T11:51:48"
       },
       {
         "title": "초기 아티스트 미팅방 접속 시 휴게방으로 들어가게 된다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-21T06:00:00",
         "lastPostponed": "2022-11-16T01:34:29"
       },
       {
         "title": "티켓팅이 진행 중일 때는 로딩창을 확인할 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-15T03:32:15"
       },
       {
         "title": "팬들은 아티스트의 활동 사진을 확인할 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-16T07:21:28"
       },
       {
         "title": "아티스트는 캘린더에서 날짜를 클릭했을 때 비어있으면 해당 날짜의 티켓 생성 모달을 볼 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-18T01:35:38"
       },
       {
         "title": "실시간 영상이 시작되면 아티스트 팬 게시판에 실시간 영상의 썸네일을 볼 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-18T05:44:48"
       },
       {
         "title": "회원 여부 확인 후 회원가입이 되어 있지 않으면 닉네임을 입력받고 핸드폰 인증받기",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T02:00:00",
         "lastPostponed": "2022-11-17T04:20:14"
       },
       {
         "title": "팬들은 아티스트가 진행 중인 실시간 영상을 볼 수 있다. ",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T04:00:00",
         "lastPostponed": "2022-11-15T00:20:55"
       },
       {
         "title": "아티스트는 캘린더에서 일정을 클릭했을 때 미팅이 존재하면 해당 미팅의 정보를 볼 수 있다. ",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T04:00:00",
         "lastPostponed": "2022-11-17T10:17:22"
       },
       {
         "title": "티켓 판매 날짜와 시간을 정할 수 있다. ",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-14T02:41:42"
       },
       {
         "title": "팬들은 아티스트의 활동 영상을 확인할 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-17T08:40:52"
       },
       {
         "title": "팬은 티켓팅 시작 전에 티켓팅까지 남은 시간을 확인할 수 있다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T06:00:00",
         "lastPostponed": "2022-11-13T10:56:39"
       },
       {
         "title": "아티스트가 실시간 영상 종료를 클릭하였을 때 영상으로 기록할지 삭제할지 선택할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T04:00:00",
         "lastPostponed": "2022-11-14T00:36:58"
       },
       {
         "title": "아티스트는 전체 미팅 방을 한번에 삭제할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T04:00:00",
         "lastPostponed": "2022-11-17T11:16:07"
       },
       {
         "title": "아티스트는 캘린더에서 일정을 클릭했을 때 미팅이 존재하면 해당 미팅을 수정할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-15T00:32:49"
       },
       {
         "title": "아티스트는 도배하는 팬들의 메시지를 차단할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-16T05:10:16"
       },
       {
         "title": "작성한 댓글의 목록을 확인할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-17T02:57:01"
       },
       {
         "title": "아티스트는 개별 방 하나하나 클릭하여 삭제할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-17T05:20:06"
       },
       {
         "title": "팬이 채팅을 남겼을 때 5초 뒤에 또다른 채팅을 남길 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-18T04:08:23"
       },
       {
         "title": "티켓 생성 시 이벤트 Title 을 작성할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-14T09:24:33"
       },
       {
         "title": "티켓의 마감일이 1시간보다 적게 남았을 경우 분으로 나타낸다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-15T02:30:11"
       },
       {
         "title": "팬은 미팅 30분전/5분 전에 미팅 알람을 받을 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T02:00:00",
         "lastPostponed": "2022-11-13T03:14:37"
       },
       {
         "title": "아티스트는 특정 팬을 강퇴할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T02:00:00",
         "lastPostponed": "2022-11-16T08:11:34"
       },
       {
         "title": "미팅의 정보는 한팀 당 인원, 미팅 시간, 미팅 진행 리스트이다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-13T09:38:42"
       },
       {
         "title": "팬은 아티스트 팬 게시판에서 응원의 댓글을 남길 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-14T00:31:36"
       },
       {
         "title": "팬은 한번만 기록 버튼을 누를 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-14T06:52:12"
       },
       {
         "title": "사용자는 현재 화상 채팅에 참여 중인 인원을 확인할 수 있다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T06:00:00",
         "lastPostponed": "2022-11-15T01:20:53"
       },
       {
         "title": "티켓팅이 끝나면 결과 페이지로 이동 후 결과를 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-13T08:25:59"
       },
       {
         "title": "팬은 미팅이 다가오는 날짜 순으로 자신이 예약한 티켓 목록을 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-17T02:51:20"
       },
       {
         "title": "한팀 당 미팅 시간을 설정할 수 있다. ",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-17T09:05:04"
       },
       {
         "title": "한팀 당 미팅 인원을 설정할 수 있다. (1:[1~5])",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-19T07:04:56"
       },
       {
         "title": "메인 페이지에서 팬은 새로운/다른 아티스트 목록을 확인할 수 있다. ",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T02:00:00",
         "lastPostponed": "2022-11-18T09:44:08"
       },
       {
         "title": "사용자는 다른 사람이 입력한 채팅을 실시간으로 확인 할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T04:00:00",
         "lastPostponed": "2022-11-15T01:37:33"
       },
       {
         "title": "티켓팅 시작 시간이 되면 구매할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-14T03:58:16"
       },
       {
         "title": "소셜 로그인(네이버, 구글) 구현하기",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-14T10:48:25"
       },
       {
         "title": "아티스트는 미팅 목록을 시간 순대로 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-15T04:51:33"
       },
       {
         "title": "회원 여부 확인 시 회원이면 메인페이지로 이동하기",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-22T06:00:00",
         "lastPostponed": "2022-11-18T05:20:57"
       },
       {
         "title": "티켓 페이지에서 사용자는 현재 판매중인 티켓목록을 확인할 수  있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-17T08:59:50"
       },
       {
         "title": "아티스트는 캘린더를 통하여 미팅 시간 스케줄을 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-19T05:18:57"
       },
       {
         "title": "사용자는 자신이 입력한 채팅을 같은 방에 있는 다른 사람들에게 전달 할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T02:00:00",
         "lastPostponed": "2022-11-17T01:45:37"
       },
       {
         "title": "팬은 입장하기 버튼을 통하여 미팅방에 접속할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T02:00:00",
         "lastPostponed": "2022-11-19T02:30:30"
       },
       {
         "title": "메인 페이지에서 팬은 구독한 아티스트의 목록을 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-14T04:09:38"
       },
       {
         "title": "아티스트는 미팅 목록 중 하나를 클릭 시 미팅방을 옮길 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-15T09:44:14"
       },
       {
         "title": "아티스트는 판매한 티켓의 미팅 시간을 다가오는 날짜 순으로 확인할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-10-05T00:00:00",
         "until": "2022-11-23T04:00:00",
         "lastPostponed": "2022-11-18T06:29:33"
@@ -424,637 +424,637 @@
     "data": [
       {
         "title": "프로젝트에 사용할 기술 스택을 결정한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-10T00:00:00",
         "lastPostponed": "2022-11-09T20:49:07"
       },
       {
         "title": "데이터베이스를 설계하고 구축한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-10T00:00:00",
         "lastPostponed": "2022-11-07T16:05:34"
       },
       {
         "title": "husky pre-commit hook을 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-10T00:00:00",
         "lastPostponed": "2022-11-07T21:45:48"
       },
       {
         "title": "Task들의 시간을 산출하고 주차 별 계획을 세운다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-10T00:00:00",
         "lastPostponed": "2022-11-08T17:30:38"
       },
       {
         "title": "서버와 클라이언트 환경을 세팅한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-10T14:44:21"
       },
       {
         "title": "워크스페이스 생성 API를 작성한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-10T15:55:10"
       },
       {
         "title": "github OAuth 기반의 회원가입 및 로그인 API를 만든다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-11T22:58:30"
       },
       {
         "title": "실시간 공유 문서 작성에서 발생할 수 있는 문제들을 핸들링한다. (태스크 세분화 필요)",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-12T21:16:16"
       },
       {
         "title": "워크스페이스 참여 API를 작성한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-13T23:22:35"
       },
       {
         "title": "특정 워크스페이스의 멤버와 회의록 목록을 가져오는 API를 만든다. + 테스트코드 작성",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-15T18:23:45"
       },
       {
         "title": "투표 블록의 데이터 저장 방식과 서비스 로직을 설계한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-18T15:50:35"
       },
       {
         "title": "https 서버를 설정한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-18T18:38:02"
       },
       {
         "title": "연결 리스트 CRDT 삽입과 삭제 알고리즘을 구현한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-20T13:24:42"
       },
       {
         "title": "<p contentEditable=”true” /> 에디터를 구현한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-20T19:51:20"
       },
       {
         "title": "고정된 하나의 워크스페이스와 회의록으로 서비스를 제공할 소켓 서버를 구축한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-21T13:11:23"
       },
       {
         "title": "로그인 페이지 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-10T13:07:55"
       },
       {
         "title": "백엔드 미들웨어를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-11T23:13:03"
       },
       {
         "title": "워크스페이스 서비스 로직의 테스트 코드를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T13:01:19"
       },
       {
         "title": "투표 등록 버튼을 눌러야 문서에 블록이 반영된다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-12T14:17:08"
       },
       {
         "title": "특정 유저로 워크스페이스 리스트를 받아오는 API를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T15:44:57"
       },
       {
         "title": "p 태그 블록들로 구성된 에디터를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-12T15:54:44"
       },
       {
         "title": "CD를 위한 github Action을 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-12T16:50:43"
       },
       {
         "title": "워크스페이스 리스트의 생성 or 참여 선택 모달 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T16:55:25"
       },
       {
         "title": "캠을 on하면 캠이 켜지고 다른 참가자들에게 캠 화면을 전송한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T19:21:59"
       },
       {
         "title": "워크스페이스 리스트에서 추가 아이콘을 누르면 생성 또는 참여 선택 모달을 사용할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T21:20:13"
       },
       {
         "title": "회의 중에는 시작 버튼이 종료 버튼으로 바뀌고 클릭으로 회의를 종료할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T23:13:05"
       },
       {
         "title": "마이크를 off하면 다른 참가자들은 해당 참가자의 소리를 들을 수 없다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T23:55:25"
       },
       {
         "title": "설정 메뉴를 누르면 열리는 워크스페이스 설정 모달 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-13T15:12:16"
       },
       {
         "title": "사이드바 가장 하단의 회의시작 버튼을 클릭해 회의를 시작할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-13T16:02:57"
       },
       {
         "title": "워크스페이스 리스트에서 내가 속해있는 팀들을 확인할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-13T16:26:28"
       },
       {
         "title": "회원가입 및 로그인 서비스 로직의 테스트 코드를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-13T17:33:46"
       },
       {
         "title": "워크스페이스 리스트 UI를 만든다. 썸네일과 추가 버튼을 포함한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-13T17:54:01"
       },
       {
         "title": "서버와 클라이언트 폴더구조를 설계한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-13T19:17:01"
       },
       {
         "title": "회의록을 선택하면 소켓 서버에 변경을 emit하고 선택된 회의록을 표시한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-13T20:32:39"
       },
       {
         "title": "질문 블록의 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-13T22:00:29"
       },
       {
         "title": "에디터에서 투표 블록을 선택하면 투표 블록 생성 폼이 나타난다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-13T22:18:30"
       },
       {
         "title": "워크스페이스 리스트의 생성 or 참여 모달 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-14T13:07:17"
       },
       {
         "title": "선택된 워크스페이스에 맞는 네임스페이스로 소켓을 연결한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-14T17:36:40"
       },
       {
         "title": "투표 블록에서 각 항목을 클릭해서 선택할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-14T18:14:24"
       },
       {
         "title": "워크스페이스 리스트에서 선택된 워크스페이스의 멤버와 회의록 목록을 불러온다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-18T00:00:00",
         "lastPostponed": "2022-11-14T19:05:24"
       },
       {
         "title": "워크스페이스 생성 모달에서 워크스페이스 이름을 입력하여 워크스페이스를 생성할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-14T19:21:43"
       },
       {
         "title": "투표 블록 생성 폼과 투표 블록 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-14T20:46:11"
       },
       {
         "title": "로그인 API를 연동한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-14T21:09:04"
       },
       {
         "title": "on/off로 토글되는 캠/마이크 컨트롤러 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-14T23:40:58"
       },
       {
         "title": "회의록 추가 버튼을 클릭해서 새로운 회의록을 만들 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-15T16:11:23"
       },
       {
         "title": "질문 블록의 제목은 ‘질문 리스트’로 기본 생성되고 수정이 가능하다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-15T20:41:01"
       },
       {
         "title": "투표 블록 생성 폼에서는 투표 제목을 입력하고 항목을 입력, 추가, 제거할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-16T14:12:33"
       },
       {
         "title": "워크스페이스 참여 모달에서 참여코드를 입력하여 워크스페이스에 조인할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T14:22:50"
       },
       {
         "title": "배포 환경을 구성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T16:54:46"
       },
       {
         "title": "질문 블록의 데이터 저장 방식과 서비스 로직을 설계한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T17:33:55"
       },
       {
         "title": "회의록 선택 이벤트에 클라이언트 소켓을 joinRoom 시키고 회의록 내용을 emit한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-16T18:12:17"
       },
       {
         "title": "사이드바에 회의록 목록 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-16T18:33:29"
       },
       {
         "title": "사이드바에 워크스페이스 이름과 설정 메뉴가 표시되는 헤더 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-16T19:09:21"
       },
       {
         "title": "캠을 off하면 캠이 꺼지고 다른 참가자들에게 전송되던 화면 대신 기본 화면이 표시된다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T20:25:01"
       },
       {
         "title": "새로운 멤버 참여 소켓 이벤트를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-17T17:17:18"
       },
       {
         "title": "회의록 생성 소켓 이벤트를 작성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-18T00:00:00",
         "lastPostponed": "2022-11-17T19:24:46"
       },
       {
         "title": "헤더에는 제목과 만들어진 시간이 표시되고 바디는 빈 div인 회의록 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-18T13:45:29"
       },
       {
         "title": "사이드바에 멤버 목록과 회의 버튼 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-18T15:20:30"
       },
       {
         "title": "헤더에서 회의록 제목을 수정할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-18T21:39:58"
       },
       {
         "title": "화상회의 사이드바에 접속자들의 디바이스 상태가 표시되는 UI를 만든다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-19T15:42:43"
       },
       {
         "title": "마이크를 on하면 다른 참가자들은 해당 참가자의 소리를 들을 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-19T19:41:44"
       },
       {
         "title": "회의록 변경 이벤트를 emit하고 listen한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-20T22:22:00"
       },
       {
         "title": "오른쪽 사이드바 UI를 만든다. 최상단에 본인의 영상이 위치한다. (피어 연결 제외)",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-21T18:38:38"
       },
       {
         "title": "WebRTC 사용을 위해 시그널링을 구현한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T00:00:00",
         "lastPostponed": "2022-11-21T20:03:12"
       },
       {
         "title": "화상회의 사이드바에 현재 접속한 피어 멤버들의 영상이 표시된다. ",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-22T15:36:29"
       },
       {
         "title": "회의록 변경 이벤트를 타겟 클라이언트들에게 전달한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-23T00:00:00",
         "lastPostponed": "2022-11-22T19:45:50"
       },
       {
         "title": "전체 설계 다이어그램을 그린다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-11T00:00:00",
         "lastPostponed": "2022-11-07T20:47:19"
       },
       {
         "title": "CI를 위한 github Action을 작성한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-10T20:15:53"
       },
       {
         "title": "마지막 항목이 추가되면 새로 입력할 항목이 나타난다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-11T12:51:03"
       },
       {
         "title": "타이머 시간을 설정하고 확인할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-11T16:02:54"
       },
       {
         "title": "질문 블록은 체크리스트 형태로 완료된 질문은 체크박스를 클릭해 완료 상태로 바꿀 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-11T19:28:20"
       },
       {
         "title": "에디터에서 Ctrl/Command+Z 단축키를 사용해 동작을 취소할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-12T14:26:29"
       },
       {
         "title": "dotenv-vault를 설정한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T00:00:00",
         "lastPostponed": "2022-11-13T15:09:08"
       },
       {
         "title": "새로운 멤버 참여와 회의록 생성 이벤트를 SSE로 워크스페이스 유저들에게 알린다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-13T15:46:05"
       },
       {
         "title": "각 항목마다 (투표 참여자/멤버) 와 비율을 보여준다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-13T18:32:52"
       },
       {
         "title": "워크스페이스 탈퇴 API를 작성한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-14T13:40:55"
       },
       {
         "title": "각 항목의 투표율을 시각적인 막대 그래프로 보여준다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-14T14:01:04"
       },
       {
         "title": "워크스페이스 생성 완료 모달에서 참여코드를 복사할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-14T19:57:58"
       },
       {
         "title": "블록의 첫번째 인덱스에서 /를 입력하면 블록 모달이 나타나고 블록 타입을 선택할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-18T00:00:00",
         "lastPostponed": "2022-11-14T20:43:55"
       },
       {
         "title": "화상회의가 진행되는 동안 참가자들이 화면을 공유할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T00:00:00",
         "lastPostponed": "2022-11-14T23:59:17"
       },
       {
         "title": "질문 블록에서 질문에 대한 답변을 입력할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-15T13:37:46"
       },
       {
         "title": "에디터에서 이미지를 첨부할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T00:00:00",
         "lastPostponed": "2022-11-15T14:48:05"
       },
       {
         "title": "에디터에서 #, ##, ### 문법으로 헤딩 블록을 추가할 수 있다. (optional)",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-15T20:43:38"
       },
       {
         "title": "에디터에서 h1, h2, h3 블록을 사용할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-15T23:06:11"
       },
       {
         "title": "입력한 참여코드가 유효하지 않을 경우 에러 메세지를 표시한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T15:38:56"
       },
       {
         "title": "블록 타입을 선택할 수 있는 모달 UI를 만든다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-16T18:34:05"
       },
       {
         "title": "워크스페이스 설정에서 참여코드를 확인하고 복사할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T00:00:00",
         "lastPostponed": "2022-11-16T21:16:25"
       },
       {
         "title": "워크스페이스 생성 모달에서 썸네일을 업로드하고 POST 요청을 보낼 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-16T21:49:32"
       },
       {
         "title": "새로운 회의록이 생성되면 선택된 회의록 context를 업데이트한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-17T17:45:19"
       },
       {
         "title": "워크스페이스 설정에서 해당 워크스페이스를 탈퇴할 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-20T00:00:00",
         "lastPostponed": "2022-11-17T19:14:50"
       },
       {
         "title": "오브젝트 스토리지와 multer 사용을 위한 환경을 만든다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-19T00:00:00",
         "lastPostponed": "2022-11-17T19:54:19"
@@ -1067,420 +1067,420 @@
     "data": [
       {
         "title": "redis를 이용하여 상위 10개의 인기 검색어 rank를 관리하는 시스템을 만든다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T09:00:00",
         "lastPostponed": "2022-11-12T07:48:17"
       },
       {
         "title": "다른 노드를 선택하는 경우 해당 논문의 참조 논문을 추가로 그려준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T12:00:00",
         "lastPostponed": "2022-11-11T02:45:58"
       },
       {
         "title": "요청받은 DOI에 대한 레퍼런스를 요청할 시 캐싱여부를 확인하는 파이프라인을 만든다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T12:00:00",
         "lastPostponed": "2022-11-11T05:37:39"
       },
       {
         "title": "검색한 논문을 토대로 참조한 논문을 1depth로 차트를 렌더링 한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T12:00:00",
         "lastPostponed": "2022-11-14T00:13:01"
       },
       {
         "title": "미니검색바는 메인페이지 검색바와 동일하게 동작한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T15:00:00",
         "lastPostponed": "2022-11-12T04:09:20"
       },
       {
         "title": "메인페이지 UI 구현",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T15:00:00",
         "lastPostponed": "2022-11-12T07:09:34"
       },
       {
         "title": "docker, github workflows 이용한 dev 서버 배포 자동화",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T15:00:00",
         "lastPostponed": "2022-11-14T05:02:48"
       },
       {
         "title": "타겟노드의 경우에는 노드를 별표시로 강조해준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T18:00:00",
         "lastPostponed": "2022-11-13T13:03:29"
       },
       {
         "title": "문의 이메일, 저작권 정보, 깃허브 링크를 표시한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T09:00:00",
         "lastPostponed": "2022-11-12T07:52:12"
       },
       {
         "title": "crossref api에 대한 성능 테스트 (timeout 시간 결정)",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T15:00:00",
         "lastPostponed": "2022-11-11T05:13:37"
       },
       {
         "title": "자식노드 클릭시 api 요청을 할 때 현재 캔버스의 zoom 상태를 전달한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-14T12:00:00",
         "lastPostponed": "2022-11-14T06:19:25"
       },
       {
         "title": "캐싱되지 않은 논문을 검색한 경우, 논문에 대한 data를 DB에 저장한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T02:52:12"
       },
       {
         "title": "검색어가 두글자 이상일 때만 자동완성을 보여준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T04:08:45"
       },
       {
         "title": "검색어 입력 시 자동완성 창이 열린다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T05:02:58"
       },
       {
         "title": "검색어 클릭 시 해당 논문의 상세 페이지로 이동한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T06:03:15"
       },
       {
         "title": "논문 데이터를 리스트 형식으로 한 페이지당 10개씩 보여준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-14T03:40:49"
       },
       {
         "title": "crossRef API 요청하여 키워드(제목, 저자)에 해당하는 논문 검색",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-14T06:12:57"
       },
       {
         "title": "서버에서 저장하고 있는 데이터에 대한 검색",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T12:00:00",
         "lastPostponed": "2022-11-14T06:16:06"
       },
       {
         "title": "검색한 논문의 제목, 저자, DOI, 인용논문 목록을 보여준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T15:00:00",
         "lastPostponed": "2022-11-12T08:07:51"
       },
       {
         "title": "네트워크 차트를 렌더링할 때 D3.js를 이용하여 좌표를 계산한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T15:00:00",
         "lastPostponed": "2022-11-12T09:57:18"
       },
       {
         "title": "1~10위까지의 인기검색어 데이터를 1초간격으로 슬라이딩 방식으로 보여준다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T15:00:00",
         "lastPostponed": "2022-11-13T06:59:37"
       },
       {
         "title": "자동완성 검색시 클라이언트로부터 전달받은 keyword를 response에 함께 전달한다",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T15:00:00",
         "lastPostponed": "2022-11-14T14:26:36"
       },
       {
         "title": "docker-compose redis, db 연결",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T18:00:00",
         "lastPostponed": "2022-11-15T15:32:12"
       },
       {
         "title": "인기검색어 클릭 시 해당 검색어로 검색된 페이지로 이동하고, 검색결과 데이터를 요청하고 받아온다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T15:00:00",
         "lastPostponed": "2022-11-14T09:42:12"
       },
       {
         "title": "검색어 자동완성 API 호출시 디바운스 딜레이 텀은 150ms으로 한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T15:00:00",
         "lastPostponed": "2022-11-15T09:33:02"
       },
       {
         "title": "요청받은 DOI에 해당하는 검색 결과를 클라이언트에 전달한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T15:00:00",
         "lastPostponed": "2022-11-15T11:18:03"
       },
       {
         "title": "검색어를 입력하고 enter key down / 돋보기 아이콘 클릭시 해당 검색어로 검색된 페이지로 이동한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T18:00:00",
         "lastPostponed": "2022-11-14T12:49:12"
       },
       {
         "title": "이미 자식을 렌더링한 노드를 클릭하는 경우에는 추가적인 api call을 block 한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T09:00:00",
         "lastPostponed": "2022-11-16T03:10:45"
       },
       {
         "title": "그리는중에는 추가로 노드를 그리는 요청을 받지 않게 blocking한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T12:00:00",
         "lastPostponed": "2022-11-14T04:42:11"
       },
       {
         "title": "ncloud 서버 생성",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T15:00:00",
         "lastPostponed": "2022-11-15T03:46:18"
       },
       {
         "title": "DOI 클릭할 경우 논문 페이지로 이동한다.",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T18:00:00",
         "lastPostponed": "2022-11-15T12:14:05"
       },
       {
         "title": "인기검색어 업데이트 테스트 코드 작성",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T18:00:00",
         "lastPostponed": "2022-11-17T08:44:29"
       },
       {
         "title": "검색요청 API 작성",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-21T12:00:00",
         "lastPostponed": "2022-11-19T02:03:23"
       },
       {
         "title": "url 쿼리(keyword, page, rows=10)에 해당하는 검색 결과를 전달한다. (totalPages, totalPapers 와 같은 pagination info 포함)",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-21T15:00:00",
         "lastPostponed": "2022-11-18T03:31:02"
       },
       {
         "title": "논문 검색 테스트 코드 작성",
-        "importance": "3",
+        "importance": 3,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-21T18:00:00",
         "lastPostponed": "2022-11-20T13:48:46"
       },
       {
         "title": "검색창 클릭 시 최근 검색기록을 5개까지 보여준다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T22:10:11"
       },
       {
         "title": "docker, github workflows 이용한 production 서버 배포 자동화",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-14T01:49:12"
       },
       {
         "title": "검색창에서 검색할시에는 로컬스토리지 검색기록에 검색어를 저장한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T12:00:00",
         "lastPostponed": "2022-11-13T08:53:12"
       },
       {
         "title": "검색어와 일치하는 구문은 highlight 표시한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T12:00:00",
         "lastPostponed": "2022-11-13T11:49:13"
       },
       {
         "title": "자동완성 검색어 / 최근 검색기록 hover시 배경색으로 강조한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T12:00:00",
         "lastPostponed": "2022-11-14T09:50:30"
       },
       {
         "title": "로딩 스피너를 보여주고, 로딩 문구를 랜덤으로 보여준다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T12:00:00",
         "lastPostponed": "2022-11-14T09:57:45"
       },
       {
         "title": "창을 클릭하면 10개의 검색어를 모두 보여주는 리스트가 토글된다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T15:00:00",
         "lastPostponed": "2022-11-12T04:56:35"
       },
       {
         "title": "홈버튼 클릭 시 메인페이지로 이동한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T18:00:00",
         "lastPostponed": "2022-11-12T17:47:57"
       },
       {
         "title": "인기검색어 hover 시 해당 검색어가 밑줄로 강조된다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T18:00:00",
         "lastPostponed": "2022-11-15T08:01:22"
       },
       {
         "title": "disabled 검색결과를 필터로 on/off 토글한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T09:00:00",
         "lastPostponed": "2022-11-13T05:39:12"
       },
       {
         "title": "개발서버 docker compose로 배포 자동화 로직 수정",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T12:00:00",
         "lastPostponed": "2022-11-14T02:00:48"
       },
       {
         "title": "DOI가 없는 논문은 인터랙션이 불가능하다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T15:00:00",
         "lastPostponed": "2022-11-16T10:05:04"
       },
       {
         "title": "reference 목록의 논문을 hover할 시에 해당한 논문의 노드를 강조하는 기능을 추가한다",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T18:00:00",
         "lastPostponed": "2022-11-15T10:27:20"
       },
       {
         "title": "인기검색어 업데이트 단위 시간 설정",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T18:00:00",
         "lastPostponed": "2022-11-15T11:46:20"
       },
       {
         "title": "검색기록 클릭 시 해당 검색어로 검색된 페이지로 이동한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-16T18:00:00",
         "lastPostponed": "2022-11-16T09:09:40"
       },
       {
         "title": "자동완성 검색 응답 대기시 스피너(달) 을 보여준다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T09:00:00",
         "lastPostponed": "2022-11-14T21:40:52"
       },
       {
         "title": "배경에 반짝이는 별 레이어를 생성한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T09:00:00",
         "lastPostponed": "2022-11-15T03:06:29"
       },
       {
         "title": "노드를 hover 시 해당 노드의 논문정보를 강조해주는 기능을 추가한다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T15:00:00",
         "lastPostponed": "2022-11-17T03:08:48"
       },
       {
         "title": "스크롤로 줌인 / 줌아웃 할 수 있다.",
-        "importance": "2",
+        "importance": 2,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T15:00:00",
         "lastPostponed": "2022-11-17T06:39:07"
       },
       {
         "title": "드래그로 포커스를 옮길 수 있다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-12T02:32:12"
       },
       {
         "title": "위, 아래 방향키로 최근 검색기록 / 자동완성 결과를 hover시킨다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T09:00:00",
         "lastPostponed": "2022-11-13T21:45:12"
       },
       {
         "title": "쿠버네티스 세팅",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-15T18:00:00",
         "lastPostponed": "2022-11-15T16:44:38"
       },
       {
         "title": "그래프에 있는 논문 node를 hover시 상세정보를 보여주는 tooltip을 표시한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T09:00:00",
         "lastPostponed": "2022-11-16T05:36:21"
       },
       {
         "title": "네트워크 차트를 그릴 때 노드의 위치를 서버측에서 계산을 한다.",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-17T18:00:00",
         "lastPostponed": "2022-11-14T09:19:16"
       },
       {
         "title": "Elasticsearch db 연결",
-        "importance": "1",
+        "importance": 1,
         "from": "1994-01-01T00:00:00",
         "until": "2022-11-22T09:00:00",
         "lastPostponed": "2022-11-20T03:52:07"
