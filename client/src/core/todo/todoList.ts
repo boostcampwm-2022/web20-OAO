@@ -47,27 +47,50 @@ export class Todo implements InputTodo {
     this.state = inputTodo.state ?? 'READY';
   }
 
-  postponeTemporally(): void {
+  postponeTemporally(): Todo {
     this.lastPostponed = new Date();
+    return this;
   }
 
-  postponeDeadline(): void {
+  postponeDeadline(): Todo {
     this.until = new Date(this.until.getTime() + DAY);
+    return this;
   }
 
-  postponeForToday(): void {
+  postponeForToday(): Todo {
     const today = new Date();
     this.from = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    return this;
   }
 
-  lowerImportance(): void {
+  lowerImportance(): Todo {
     this.importance = Math.max(this.importance - 1, 1);
+    return this;
   }
 
-  setDone(): void {}
+  setReady(): Todo {
+    this.state = 'READY';
+    return this;
+  }
 
-  updateElapsedTime(elapsedTime: number): void {
+  setWait(): Todo {
+    this.state = 'WAIT';
+    return this;
+  }
+
+  setDone(): Todo {
+    this.state = 'DONE';
+    return this;
+  }
+
+  isFromBeforeToday(): boolean {
+    if (this.from.getTime() < new Date().getTime()) return true;
+    return false;
+  }
+
+  updateElapsedTime(elapsedTime: number): Todo {
     this.elapsedTime = elapsedTime;
+    return this;
   }
 
   static compare(): (a: Todo, b: Todo) => number {
@@ -158,8 +181,25 @@ export class TodoList {
     return new TodoList(this.todoList);
   }
 
-  setDone(): Todo[] {
-    return [];
+  isAllPrevDone = (todo: Todo, todoList: Todo[]): boolean =>
+    todo.prev.reduce((acc, id) => acc && todoList.find((el) => el.id === id)?.state === 'DONE', true);
+
+  setDone(): TodoList {
+    this.getActiveTodo()
+      .setDone()
+      .next.forEach((nid) => {
+        const nextTodo = this.todoList.find((el) => el.id === nid);
+        if (nextTodo === undefined) return;
+        if (
+          nextTodo.prev.every((pid) => this.todoList.find((el) => el.id === pid)?.state === 'DONE') &&
+          nextTodo.isFromBeforeToday()
+        ) {
+          return nextTodo.setReady();
+        }
+        return nextTodo.setWait();
+      });
+
+    return new TodoList(this.todoList);
   }
 
   updateElapsedTime(elapsedTime: number): TodoList {
