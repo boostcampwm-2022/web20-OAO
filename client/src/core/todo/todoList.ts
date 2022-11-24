@@ -84,7 +84,7 @@ export class TodoList {
   }
 
   getDTL(): Todo[] {
-    return [];
+    return this.todoList.filter((el) => el.state === 'DONE').map((el) => el.clone());
   }
 
   getActiveTodo(): Todo {
