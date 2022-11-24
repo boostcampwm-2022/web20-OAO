@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import LongLogo from '../components/LongLogo';
+import { useAtom } from 'jotai';
+import { loginStateAtom } from '../util/GlobalState';
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,17 +15,29 @@ const Wrapper = styled.div`
   font-family: 'Roboto';
 `;
 
-// const Login = styled.p``;
-// const accountText = {
-//   login: 'Sign out',
-//   logout: 'Sign in',
-// };
+const FlexGrow3 = styled.div`
+  flex-grow: 3;
+`;
 
 const Header = (): ReactElement => {
+  const [login, setUserLogin] = useAtom(loginStateAtom);
+
   return (
     <Wrapper>
-      <Button context={<LongLogo />} />
-      <Button context={<Text text={'Sign up'} fontFamily="roboto" />} />
+      <FlexGrow3>
+        <Button context={<LongLogo />} />
+      </FlexGrow3>
+      {!login && (
+        <Button
+          context={<Text text={'Sign in'} fontFamily="roboto" />}
+          onClick={() => setUserLogin(!login)}
+          margin={'0 3vw 0 0'}
+        />
+      )}
+      {!login && <Button context={<Text text={'Sign up'} fontFamily="roboto" />} />}
+      {login && (
+        <Button context={<Text text={'Sign out'} fontFamily="roboto" />} onClick={() => setUserLogin(!login)} />
+      )}
     </Wrapper>
   );
 };

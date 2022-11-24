@@ -4,6 +4,7 @@ import { router } from './Router';
 import styled from 'styled-components';
 import Header from './container/Header';
 import Menubar from './container/Menubar';
+import { Provider } from 'jotai';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -12,11 +13,13 @@ const Wrapper = styled.div`
 const App = (): ReactElement => {
   return (
     <>
-      <Menubar />
-      <Wrapper>
-        <Header />
-        <RouterProvider router={router} />
-      </Wrapper>
+      <Provider>
+        <Menubar />
+        <Wrapper>
+          <Header />
+          <RouterProvider router={router} />
+        </Wrapper>
+      </Provider>
     </>
   );
 };

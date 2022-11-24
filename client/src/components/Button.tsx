@@ -7,6 +7,7 @@ interface StyleProps {
   backgroundColor?: string;
   color?: string;
   borderRadius?: string;
+  margin?: string;
 }
 
 interface Props extends StyleProps {
@@ -20,6 +21,7 @@ const StyledButton = styled.button<StyleProps>`
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ color }) => color};
   border-radius: ${({ borderRadius }) => borderRadius};
+  margin: ${({ margin }) => margin};
 `;
 
 const Button: FC<Props> = ({ context, onClick, ...props }) => {
