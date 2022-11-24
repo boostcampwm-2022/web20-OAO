@@ -17,7 +17,7 @@ export interface InputTodo {
   state: 'READY' | 'DONE' | 'WAIT';
 }
 
-export class Todo {
+export class Todo implements InputTodo {
   id: string;
   title: string;
   content: string;
@@ -45,11 +45,13 @@ export class Todo {
     this.state = inputTodo.state ?? 'READY';
   }
 
-  postponeTemporally(): void {}
+  postponeTemporally(): void {
+    this.lastPostponed = new Date();
+  }
 
   postponeDeadline(): void {}
 
-  postponeForToday(): void {}
+  postponeFor(): void {}
 
   lowerImportance(): void {}
 
@@ -57,7 +59,8 @@ export class Todo {
 
   updateElapsedTime(): void {}
 
-  static compare(today: Date): (a: Todo, b: Todo) => number {
+  static compare(): (a: Todo, b: Todo) => number {
+    const today = new Date();
     return (a: Todo, b: Todo): number => {
       const imminenceDiff = Number(isEqualDate(today, b.until)) - Number(isEqualDate(today, a.until));
       if (imminenceDiff !== 0) return imminenceDiff;
@@ -113,26 +116,27 @@ export class TodoList {
   }
 
   getActiveTodo(): Todo {
-    return this.todoList[0].clone();
+    return this.getSortedRTL()[0].clone();
   }
 
-  getSortedRTL(today: Date): Todo[] {
-    return this.getRTL().sort(Todo.compare(today));
+  getSortedRTL(): Todo[] {
+    return this.getRTL().sort(Todo.compare());
   }
 
   sort(): Todo[] {
     return [];
   }
 
-  postponeTemporally(): Todo[] {
-    return [];
+  postponeTemporally(): TodoList {
+    this.getActiveTodo().postponeTemporally();
+    return new TodoList(this.todoList);
   }
 
   postponeDeadline(): Todo[] {
     return [];
   }
 
-  postponeForToday(): Todo[] {
+  postponeFor(): Todo[] {
     return [];
   }
 
