@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
 import Text from '../components/Text';
-import LongLogo from '../components/LongLogo';
+import LongLogo from '../images/LongLogo.svg';
 import { useAtom } from 'jotai';
 import { loginStateAtom } from '../util/GlobalState';
 
@@ -25,7 +25,7 @@ const Header = (): ReactElement => {
   return (
     <Wrapper>
       <FlexGrow3>
-        <Button context={<LongLogo />} />
+        <Button context={<img src={LongLogo} />} />
       </FlexGrow3>
       {!login && (
         <Button
