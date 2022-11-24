@@ -172,7 +172,7 @@ export class TodoList {
   }
 
   postponeForToday(): TodoList {
-    this.getActiveTodo().postponeForToday();
+    this.getActiveTodo().postponeForToday().setWait();
     return new TodoList(this.todoList);
   }
 
