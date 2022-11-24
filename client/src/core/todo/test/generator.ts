@@ -5,7 +5,11 @@ const testToday = new Date();
 const DAY = 24 * 60 * 60 * 1000;
 const WEEK = 7 * DAY;
 
-type TestData = { today: Date; tag: string; data: Array<TestTodo> };
+interface TestData {
+  today: Date;
+  tag: string;
+  data: TestTodo[];
+}
 
 const generateTodoForSortTest = (): TestTodo =>
   toTestTodo({
@@ -15,7 +19,7 @@ const generateTodoForSortTest = (): TestTodo =>
     from: new Date(1994, 10, 5),
   });
 
-const generateTodoListForSortTest = (length: number): Array<TestTodo> =>
+const generateTodoListForSortTest = (length: number): TestTodo[] =>
   Array.from({ length }, () => generateTodoForSortTest());
 
 // update
@@ -49,8 +53,8 @@ const getTodoIdFromNextElement = (
   length: number,
   index: number,
   numNext: number,
-  arr: Array<TestTodo>,
-): { idx: Array<number>; next: Array<string> } => {
+  arr: TestTodo[],
+): { idx: number[]; next: string[] } => {
   if (index + numNext >= length) return { next: [], idx: [] };
 
   const idx = Array.from({ length: numNext }, () => getRandomIndex(length, index, numNext))
@@ -61,9 +65,9 @@ const getTodoIdFromNextElement = (
   return { idx, next };
 };
 
-const generateRandomNumber = (p: number, max: number) => {
+const generateRandomNumber = (p: number, max: number): number => {
   let num = 0;
-  const addNextNum = () => {
+  const addNextNum = (): void => {
     if (num < max && Math.random() > p) {
       num += 1;
       addNextNum();
@@ -73,8 +77,8 @@ const generateRandomNumber = (p: number, max: number) => {
   return num;
 };
 
-const generateTodoListForUpdateTest = (length: number): Array<TestTodo> => {
-  const todos: Array<TestTodo> = Array.from({ length }, (el, i) => generateRandomTodo(i.toString()));
+const generateTodoListForUpdateTest = (length: number): TestTodo[] => {
+  const todos: TestTodo[] = Array.from({ length }, (el, i) => generateRandomTodo(i.toString()));
   todos.forEach((el, i) => {
     const { idx, next } = getTodoIdFromNextElement(
       length,
@@ -91,30 +95,26 @@ const generateTodoListForUpdateTest = (length: number): Array<TestTodo> => {
   return todos;
 };
 
-const generateSortTestProblem = (answer: Array<TestTodo>) => {
+const generateSortTestProblem = (answer: TestTodo[]): TestTodo[] => {
   const problem = JSON.parse(JSON.stringify(answer)).map((el: any) => toTestTodo(el));
   problem.sort(() => Math.random() - 0.5);
   return problem;
 };
 
-const changeTodoStateRandomly = (todo: TestTodo, p: number) => {
+const changeTodoStateRandomly = (todo: TestTodo, p: number): TestTodo => {
   if (todo.state === 'DONE' || Math.random() < p) return todo;
   if (todo.state === 'READY') return { ...todo, state: 'WAIT' };
   return { ...todo, state: 'READY' };
 };
 
-const generateUpdateTestProblem = (answer: Array<TestTodo>) => {
+const generateUpdateTestProblem = (answer: TestTodo[]): TestTodo[] => {
   const problem = JSON.parse(JSON.stringify(answer))
     .map((el: any) => toTestTodo(el))
     .map((el: TestTodo) => changeTodoStateRandomly(el, 0.8));
   return problem;
 };
 
-const generateTestCases = (
-  answerObject: TestData,
-  generator: (answer: Array<TestTodo>) => Array<TestTodo>,
-  num: number,
-) =>
+const generateTestCases = (answerObject: TestData, generator: (answer: TestTodo[]) => TestTodo[], num: number): any[] =>
   new Array(num).fill(0).map((el, i) => ({
     today: answerObject.today,
     tag: `answer: ${answerObject.tag}, problem:${i}`,
@@ -122,16 +122,13 @@ const generateTestCases = (
     answer: answerObject.data,
   }));
 
-const generateTestSet = (
-  data: Array<TestData>,
-  generator: (answer: Array<TestTodo>) => Array<TestTodo>,
-  multiplier: number,
-) => data.flatMap((el) => generateTestCases(el, generator, multiplier));
+const generateTestSet = (data: TestData[], generator: (answer: TestTodo[]) => TestTodo[], multiplier: number): any[] =>
+  data.flatMap((el) => generateTestCases(el, generator, multiplier));
 
-const generateSortTestSet = (data: Array<TestData>, multiplier: number) =>
+const generateSortTestSet = (data: TestData[], multiplier: number): any[] =>
   generateTestSet(data, generateSortTestProblem, multiplier);
 
-const generateUpdateTestSet = (data: Array<TestData>, multiplier: number) =>
+const generateUpdateTestSet = (data: TestData[], multiplier: number): any[] =>
   generateTestSet(data, generateUpdateTestProblem, multiplier);
 
 export {

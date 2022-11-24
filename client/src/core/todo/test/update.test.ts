@@ -9,7 +9,7 @@ const updateTestCase = updateRawTestCase.map((el) => ({
   data: el.data.map((todo) => toTestTodo(todo)),
 }));
 
-const update = (todoList: Array<TestTodo>, today: Date): Array<TestTodo> => {
+const update = (todoList: TestTodo[], today: Date): TestTodo[] => {
   return [...todoList];
 };
 
@@ -36,7 +36,7 @@ describe('업데이트 대단위 테스트', () => {
   describe.each(macroUnitTestCases)('$tag', ({ problem, today, answer }) => {
     it('Todo List의 선후관계 및 날짜 비교를 통해 Todo들의 상태를 업데이트 할 수 있다.', () => {
       expect(update(problem, today).map((el) => toComparableTestTodo(el))).toEqual(
-        answer.map((el) => toComparableTestTodo(el)),
+        answer.map((el: any) => toComparableTestTodo(el)),
       );
     });
   });

@@ -9,7 +9,7 @@ const sortTestCase = sortRawTestCase.map((el) => ({
   data: el.data.map((todo) => toTestTodo(todo)),
 }));
 
-const sort = (todoList: Array<TestTodo>, today: Date): Array<TestTodo> => {
+const sort = (todoList: TestTodo[], today: Date): TestTodo[] => {
   return [...todoList];
 };
 
@@ -40,7 +40,7 @@ describe('정렬 대단위 테스트', () => {
   describe.each(macroUnitTestCases)('$tag', ({ problem, today, answer }) => {
     it('Ready Todo List의 기본적인 정렬을 할 수 있다.', () => {
       expect(sort(problem, today).map((el) => toComparableTestTodo(el))).toEqual(
-        answer.map((el) => toComparableTestTodo(el)),
+        answer.map((el: any) => toComparableTestTodo(el)),
       );
     });
   });
