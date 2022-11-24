@@ -88,7 +88,7 @@ export class TodoList {
   }
 
   getActiveTodo(): Todo {
-    return new Todo();
+    return this.todoList[0].clone();
   }
 
   sort(): Todo[] {
