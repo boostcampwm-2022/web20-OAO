@@ -28,7 +28,7 @@ const equalForImportanceSort = (todo1: Todo, todo2: Todo): boolean => {
 const validateDeadlineSort = (todoList: Todo[], testToday: Date): boolean => {
   if (!validateImportanceSort(todoList, testToday)) return false;
   todoList.reduce(
-    (acc, el, i, arr) => i === 0 || (acc && (equalForImportanceSort(el, arr[i - 1]) || el.until >= arr[i - 1].until)),
+    (acc, el, i, arr) => i === 0 || (acc && (!equalForImportanceSort(el, arr[i - 1]) || el.until >= arr[i - 1].until)),
     true,
   );
   return true;
@@ -42,7 +42,7 @@ const validateLastPostponedSort = (todoList: Todo[], testToday: Date): boolean =
   if (!validateDeadlineSort(todoList, testToday)) return false;
   todoList.reduce(
     (acc, el, i, arr) =>
-      i === 0 || (acc && (equalForDeadlineSort(el, arr[i - 1]) || el.lastPostponed >= arr[i - 1].lastPostponed)),
+      i === 0 || (acc && (!equalForDeadlineSort(el, arr[i - 1]) || el.lastPostponed >= arr[i - 1].lastPostponed)),
     true,
   );
   return true;

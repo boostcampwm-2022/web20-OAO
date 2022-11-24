@@ -36,7 +36,7 @@ describe('기본 정렬 테스트', () => {
   });
 });
 
-const macroUnitTestCases = generateSortTestSet(sortTestCase, 1);
+const macroUnitTestCases = generateSortTestSet(sortTestCase, 5);
 // console.log(macroUnitTestCases);
 
 describe('정렬 대단위 테스트', () => {
