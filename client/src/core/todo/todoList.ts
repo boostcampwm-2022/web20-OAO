@@ -66,7 +66,9 @@ export class Todo implements InputTodo {
 
   setDone(): void {}
 
-  updateElapsedTime(): void {}
+  updateElapsedTime(elapsedTime: number): void {
+    this.elapsedTime = elapsedTime;
+  }
 
   static compare(): (a: Todo, b: Todo) => number {
     const today = new Date();
@@ -160,8 +162,9 @@ export class TodoList {
     return [];
   }
 
-  updateElapsedTime(): Todo[] {
-    return [];
+  updateElapsedTime(elapsedTime: number): TodoList {
+    this.getActiveTodo().updateElapsedTime(elapsedTime);
+    return new TodoList(this.todoList);
   }
 
   getSummary(): any {
