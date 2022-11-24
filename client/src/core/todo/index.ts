@@ -7,8 +7,8 @@ export interface Todo {
   importance: number; // INT or ENUM, 할일의 우선순위 레벨
   until: Date; // DATE, 할일의 마감기한
   from: Date; // DATE, 할일의 시작기한
-  prev: Array<string>; // or Array<string>, 이전에 반드시 완료되어야 하는 할일 id 배열
-  next: Array<string>; // or Array<string>, 본 할일 이후에 실행되어야 하는 할일 id 배열
+  prev: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
+  next: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
 
   // (필수) 할일의 상태값
   state: 'READY' | 'DONE' | 'WAIT';
@@ -26,7 +26,3 @@ export interface RawData {
   until: string; // string, 할일의 마감기한
   from: string; // string, 할일의 시작기한
 }
-
-export const testFun = (num: number) => {
-  return num + 1;
-};
