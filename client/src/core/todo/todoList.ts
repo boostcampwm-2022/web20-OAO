@@ -55,7 +55,10 @@ export class Todo implements InputTodo {
     this.until = new Date(this.until.getTime() + DAY);
   }
 
-  postponeForToday(): void {}
+  postponeForToday(): void {
+    const today = new Date();
+    this.from = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+  }
 
   lowerImportance(): void {}
 
@@ -142,6 +145,7 @@ export class TodoList {
   }
 
   postponeForToday(): TodoList {
+    this.getActiveTodo().postponeForToday();
     return new TodoList(this.todoList);
   }
 
