@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TodoStatus from '../container/TodoStatus';
 import { mockTodosData } from '../util/GlobalState';
 import { ReactElement } from 'react';
+import TodoTitle from '../container/TodoTitle';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -18,6 +19,7 @@ const Main = (): ReactElement => {
   return (
     <Wrapper>
       <TodoStatus activeTodo={todosArray[0]} />
+      <TodoTitle activeTodo={todosArray[0]} />
     </Wrapper>
   );
 };
