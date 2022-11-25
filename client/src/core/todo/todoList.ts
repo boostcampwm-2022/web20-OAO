@@ -93,8 +93,8 @@ export class Todo implements InputTodo {
     return this;
   }
 
-  static compare(): (a: Todo, b: Todo) => number {
-    const today = new Date();
+  static compare(date?: Date): (a: Todo, b: Todo) => number {
+    const today = date ?? new Date();
     return (a: Todo, b: Todo): number => {
       const imminenceDiff = Number(isEqualDate(today, b.until)) - Number(isEqualDate(today, a.until));
       if (imminenceDiff !== 0) return imminenceDiff;
@@ -153,8 +153,8 @@ export class TodoList {
     return this.getSortedRTL()[0].clone();
   }
 
-  getSortedRTL(): Todo[] {
-    return this.getRTL().sort(Todo.compare());
+  getSortedRTL(today?: Date): Todo[] {
+    return this.getRTL().sort(Todo.compare(today));
   }
 
   sort(): Todo[] {
@@ -180,9 +180,6 @@ export class TodoList {
     this.getActiveTodo().lowerImportance();
     return new TodoList(this.todoList);
   }
-
-  isAllPrevDone = (todo: Todo, todoList: Todo[]): boolean =>
-    todo.prev.reduce((acc, id) => acc && todoList.find((el) => el.id === id)?.state === 'DONE', true);
 
   setDone(): TodoList {
     this.getActiveTodo()
