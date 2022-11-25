@@ -19,10 +19,12 @@ jobs:
           node-version: "18.x"
 
       - name: 패키지 설치
+        working-directory: ./client
         run: |
           yarn
 
       - name: 테스트 실행
+        working-directory: ./client
         run: |
           yarn test
 
@@ -31,5 +33,5 @@ jobs:
         if: success() || failure()
         with:
           name: JEST Tests # Name of the check run which will be created
-          path: reports/*.xml # Path to test results
+          path: client/reports/*.xml # Path to test results
           reporter: jest-junit
