@@ -11,8 +11,7 @@ export interface Todo {
   next: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
 
   // (필수) 할일의 상태값
-  state: 'READY' | 'DONE' | 'WAIT';
-
+  state: 'READY' | 'DONE' | 'WAIT'
   // (선택) 메타데이터
   spentTime?: Date; // 총 할일 수행 시간, default = 0
   postponeCount?: number; // 총 미룬 횟수, default = 0
