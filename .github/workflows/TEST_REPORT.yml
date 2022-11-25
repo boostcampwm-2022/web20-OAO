@@ -30,7 +30,7 @@ jobs:
       - name: 테스트 실행
         working-directory: ./client
         run: |
-          yarn test
+          yarn -s test
 
       - name: 테스트 결과 발행
         uses: n-ryu/test-reporter@v0.0.1
@@ -39,3 +39,9 @@ jobs:
           name: JEST Tests # Name of the check run which will be created
           path: client/reports/*.xml # Path to test results
           reporter: jest-junit
+
+      - name: Code Coverage 리포트 발행
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests # opti
