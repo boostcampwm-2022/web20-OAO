@@ -11,7 +11,7 @@ export const readWriteAtom = atom(
 export const mockTodosData = atom([
   {
     id: '0',
-    title: 'default title',
+    title: '다람쥐 헌 쳇바퀴에 올라타',
     content: 'default content',
     owner: 'default user',
     importance: 1,
