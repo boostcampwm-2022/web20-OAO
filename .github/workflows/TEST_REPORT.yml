@@ -20,7 +20,7 @@ jobs:
 
       - name: Runner 타임존 설정
         run: |
-          timedatectl set-timezone 'Asia/Seoul'
+          sudo timedatectl set-timezone 'Asia/Seoul'
 
       - name: 패키지 설치
         working-directory: ./client
