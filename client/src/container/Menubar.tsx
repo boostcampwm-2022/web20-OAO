@@ -1,11 +1,10 @@
 import { ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import Button from '../components/Button';
 
 import Home from '../images/Home.svg';
 import Table from '../images/Table.svg';
+import Image from '../components/Image';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -15,20 +14,14 @@ const Wrapper = styled.div`
 `;
 
 const Menubar = (): ReactElement => {
-  const navigate = useNavigate();
-
-  const goHome = (): void => {
-    navigate('/');
-  };
-
-  const goTable = (): void => {
-    navigate('/table');
-  };
-
   return (
     <Wrapper>
-      <Button context={<img src={Home} />} margin={'30px 0 0 0'} onClick={goHome} />
-      <Button context={<img src={Table} />} margin={'30px 0 0 0'} onClick={goTable} />
+      <Link to="/">
+        <Image src={Home} margin={'30px 0 0 0'} />
+      </Link>
+      <Link to="/table">
+        <Image src={Table} margin={'30px 0 0 0'} />
+      </Link>
     </Wrapper>
   );
 };

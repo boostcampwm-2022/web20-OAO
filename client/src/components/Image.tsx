@@ -6,6 +6,8 @@ interface StyleProps {
   height?: string;
   transform?: string;
   src: string;
+  margin?: string;
+  flexGrow?: number;
 }
 
 interface Props extends StyleProps {
@@ -17,6 +19,8 @@ const StyledImage = styled.img<StyleProps>`
   height: ${({ height }) => height};
   transform: ${({ transform }) => transform};
   content: url(${({ src }) => src});
+  margin: ${({ margin }) => margin};
+  flex-grow: ${({ flexGrow }) => flexGrow};
 `;
 
 const Image: FC<Props> = ({ ...props }) => {

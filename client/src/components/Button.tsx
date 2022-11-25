@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
 interface StyleProps {
@@ -8,6 +8,7 @@ interface StyleProps {
   color?: string;
   borderRadius?: string;
   margin?: string;
+  flexGrow?: number;
 }
 
 interface Props extends StyleProps {
@@ -22,6 +23,7 @@ const StyledButton = styled.button<StyleProps>`
   color: ${({ color }) => color};
   border-radius: ${({ borderRadius }) => borderRadius};
   margin: ${({ margin }) => margin};
+  flex-grow: ${({ flexGrow }) => flexGrow};
 `;
 
 const Button: FC<Props> = ({ context, onClick, ...props }) => {
@@ -32,4 +34,4 @@ const Button: FC<Props> = ({ context, onClick, ...props }) => {
   );
 };
 
-export default Button;
+export default memo(Button);
