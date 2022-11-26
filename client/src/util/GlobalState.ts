@@ -50,5 +50,5 @@ export const mockTodosData = atom([
   },
 ]);
 
-export const elasedTimeAtom = atom(3719); // 초 단위 경과시간
+export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());

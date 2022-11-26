@@ -4,6 +4,7 @@ import TodoStatus from '../container/TodoStatus';
 import { mockTodosData } from '../util/GlobalState';
 import { ReactElement } from 'react';
 import TodoTitle from '../container/TodoTitle';
+import TodoTimeInteraction from '../container/TodoTimeInteraction';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -20,6 +21,7 @@ const Main = (): ReactElement => {
     <Wrapper>
       <TodoStatus activeTodo={todosArray[0]} />
       <TodoTitle activeTodo={todosArray[0]} />
+      <TodoTimeInteraction activeTodo={todosArray[0]} />
     </Wrapper>
   );
 };
