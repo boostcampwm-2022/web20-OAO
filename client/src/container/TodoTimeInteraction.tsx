@@ -28,6 +28,12 @@ const ButtonWrapper = styled.div`
   gap: 20px;
 `;
 
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 const TodoTimeInteraction = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
   const [userState] = useAtom(isOnProgress);
   const [displayTime] = useElapsedTime();
@@ -40,10 +46,10 @@ const TodoTimeInteraction = ({ activeTodo }: { activeTodo: Todo }): ReactElement
         <Button context={<Image src={Postpone} />} />
         <Button context={<Image src={Done} />} />
       </ButtonWrapper>
-      <div>
+      <TextWrapper>
         <Text text={getTodoUntilText(activeTodo.until)} />
         <Text text={displayTime} />
-      </div>
+      </TextWrapper>
     </Wrapper>
   );
 };
