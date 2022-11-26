@@ -52,3 +52,4 @@ export const mockTodosData = atom([
 
 export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());
+export const postponeClicked = atom(false);
