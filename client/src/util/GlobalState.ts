@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 
 export const loginStateAtom = atom(true);
-export const isOnProgress = atom('working');
+export const isOnProgress = atom('relaxing');
 
 export const readWriteAtom = atom(
   (get) => get(loginStateAtom),
@@ -49,3 +49,6 @@ export const mockTodosData = atom([
     state: 'WAIT',
   },
 ]);
+
+export const elasedTimeAtom = atom(3719); // 초 단위 경과시간
+export const startTimeAtom = atom(new Date());
