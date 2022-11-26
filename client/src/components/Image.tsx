@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from 'styled-components';
 
 interface StyleProps {
@@ -27,4 +27,4 @@ const Image: FC<Props> = ({ ...props }) => {
   return <StyledImage {...props} />;
 };
 
-export default Image;
+export default memo(Image);
