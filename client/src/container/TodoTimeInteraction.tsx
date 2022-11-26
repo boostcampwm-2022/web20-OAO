@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 
 import Done from '../images/Done.svg';
@@ -39,12 +39,24 @@ const TodoTimeInteraction = ({ activeTodo }: { activeTodo: Todo }): ReactElement
   const [displayTime] = useElapsedTime();
   const [buttonConfig, handleOnToggle] = useButtonConfig(userState);
 
+  const startPauseButton = useMemo(() => {
+    return <Button context={<Image src={buttonConfig.src} />} onClick={handleOnToggle} />;
+  }, [buttonConfig.src]);
+
+  const postponeDoneButton = useMemo(() => {
+    return (
+      <>
+        <Button context={<Image src={Postpone} />} />
+        <Button context={<Image src={Done} />} />
+      </>
+    );
+  }, []);
+
   return (
     <Wrapper>
       <ButtonWrapper>
-        <Button context={<Image src={buttonConfig.src} />} onClick={handleOnToggle} />
-        <Button context={<Image src={Postpone} />} />
-        <Button context={<Image src={Done} />} />
+        {startPauseButton}
+        {postponeDoneButton}
       </ButtonWrapper>
       <TextWrapper>
         <Text text={getTodoUntilText(activeTodo.until)} />
