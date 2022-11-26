@@ -1,20 +1,10 @@
-import { useAtom } from 'jotai';
 import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 
-import Done from '../images/Done.svg';
-import Postpone from '../images/Postpone.svg';
-import Button from '../components/Button';
-import Image from '../components/Image';
-import Text from '../components/Text';
+import TodoInteractionButton from '../components/TodoInteractionButton';
+import TodoTimeText from '../components/TodoTimeText';
 
 import { Todo } from '../core/todo/index';
-
-import useButtonConfig from '../hooks/useButtonConfig';
-import useElapsedTime from '../hooks/useElapsedTime';
-
-import { getTodoUntilText } from '../util/Common';
-import { isOnProgress } from '../util/GlobalState';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -23,45 +13,11 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const TextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
 const TodoTimeInteraction = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
-  const [userState] = useAtom(isOnProgress);
-  const [displayTime] = useElapsedTime();
-  const [buttonConfig, handleOnToggle] = useButtonConfig(userState);
-
-  const startPauseButton = useMemo(() => {
-    return <Button context={<Image src={buttonConfig.src} />} onClick={handleOnToggle} />;
-  }, [buttonConfig.src]);
-
-  const postponeDoneButton = useMemo(() => {
-    return (
-      <>
-        <Button context={<Image src={Postpone} />} />
-        <Button context={<Image src={Done} />} />
-      </>
-    );
-  }, []);
-
   return (
     <Wrapper>
-      <ButtonWrapper>
-        {startPauseButton}
-        {postponeDoneButton}
-      </ButtonWrapper>
-      <TextWrapper>
-        <Text text={getTodoUntilText(activeTodo.until)} />
-        <Text text={displayTime} />
-      </TextWrapper>
+      <TodoInteractionButton />
+      <TodoTimeText until={activeTodo.until} />
     </Wrapper>
   );
 };

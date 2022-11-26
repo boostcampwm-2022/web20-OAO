@@ -9,7 +9,12 @@ export const isTodoImminence = (todoUntil: string): boolean => {
 };
 
 export const getTodoUntilText = (todoUntil: string): string => {
-  return '마감일: '.concat(isTodoImminence(todoUntil) ? '오늘' : getFormattedDate(todoUntil));
+  const untilDate = new Date(todoUntil);
+  return '마감일: '.concat(
+    isTodoImminence(todoUntil)
+      ? `오늘 ${untilDate.getHours()}시 ${untilDate.getMinutes()}분`
+      : getFormattedDate(todoUntil),
+  );
 };
 
 const getFormattedDate = (todoUntil: string): string => {
