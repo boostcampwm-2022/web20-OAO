@@ -1,13 +1,13 @@
 import { ReactElement } from 'react';
-import Text from '../components/Text';
-import Image from '../components/Image';
+import Text from '@components/Text';
+import Image from '@components/Image';
 
-import { Todo } from '../core/todo/index';
-import { isOnProgress } from '../util/GlobalState';
+import { Todo } from '@core/todo/index';
+import { isOnProgress } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
-import Working from '../images/Working.svg';
-import Relaxing from '../images/Relaxing.svg';
+import Working from '@images/Working.svg';
+import Relaxing from '@images/Relaxing.svg';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -21,6 +21,7 @@ const Wrapper = styled.div`
 
 const Hr = styled.hr`
   border: 1px solid #3f3f3f;
+  background-color: #3f3f3f;
   width: 850px;
 `;
 

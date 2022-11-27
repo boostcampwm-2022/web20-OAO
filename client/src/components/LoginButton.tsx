@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { ReactElement } from 'react';
-import { loginStateAtom } from '../util/GlobalState';
+import { loginStateAtom } from '@util/GlobalState';
 
 import Button from './Button';
 import Text from './Text';

@@ -1,15 +1,15 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import TodoStatus from '../container/TodoStatus';
-import { mockTodosData } from '../util/GlobalState';
+import TodoStatus from '@container/TodoStatus';
+import { mockTodosData } from '@util/GlobalState';
 import { ReactElement } from 'react';
-import TodoTitle from '../container/TodoTitle';
+import TodoTitle from '@container/TodoTitle';
 
 const Wrapper = styled.div`
   height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 

@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
 
-import LongLogo from '../images/LongLogo.svg';
+import LongLogo from '@images/LongLogo.svg';
 
 import { Link } from 'react-router-dom';
-import Image from '../components/Image';
-import LoginButton from '../components/LoginButton';
+import Image from '@components/Image';
+import LoginButton from '@components/LoginButton';
 
 const Wrapper = styled.div`
   display: flex;
