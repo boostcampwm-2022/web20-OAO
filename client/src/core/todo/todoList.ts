@@ -295,8 +295,24 @@ export class TodoList {
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
-    const newTodoList = this.todoList.filter((el) => el.id !== id);
-    newTodoList.push(new Todo({ ...todo, id }));
+    const oldTodo = this.todoList.find((el) => el.id === id);
+    if (oldTodo === undefined) throw new Error('ERROR: 수정하려는 ID의 Todo가 존재하지 않습니다.');
+    const newTodo = new Todo(todo);
+
+    this.getPrev(oldTodo).forEach((el) => el.removeNext(oldTodo.id));
+    this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
+
+    this.updateTodoState(newTodo);
+
+    this.getNext(oldTodo).forEach((el) => el.removePrev(oldTodo.id));
+    this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
+
+    this.getNext(oldTodo).forEach((el) => this.updateTodoState(el));
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
+    const newTodoList = this.todoList.filter((el) => el !== oldTodo);
+    newTodoList.push(newTodo);
+
     return new TodoList(newTodoList.map((el) => el.toPlain()));
   }
 
