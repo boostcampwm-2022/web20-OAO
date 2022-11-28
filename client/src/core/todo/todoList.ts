@@ -301,6 +301,15 @@ export class TodoList {
   }
 
   async remove(id: string): Promise<TodoList> {
+    const newTodo = this.todoList.find((el) => el.id === id);
+    if (newTodo === undefined) throw new Error('ERROR: 지우려는 ID의 Todo가 존재하지 않습니다.');
+
+    this.getPrev(newTodo).forEach((el) => el.removeNext(newTodo.id));
+
+    this.getNext(newTodo).forEach((el) => el.removePrev(newTodo.id));
+
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
     return new TodoList(this.todoList.filter((el) => el.id !== id).map((el) => el.toPlain()));
   }
 
