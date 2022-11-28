@@ -40,3 +40,5 @@ dist-ssr
 *.sw?
 
 client/src/core/todo/test/temp.ts
+
+*.xml
