@@ -1,4 +1,4 @@
-import { TestTodo, toTestTodo, toComparableTestTodo } from './type';
+import { Todo, TodoList } from '../todoList';
 import { validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
 import { testToday, generateTodoListForSortTest, generateSortTestSet } from './generator';
 import * as sortRawTestCase from './sort.data.json';
@@ -6,11 +6,14 @@ import * as sortRawTestCase from './sort.data.json';
 const sortTestCase = sortRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map((todo) => toTestTodo(todo)),
+  data: el.data.map(
+    (todo) => new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }),
+  ),
 }));
 
-const sort = (todoList: TestTodo[], today: Date): TestTodo[] => {
-  return [...todoList];
+const sort = (todoList: Todo[], today: Date): Todo[] => {
+  const newTodoList = new TodoList(todoList);
+  return newTodoList.getSortedRTL(today);
 };
 
 const testCases = new Array(10).fill(0).map((el, i) => ({
@@ -39,8 +42,8 @@ const macroUnitTestCases = generateSortTestSet(sortTestCase, 5);
 describe('정렬 대단위 테스트', () => {
   describe.each(macroUnitTestCases)('$tag', ({ problem, today, answer }) => {
     it('Ready Todo List의 기본적인 정렬을 할 수 있다.', () => {
-      expect(sort(problem, today).map((el) => toComparableTestTodo(el))).toEqual(
-        answer.map((el: any) => toComparableTestTodo(el)),
+      expect(sort(problem, today).map((el) => el.toComparableTodo())).toEqual(
+        answer.map((el) => el.toComparableTodo()),
       );
     });
   });
