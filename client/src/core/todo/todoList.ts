@@ -224,7 +224,7 @@ export class TodoList {
   }
 
   async remove(id: string): Promise<TodoList> {
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.filter((el) => el.id !== id));
   }
 
   async getSortedList(type: string, compareArr: string[]): Promise<TodoList> {
