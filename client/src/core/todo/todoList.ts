@@ -47,7 +47,7 @@ export interface InputTodo {
   state: 'READY' | 'DONE' | 'WAIT';
 }
 
-export class Todo implements InputTodo {
+export class Todo {
   id: string;
   title: string;
   content: string;
@@ -55,8 +55,8 @@ export class Todo implements InputTodo {
   importance: number;
   until: Date;
   from: Date;
-  prev: string[];
-  next: string[];
+  prev: Set<string>;
+  next: Set<string>;
   elapsedTime: number;
   lastPostponed: Date;
   state: 'READY' | 'DONE' | 'WAIT';
@@ -68,8 +68,8 @@ export class Todo implements InputTodo {
     this.importance = inputTodo.importance ?? 1;
     this.until = new Date(inputTodo.until ?? new Date(2077, 1, 1));
     this.from = new Date(inputTodo.from ?? new Date(1994, 1, 1));
-    this.prev = inputTodo.prev ?? [];
-    this.next = inputTodo.next ?? [];
+    this.prev = new Set(inputTodo.prev);
+    this.next = new Set(inputTodo.next);
     this.elapsedTime = inputTodo.elapsedTime ?? 0;
     this.lastPostponed = new Date(inputTodo.lastPostponed ?? new Date());
     this.state = inputTodo.state ?? 'READY';
@@ -141,12 +141,18 @@ export class Todo implements InputTodo {
   }
 
   clone(): Todo {
-    return new Todo({
+    return new Todo(this.toPlain());
+  }
+
+  toPlain(): InputTodo {
+    return {
       ...this,
+      prev: [...this.prev],
+      next: [...this.next],
       from: new Date(this.from),
       until: new Date(this.until),
       lastPostponed: new Date(this.lastPostponed),
-    });
+    };
   }
 
   toComparableTodo(): any {
@@ -159,22 +165,22 @@ export class Todo implements InputTodo {
   }
 
   addPrev(id: string): Todo {
+    this.prev.add(id);
     return this;
   }
 
   addNext(id: string): Todo {
+    this.next.add(id);
     return this;
   }
 
   removePrev(id: string): Todo {
+    this.prev.delete(id);
     return this;
   }
 
   removeNext(id: string): Todo {
-    return this;
-  }
-
-  updateState(): Todo {
+    this.next.delete(id);
     return this;
   }
 }
@@ -189,7 +195,7 @@ export class TodoList {
   }
 
   async getActiveTodo(): Promise<InputTodo> {
-    return { ...this.getActiveTodoAsInstance().clone() };
+    return this.getActiveTodoAsInstance().toPlain();
   }
 
   getSortedRTL(today?: Date): Todo[] {
@@ -201,45 +207,45 @@ export class TodoList {
 
   async postponeTemporally(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeTemporally();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async postponeDeadline(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeDeadline();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async postponeForToday(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeForToday().setWait();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async lowerImportance(): Promise<TodoList> {
     this.getActiveTodoAsInstance().lowerImportance();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async setDone(): Promise<TodoList> {
-    this.getActiveTodoAsInstance()
-      .setDone()
-      .next.forEach((nid) => {
-        const nextTodo = this.todoList.find((el) => el.id === nid);
-        if (nextTodo === undefined) return;
-        if (
-          nextTodo.prev.every((pid) => this.todoList.find((el) => el.id === pid)?.state === 'DONE') &&
-          nextTodo.isFromBeforeToday()
-        ) {
-          return nextTodo.setReady();
-        }
-        return nextTodo.setWait();
-      });
+    // this.getActiveTodoAsInstance()
+    //   .setDone()
+    //   .next.forEach((nid) => {
+    //     const nextTodo = this.todoList.find((el) => el.id === nid);
+    //     if (nextTodo === undefined) return;
+    //     if (
+    //       nextTodo.prev.every((pid) => this.todoList.find((el) => el.id === pid)?.state === 'DONE') &&
+    //       nextTodo.isFromBeforeToday()
+    //     ) {
+    //       return nextTodo.setReady();
+    //     }
+    //     return nextTodo.setWait();
+    //   });
 
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
     this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   getSummary(): any {
@@ -258,17 +264,17 @@ export class TodoList {
 
     // update next Todo
 
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
     const newTodoList = this.todoList.filter((el) => el.id !== id);
     newTodoList.push(new Todo({ ...todo, id }));
-    return new TodoList(newTodoList);
+    return new TodoList(newTodoList.map((el) => el.toPlain()));
   }
 
   async remove(id: string): Promise<TodoList> {
-    return new TodoList(this.todoList.filter((el) => el.id !== id));
+    return new TodoList(this.todoList.filter((el) => el.id !== id).map((el) => el.toPlain()));
   }
 
   async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<TodoList> {
@@ -283,6 +289,6 @@ export class TodoList {
       };
     };
     this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 }
