@@ -12,7 +12,8 @@ export const mockTodosData = atom([
   {
     id: '0',
     title: '다람쥐 헌 쳇바퀴에 올라타',
-    content: 'default content',
+    content:
+      '다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타',
     owner: 'default user',
     importance: 1,
     until: 'Sat Nov 26 2022 23:54:52 GMT+0900 (한국 표준시)',
