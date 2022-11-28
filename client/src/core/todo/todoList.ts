@@ -213,6 +213,7 @@ export class TodoList {
   }
 
   async add(todo: InputTodo): Promise<TodoList> {
+    this.todoList.push(new Todo(todo));
     return new TodoList(this.todoList);
   }
 
