@@ -157,6 +157,26 @@ export class Todo implements InputTodo {
       lastPostponed: this.lastPostponed.getTime(),
     };
   }
+
+  addPrev(id: string): Todo {
+    return this;
+  }
+
+  addNext(id: string): Todo {
+    return this;
+  }
+
+  removePrev(id: string): Todo {
+    return this;
+  }
+
+  removeNext(id: string): Todo {
+    return this;
+  }
+
+  updateState(): Todo {
+    return this;
+  }
 }
 export class TodoList {
   private readonly todoList: Todo[];
@@ -227,7 +247,17 @@ export class TodoList {
   }
 
   async add(todo: InputTodo): Promise<TodoList> {
+    // push new Todo
     this.todoList.push(new Todo(todo));
+
+    // add mySelf as next to my prev Todo
+
+    // update mySelf
+
+    // add mySelf as prev to my next Todo
+
+    // update next Todo
+
     return new TodoList(this.todoList);
   }
 
