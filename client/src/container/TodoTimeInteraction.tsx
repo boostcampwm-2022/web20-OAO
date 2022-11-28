@@ -7,7 +7,10 @@ import TodoInteractionButton from '../components/TodoInteractionButton';
 import TodoTimeText from '../components/TodoTimeText';
 
 import { InputTodo } from '@core/todo/todoList.js';
-import { postponeClicked } from '../util/GlobalState';
+import { isOnProgress, postponeClicked } from '../util/GlobalState';
+import useTodoList from '../hooks/useTodoList';
+import useElapsedTime from '../hooks/useElapsedTime';
+import useButtonConfig from '../hooks/useButtonConfig';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -19,13 +22,25 @@ const Wrapper = styled.div`
 
 const TodoTimeInteraction = ({ activeTodo }: { activeTodo: InputTodo }): ReactElement => {
   const [isPostpone] = useAtom(postponeClicked);
+  const [userState] = useAtom(isOnProgress);
+  const [setPostpone, , postponeOptions] = useTodoList();
+  const [, , stopTimer, time, setTime] = useElapsedTime();
+  const [buttonConfig, handleOnToggle] = useButtonConfig(userState);
 
   return (
     <>
       <Wrapper>
-        <TodoInteractionButton />
+        <TodoInteractionButton buttonConfig={buttonConfig} handleOnToggle={handleOnToggle} />
         <TodoTimeText until={activeTodo.until.toString()} />
-        {isPostpone && <PostponeBox />}
+        {isPostpone && (
+          <PostponeBox
+            postponeOptions={postponeOptions}
+            setPostpone={setPostpone}
+            time={time}
+            setTime={setTime}
+            stopTimer={stopTimer}
+          />
+        )}
       </Wrapper>
     </>
   );

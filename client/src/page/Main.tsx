@@ -1,12 +1,11 @@
-import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import { activeTodoAtom } from '@util/GlobalState';
-import { ReactElement, Suspense } from 'react';
+import { ReactElement } from 'react';
 
 import TodoTitle from '@container/TodoTitle';
 import TodoStatus from '@container/TodoStatus';
 import TodoTimeInteraction from '@container/TodoTimeInteraction';
 import TodoContents from '@container/TodoContents';
+import useTodoList from '../hooks/useTodoList';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -16,24 +15,20 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const ComponentUsingAsyncAtoms = (): ReactElement => {
-  const [activeTodo] = useAtom(activeTodoAtom);
-  return (
-    <>
-      <TodoStatus activeTodo={activeTodo} />
-      <TodoTitle activeTodo={activeTodo} />
-      <TodoTimeInteraction activeTodo={activeTodo} />
-      <TodoContents activeTodo={activeTodo} />
-    </>
-  );
-};
-
 const Main = (): ReactElement => {
+  const [, activeTodo] = useTodoList();
   return (
     <Wrapper>
-      <Suspense fallback={<div>waiting....</div>}>
-        <ComponentUsingAsyncAtoms />
-      </Suspense>
+      {activeTodo.id !== undefined ? (
+        <>
+          <TodoStatus activeTodo={activeTodo} />
+          <TodoTitle activeTodo={activeTodo} />
+          <TodoTimeInteraction activeTodo={activeTodo} />
+          <TodoContents activeTodo={activeTodo} />
+        </>
+      ) : (
+        <div>Good Job bbb</div>
+      )}
     </Wrapper>
   );
 };

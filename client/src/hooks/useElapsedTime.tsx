@@ -23,10 +23,11 @@ const useElapsedTime = (): any[] => {
   };
 
   const stopTimer = (): void => {
+    console.log('hjkahfkja');
     clearInterval(intervalRef.current);
   };
 
-  return [displayTime, startTimer, stopTimer];
+  return [displayTime, startTimer, stopTimer, time, setTime];
 };
 
 export default useElapsedTime;

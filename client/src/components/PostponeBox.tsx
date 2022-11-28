@@ -1,14 +1,19 @@
 import { memo, ReactElement } from 'react';
 import styled from 'styled-components';
-
-import { POSTPONE_TEXTS, PRIMARY_COLORS } from '../util/Constants';
+import { PRIMARY_COLORS } from '../util/Constants';
 
 import Text from './Text';
 import Button from './Button';
 
+import useTodoList from '../hooks/useTodoList';
+import { useAtom } from 'jotai';
+import { isOnProgress, postponeClicked } from '@util/GlobalState';
+import useElapsedTime from '../hooks/useElapsedTime';
+import useButtonConfig from '../hooks/useButtonConfig';
+
 const { red, white } = PRIMARY_COLORS;
 
-const STYLED_POSTPONE_BOX = styled.div`
+const StyledPostponeBox = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${red};
@@ -19,7 +24,6 @@ const STYLED_POSTPONE_BOX = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   width: 161px;
-  height: 155px;
   padding: 20px;
   gap: 20px;
   position: absolute;
@@ -27,21 +31,36 @@ const STYLED_POSTPONE_BOX = styled.div`
   top: 60px;
 `;
 
-const PostponeBox = (): ReactElement => {
+interface PostponeProps {
+  setPostpone: Function;
+  postponeOptions: any[];
+  time: number;
+  setTime: Function;
+  stopTimer: Function;
+}
+const PostponeBox = (props: PostponeProps): ReactElement => {
+  const { setPostpone, postponeOptions, time, setTime, stopTimer } = props;
+
+  const handlePosponeClicked = (text: string): void => {
+    stopTimer();
+    setPostpone(time, text);
+    setTime(0);
+  };
+
   return (
-    <STYLED_POSTPONE_BOX>
-      {POSTPONE_TEXTS.map((text): ReactElement => {
+    <StyledPostponeBox>
+      {postponeOptions.map((text: string): ReactElement => {
         return (
           <Button
             key={text}
             context={<Text text={text} color={white} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
             onClick={() => {
-              console.log(text);
+              handlePosponeClicked(text);
             }}
           />
         );
       })}
-    </STYLED_POSTPONE_BOX>
+    </StyledPostponeBox>
   );
 };
 export default memo(PostponeBox);

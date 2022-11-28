@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 const DAY = 24 * 60 * 60 * 1000;
 
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
-const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+export const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
 
 const compareFunctions = {
   ascendImminence: (a: Todo, b: Todo): number => {
@@ -33,18 +33,18 @@ const compareFunctions = {
 };
 
 export interface InputTodo {
-  id: string; // UUIDv4, 할일의 고유 id
-  title: string; // VARCHAR(255), 할일의 이름
-  content: string; // TEXT, 할일의 상세 내용
-  owner: string; // UUIDv4, 할일 소유자의 id
-  importance: number; // INT or ENUM, 할일의 우선순위 레벨
-  until: Date | string; // DATE, 할일의 마감기한
-  from: Date | string; // DATE, 할일의 시작기한
-  prev: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
-  next: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
-  elapsedTime: number;
-  lastPostponed: Date | string;
-  state: 'READY' | 'DONE' | 'WAIT';
+  id?: string; // UUIDv4, 할일의 고유 id
+  title?: string; // VARCHAR(255), 할일의 이름
+  content?: string; // TEXT, 할일의 상세 내용
+  owner?: string; // UUIDv4, 할일 소유자의 id
+  importance?: number; // INT or ENUM, 할일의 우선순위 레벨
+  until?: Date | string; // DATE, 할일의 마감기한
+  from?: Date | string; // DATE, 할일의 시작기한
+  prev?: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
+  next?: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
+  elapsedTime?: number;
+  lastPostponed?: Date | string;
+  state?: 'READY' | 'DONE' | 'WAIT';
 }
 
 export class Todo implements InputTodo {
@@ -169,7 +169,7 @@ export class TodoList {
   }
 
   async getActiveTodo(): Promise<InputTodo> {
-    return { ...this.getActiveTodoAsInstance().clone() };
+    return { ...this.getActiveTodoAsInstance()?.clone() }; // ? 없으면 미루기 계속 누르다가 사라짐
   }
 
   getSortedRTL(today?: Date): Todo[] {
@@ -219,6 +219,7 @@ export class TodoList {
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
     this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
+    console.log(this.todoList);
     return new TodoList(this.todoList);
   }
 
