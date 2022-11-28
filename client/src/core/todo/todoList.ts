@@ -218,7 +218,9 @@ export class TodoList {
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
-    return new TodoList(this.todoList);
+    const newTodoList = this.todoList.filter((el) => el.id !== id);
+    newTodoList.push(new Todo({ ...todo, id }));
+    return new TodoList(newTodoList);
   }
 
   async remove(id: string): Promise<TodoList> {
