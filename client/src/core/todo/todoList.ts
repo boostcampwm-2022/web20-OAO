@@ -164,32 +164,19 @@ export class TodoList {
     this.todoList = todoList.map((el) => new Todo(el));
   }
 
-  getRTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'READY').map((el) => el.clone());
-  }
-
-  getWTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'WAIT').map((el) => el.clone());
-  }
-
-  getDTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'DONE').map((el) => el.clone());
+  private getActiveTodoAsInstance(): Todo {
+    return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
   }
 
   async getActiveTodo(): Promise<InputTodo> {
-    return { ...this.getSortedRTL()[0].clone() };
-  }
-
-  getActiveTodoAsInstance(): Todo {
-    return this.getSortedRTL()[0].clone();
+    return { ...this.getActiveTodoAsInstance().clone() };
   }
 
   getSortedRTL(today?: Date): Todo[] {
-    return this.getRTL().sort(Todo.compare(today));
-  }
-
-  sort(): Todo[] {
-    return [];
+    return this.todoList
+      .filter((el) => el.state === 'READY')
+      .map((el) => el.clone())
+      .sort(Todo.compare(today));
   }
 
   async postponeTemporally(): Promise<TodoList> {
