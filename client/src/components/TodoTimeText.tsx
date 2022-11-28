@@ -9,6 +9,7 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  text-align: right;
 `;
 
 const TodoTimeText = ({ until }: { until: string }): ReactElement => {

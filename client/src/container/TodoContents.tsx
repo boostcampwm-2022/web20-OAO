@@ -8,6 +8,7 @@ import { Todo } from '../core/todo/index';
 const ContentWrapper = styled.div`
   width: 850px;
   margin: 40px 14px 0 14px;
+  text-align: justify;
 `;
 
 const ToggleWrapper = styled.div`
@@ -22,22 +23,22 @@ const ToggleWrapper = styled.div`
   input {
     display: none;
   }
-  input[id='toggleCheck']:checked + label img {
+  input[id='toggleCheck'] + label img {
     transform: rotate(180deg);
   }
-  input[id='toggleCheck']:checked + label div {
-    display: none;
+  input[id='toggleCheck']:checked + label img {
+    transform: rotate(0deg);
   }
   hr {
     width: 850px;
-    margin: 40px 14px 7px 0;
+    margin: 40px 0px 7px 0;
     border: 1px solid #3f3f3f;
     background-color: #3f3f3f;
   }
 `;
 
 const TodoContents = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
-  const [isTodoContentToggled, setIsTodoContentToggled] = useState(false);
+  const [isTodoContentToggled, setIsTodoContentToggled] = useState(true);
   const checkHandler = (): void => {
     setIsTodoContentToggled(!isTodoContentToggled);
   };
@@ -47,7 +48,7 @@ const TodoContents = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
       <ToggleWrapper>
         <input type="checkBox" id="toggleCheck" readOnly={isTodoContentToggled} onClick={checkHandler} />
         <label htmlFor="toggleCheck">
-          <ContentWrapper>{activeTodo.content}</ContentWrapper>
+          {isTodoContentToggled ? <></> : <ContentWrapper>{activeTodo.content}</ContentWrapper>}
           <hr />
           <Image src={DropDown} />
         </label>
