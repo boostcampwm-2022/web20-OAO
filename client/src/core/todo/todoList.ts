@@ -4,6 +4,34 @@ const DAY = 24 * 60 * 60 * 1000;
 
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+
+const compareFunctions = {
+  ascendImminence: (a: Todo, b: Todo): number => {
+    const newToday = new Date();
+    return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
+  },
+  descendImminence: (a: Todo, b: Todo): number => {
+    const newToday = new Date();
+    return Number(isEqualDate(newToday, a.until)) - Number(isEqualDate(newToday, b.until));
+  },
+  ascendDeadline: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
+  descendDeadline: (a: Todo, b: Todo): number => -a.until.getTime() + b.until.getTime(),
+  ascendImportance: (a: Todo, b: Todo): number => -b.importance + a.importance,
+  descendImportance: (a: Todo, b: Todo): number => b.importance - a.importance,
+  ascendLastPostponed: (a: Todo, b: Todo): number => a.lastPostponed.getTime() - b.lastPostponed.getTime(),
+  descendLastPostponed: (a: Todo, b: Todo): number => -a.lastPostponed.getTime() + b.lastPostponed.getTime(),
+  ascendTitle: (a: Todo, b: Todo): number => {
+    if (a.title === b.title) return 0;
+    if (a.title < b.title) return -1;
+    return 1;
+  },
+  descendTitle: (a: Todo, b: Todo): number => {
+    if (a.title === b.title) return 0;
+    if (a.title < b.title) return 1;
+    return -1;
+  },
+};
+
 export interface InputTodo {
   id: string; // UUIDv4, 할일의 고유 id
   title: string; // VARCHAR(255), 할일의 이름
@@ -130,7 +158,6 @@ export class Todo implements InputTodo {
     };
   }
 }
-
 export class TodoList {
   private readonly todoList: Todo[];
   constructor(todoList: InputTodo[]) {
@@ -227,7 +254,18 @@ export class TodoList {
     return new TodoList(this.todoList.filter((el) => el.id !== id));
   }
 
-  async getSortedList(type: string, compareArr: string[]): Promise<TodoList> {
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<TodoList> {
+    const generateCompare = (compareArr: string[]) => {
+      return (a: Todo, b: Todo): number => {
+        let result = 0;
+        for (let i = 0; i < compareArr.length; i++) {
+          result = compareFunctions[compareArr[i] as keyof typeof compareFunctions](a, b);
+          if (result !== 0) break;
+        }
+        return result;
+      };
+    };
+    this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
     return new TodoList(this.todoList);
   }
 }
