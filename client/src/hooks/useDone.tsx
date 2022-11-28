@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai';
-import { todoList } from '@util/GlobalState';
+
+import { todoList } from '@util/GlobalState.js';
 
 const useDone = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
@@ -7,20 +8,14 @@ const useDone = (): any[] => {
   const setDone = (elasedTime: number): void => {
     todoListAtom
       .updateElapsedTime(elasedTime)
-      .then((data) => {
-        console.log(data);
-        data
-          .setDone()
-          .then((newTodoList) => {
-            console.log(newTodoList);
-            setTodoListAtom(newTodoList);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      .then(async (data) => {
+        return await data.setDone();
+      })
+      .then((newTodoList) => {
+        setTodoListAtom(newTodoList);
       })
       .catch((err) => {
-        console.error(err);
+        throw new Error(err);
       });
   };
 

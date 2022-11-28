@@ -7,8 +7,8 @@ import Postpone from '../images/Postpone.svg';
 import Button from '../components/Button';
 import Image from '../components/Image';
 
-import useButtonConfig from '../hooks/useButtonConfig';
-import { isOnProgress, postponeClicked } from '../util/GlobalState';
+import { postponeClicked } from '@util/GlobalState.js';
+
 import useElapsedTime from '../hooks/useElapsedTime';
 import useDone from '../hooks/useDone';
 

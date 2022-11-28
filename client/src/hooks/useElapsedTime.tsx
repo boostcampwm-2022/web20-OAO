@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import { useState, useEffect, useRef } from 'react';
 
-import * as globalState from '../util/GlobalState';
+import * as globalState from '../util/GlobalState.js';
 
 const useElapsedTime = (): any[] => {
   const [time, setTime] = useAtom(globalState.elasedTimeAtom); // time: 초 단위
@@ -23,7 +23,6 @@ const useElapsedTime = (): any[] => {
   };
 
   const stopTimer = (): void => {
-    console.log('hjkahfkja');
     clearInterval(intervalRef.current);
   };
 

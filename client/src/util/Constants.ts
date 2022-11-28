@@ -7,6 +7,13 @@ export const ACTIVE_TODO_STATE = {
 
 export const POSTPONE_TEXTS = ['잠시 미루기', '하루 미루기', '우선순위 낮추기', '데드라인 미루기'];
 
+export const POSTPONE_OPTIONS = {
+  '잠시 미루기': '잠시 미루기',
+  '하루 미루기': '하루 미루기',
+  '우선순위 낮추기': '우선순위 낮추기',
+  '데드라인 미루기': '데드라인 미루기',
+};
+
 export const POSTPONE_METHODS = {
   '잠시 미루기': async (todoList: TodoList) => {
     return await todoList.postponeTemporally();

@@ -1,15 +1,12 @@
+import { useAtom } from 'jotai';
 import { memo, ReactElement } from 'react';
 import styled from 'styled-components';
-import { PRIMARY_COLORS } from '../util/Constants';
 
 import Text from './Text';
 import Button from './Button';
 
-import useTodoList from '../hooks/useTodoList';
-import { useAtom } from 'jotai';
-import { isOnProgress, postponeClicked } from '@util/GlobalState';
-import useElapsedTime from '../hooks/useElapsedTime';
-import useButtonConfig from '../hooks/useButtonConfig';
+import { ACTIVE_TODO_STATE, PRIMARY_COLORS } from '@util/Constants';
+import { isOnProgress } from '@util/GlobalState';
 
 const { red, white } = PRIMARY_COLORS;
 
@@ -33,18 +30,23 @@ const StyledPostponeBox = styled.div`
 
 interface PostponeProps {
   setPostpone: Function;
-  postponeOptions: any[];
+  postponeOptions: string[];
   time: number;
   setTime: Function;
-  stopTimer: Function;
+  handleOnToggle: Function;
 }
+
 const PostponeBox = (props: PostponeProps): ReactElement => {
-  const { setPostpone, postponeOptions, time, setTime, stopTimer } = props;
+  const { setPostpone, postponeOptions, time, setTime, handleOnToggle } = props;
+  const [progressState] = useAtom(isOnProgress);
 
   const handlePosponeClicked = (text: string): void => {
-    stopTimer();
     setPostpone(time, text);
     setTime(0);
+
+    if (progressState === ACTIVE_TODO_STATE.working) {
+      handleOnToggle();
+    }
   };
 
   return (

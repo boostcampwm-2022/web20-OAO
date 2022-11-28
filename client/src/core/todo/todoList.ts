@@ -219,7 +219,6 @@ export class TodoList {
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
     this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
-    console.log(this.todoList);
     return new TodoList(this.todoList);
   }
 
