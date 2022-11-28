@@ -239,7 +239,21 @@ export class TodoList {
   }
 
   getSummary(): any {
-    return '';
+    return {
+      numberOfImminenceTodos: this.todoList
+        .filter((el) => el.state === 'READY')
+        .filter((el) => isEqualDate(el.until, new Date())).length,
+      numberOfDistantTodos: this.todoList
+        .filter((el) => el.state === 'READY')
+        .filter((el) => !isEqualDate(el.until, new Date())).length,
+      numberOfReadyStateTodos: this.todoList.filter((el) => el.state === 'READY').length,
+      numberOfWaitStateTodos: this.todoList.filter((el) => el.state === 'WAIT').length,
+      numberOfTotalTodos: this.todoList.length,
+      numberOfRemainingTodos: -1,
+      numberOfPostpones: -1,
+      TotalElapsedTime: -1,
+      numberOfTodayDoneTodos: -1,
+    };
   }
 
   private checkPrev(todo: Todo): boolean {
