@@ -71,3 +71,5 @@ export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveT
 export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());
 export const postponeClicked = atom(false);
+
+export const isFirstRenderAtom = atom(true);

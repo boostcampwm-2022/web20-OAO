@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { isEqualDate, TodoList } from '@core/todo/todoList.js';
 
@@ -55,7 +56,7 @@ const useTodoList = (): any[] => {
       .then(({ data, top }) => {
         setTodoListAtom(data);
         setActiveTodo(top);
-        alert('완료!'); // toast
+        toast.success('완료 👏🏻👏🏻'); // toast
       })
       .catch((err) => {
         throw new Error(err);
