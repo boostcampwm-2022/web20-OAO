@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import { mockTodosData } from '@util/GlobalState';
-import { ReactElement } from 'react';
+import { activeTodoAtom } from '@util/GlobalState';
+import { ReactElement, Suspense } from 'react';
 
 import TodoTitle from '@container/TodoTitle';
 import TodoStatus from '@container/TodoStatus';
@@ -16,15 +16,24 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Main = (): ReactElement => {
-  const [todosArray] = useAtom(mockTodosData);
+const ComponentUsingAsyncAtoms = (): ReactElement => {
+  const [activeTodo] = useAtom(activeTodoAtom);
+  return (
+    <>
+      <TodoStatus activeTodo={activeTodo} />
+      <TodoTitle activeTodo={activeTodo} />
+      <TodoTimeInteraction activeTodo={activeTodo} />
+      <TodoContents activeTodo={activeTodo} />
+    </>
+  );
+};
 
+const Main = (): ReactElement => {
   return (
     <Wrapper>
-      <TodoStatus activeTodo={todosArray[0]} />
-      <TodoTitle activeTodo={todosArray[0]} />
-      <TodoTimeInteraction activeTodo={todosArray[0]} />
-      <TodoContents activeTodo={todosArray[0]} />
+      <Suspense fallback={<div>waiting....</div>}>
+        <ComponentUsingAsyncAtoms />
+      </Suspense>
     </Wrapper>
   );
 };

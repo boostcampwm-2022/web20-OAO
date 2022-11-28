@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 const DAY = 24 * 60 * 60 * 1000;
 

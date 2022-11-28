@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import { TodoList } from '@core/todo/todoList.js';
 
 export const loginStateAtom = atom(true);
 export const isOnProgress = atom('relaxing');
@@ -8,7 +9,7 @@ export const readWriteAtom = atom(
   (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
 );
 
-export const mockTodosData = atom([
+const initTodo = new TodoList([
   {
     id: '0',
     title: '다람쥐 헌 쳇바퀴에 올라타',
@@ -21,7 +22,7 @@ export const mockTodosData = atom([
     next: [],
     prev: ['18'],
     lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: '',
+    state: 'READY',
   },
   {
     id: '1',
@@ -50,6 +51,9 @@ export const mockTodosData = atom([
     state: 'WAIT',
   },
 ]);
+
+export const todoList = atom(initTodo);
+export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveTodo());
 
 export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());
