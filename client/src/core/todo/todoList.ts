@@ -226,19 +226,9 @@ export class TodoList {
   }
 
   async setDone(): Promise<TodoList> {
-    // this.getActiveTodoAsInstance()
-    //   .setDone()
-    //   .next.forEach((nid) => {
-    //     const nextTodo = this.todoList.find((el) => el.id === nid);
-    //     if (nextTodo === undefined) return;
-    //     if (
-    //       nextTodo.prev.every((pid) => this.todoList.find((el) => el.id === pid)?.state === 'DONE') &&
-    //       nextTodo.isFromBeforeToday()
-    //     ) {
-    //       return nextTodo.setReady();
-    //     }
-    //     return nextTodo.setWait();
-    //   });
+    const activeTodo = this.getActiveTodoAsInstance();
+    activeTodo.setDone();
+    this.getNext(activeTodo).forEach((el) => this.updateTodoState(el));
 
     return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
