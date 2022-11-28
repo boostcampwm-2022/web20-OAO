@@ -149,7 +149,11 @@ export class TodoList {
     return this.todoList.filter((el) => el.state === 'DONE').map((el) => el.clone());
   }
 
-  getActiveTodo(): Todo {
+  async getActiveTodo(): Promise<InputTodo> {
+    return { ...this.getSortedRTL()[0].clone() };
+  }
+
+  getActiveTodoAsInstance(): Todo {
     return this.getSortedRTL()[0].clone();
   }
 
@@ -161,28 +165,28 @@ export class TodoList {
     return [];
   }
 
-  postponeTemporally(): TodoList {
-    this.getActiveTodo().postponeTemporally();
+  async postponeTemporally(): Promise<TodoList> {
+    this.getActiveTodoAsInstance().postponeTemporally();
     return new TodoList(this.todoList);
   }
 
-  postponeDeadline(): TodoList {
-    this.getActiveTodo().postponeDeadline();
+  async postponeDeadline(): Promise<TodoList> {
+    this.getActiveTodoAsInstance().postponeDeadline();
     return new TodoList(this.todoList);
   }
 
-  postponeForToday(): TodoList {
-    this.getActiveTodo().postponeForToday().setWait();
+  async postponeForToday(): Promise<TodoList> {
+    this.getActiveTodoAsInstance().postponeForToday().setWait();
     return new TodoList(this.todoList);
   }
 
-  lowerImportance(): TodoList {
-    this.getActiveTodo().lowerImportance();
+  async lowerImportance(): Promise<TodoList> {
+    this.getActiveTodoAsInstance().lowerImportance();
     return new TodoList(this.todoList);
   }
 
-  setDone(): TodoList {
-    this.getActiveTodo()
+  async setDone(): Promise<TodoList> {
+    this.getActiveTodoAsInstance()
       .setDone()
       .next.forEach((nid) => {
         const nextTodo = this.todoList.find((el) => el.id === nid);
@@ -199,8 +203,8 @@ export class TodoList {
     return new TodoList(this.todoList);
   }
 
-  updateElapsedTime(elapsedTime: number): TodoList {
-    this.getActiveTodo().updateElapsedTime(elapsedTime);
+  async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
+    this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
     return new TodoList(this.todoList);
   }
 
