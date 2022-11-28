@@ -150,7 +150,7 @@ export class Todo {
     return new Todo(this.toPlain());
   }
 
-  toPlain(): InputTodo {
+  toPlain(): PlainTodo {
     return {
       ...this,
       prev: [...this.prev],
@@ -158,15 +158,6 @@ export class Todo {
       from: new Date(this.from),
       until: new Date(this.until),
       lastPostponed: new Date(this.lastPostponed),
-    };
-  }
-
-  toComparableTodo(): any {
-    return {
-      ...this,
-      until: this.until.getTime(),
-      from: this.from.getTime(),
-      lastPostponed: this.lastPostponed.getTime(),
     };
   }
 
@@ -200,15 +191,15 @@ export class TodoList {
     return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
   }
 
-  async getActiveTodo(): Promise<InputTodo> {
+  async getActiveTodo(): Promise<PlainTodo> {
     return this.getActiveTodoAsInstance().toPlain();
   }
 
-  getSortedRTL(today?: Date): Todo[] {
+  async getSortedRTL(today?: Date): Promise<PlainTodo[]> {
     return this.todoList
       .filter((el) => el.state === 'READY')
-      .map((el) => el.clone())
-      .sort(Todo.compare(today));
+      .sort(Todo.compare(today))
+      .map((el) => el.toPlain());
   }
 
   async postponeTemporally(): Promise<TodoList> {
@@ -266,14 +257,25 @@ export class TodoList {
     return [...todo.prev].every((prevId) => this.todoList.find((el) => el.id === prevId)?.state === 'DONE');
   }
 
-  private checkFrom(todo: Todo): boolean {
-    return todo.from < new Date();
+  private checkFrom(todo: Todo, date?: Date): boolean {
+    const today = date ?? new Date();
+    return todo.from < today;
   }
 
-  private updateTodoState(todo: Todo): Todo {
-    if (this.checkFrom(todo) && this.checkPrev(todo)) todo.state = 'READY';
+  private updateTodoState(todo: Todo, date?: Date): Todo {
+    if (todo.state === 'DONE') return todo;
+    if (this.checkFrom(todo, date) && this.checkPrev(todo)) todo.state = 'READY';
     else todo.state = 'WAIT';
     return todo;
+  }
+
+  async updateAll(date?: Date): Promise<TodoList> {
+    this.todoList.forEach((el) => this.updateTodoState(el, date));
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
+  }
+
+  getTL(): PlainTodo[] {
+    return this.todoList.map((el) => el.toPlain());
   }
 
   private getPrev(todo: Todo): Todo[] {
