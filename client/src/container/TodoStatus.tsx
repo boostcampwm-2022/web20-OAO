@@ -10,6 +10,8 @@ import Working from '@images/Working.svg';
 import Relaxing from '@images/Relaxing.svg';
 import styled from 'styled-components';
 
+import { todoStatusText } from '../util/Common';
+
 const Wrapper = styled.div`
   width: 850px;
   padding: 0 6px;
@@ -42,16 +44,6 @@ const TodoStatus = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
       <Hr />
     </>
   );
-};
-
-const todoStatusText = (todoUntil: string): string => {
-  return isTodoImminence(todoUntil) ? '오늘까지 해야하는 일!' : '오늘 안해도 되는 일';
-};
-
-const isTodoImminence = (todoUntil: string): boolean => {
-  const todoDate = new Date(todoUntil);
-  const today = new Date();
-  return todoDate.getDate() === today.getDate() && todoDate.getMonth() === today.getMonth();
 };
 
 export default TodoStatus;

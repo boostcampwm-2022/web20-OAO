@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from 'styled-components';
 
 interface StyleProps {
@@ -25,4 +25,4 @@ const Text: FC<Props> = ({ text, ...props }) => {
   return <StyledText {...props}>{text}</StyledText>;
 };
 
-export default Text;
+export default memo(Text);

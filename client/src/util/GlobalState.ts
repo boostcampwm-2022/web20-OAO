@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 
 export const loginStateAtom = atom(true);
-export const isOnProgress = atom('working');
+export const isOnProgress = atom('relaxing');
 
 export const readWriteAtom = atom(
   (get) => get(loginStateAtom),
@@ -15,7 +15,7 @@ export const mockTodosData = atom([
     content: 'default content',
     owner: 'default user',
     importance: 1,
-    until: 'Mon Sep 03 2022 16:26:10 GMT+0900 (Korean Standard Time)',
+    until: 'Sat Nov 26 2022 23:54:52 GMT+0900 (한국 표준시)',
     from: 'Fri Sep 02 2022 12:39:39 GMT+0900 (Korean Standard Time)',
     next: [],
     prev: ['18'],
@@ -49,3 +49,7 @@ export const mockTodosData = atom([
     state: 'WAIT',
   },
 ]);
+
+export const elasedTimeAtom = atom(0); // 초 단위 경과시간
+export const startTimeAtom = atom(new Date());
+export const postponeClicked = atom(false);
