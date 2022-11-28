@@ -252,17 +252,44 @@ export class TodoList {
     return '';
   }
 
+  private checkPrev(todo: Todo): boolean {
+    return [...todo.prev].every((prevId) => this.todoList.find((el) => el.id === prevId)?.state === 'DONE');
+  }
+
+  private checkFrom(todo: Todo): boolean {
+    return todo.from < new Date();
+  }
+
+  private updateTodoState(todo: Todo): Todo {
+    if (this.checkFrom(todo) && this.checkPrev(todo)) todo.state = 'READY';
+    else todo.state = 'WAIT';
+    return todo;
+  }
+
+  private getPrev(todo: Todo): Todo[] {
+    return [...todo.prev]
+      .map((prevId) => this.todoList.find((el) => el.id === prevId))
+      .filter((el) => el !== undefined) as Todo[];
+  }
+
+  private getNext(todo: Todo): Todo[] {
+    return [...todo.next]
+      .map((nextId) => this.todoList.find((el) => el.id === nextId))
+      .filter((el) => el !== undefined) as Todo[];
+  }
+
   async add(todo: InputTodo): Promise<TodoList> {
-    // push new Todo
-    this.todoList.push(new Todo(todo));
+    const newTodo = new Todo(todo);
 
-    // add mySelf as next to my prev Todo
+    this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
 
-    // update mySelf
+    this.updateTodoState(newTodo);
 
-    // add mySelf as prev to my next Todo
+    this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
 
-    // update next Todo
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
+    this.todoList.push(newTodo);
 
     return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
