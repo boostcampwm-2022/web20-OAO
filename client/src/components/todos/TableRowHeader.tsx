@@ -1,6 +1,6 @@
 import { PlainTodo } from '@core/todo/todoList';
 import { ReactElement, useState } from 'react';
-import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
+import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
 import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
 
 import Button from '@components/Button';
@@ -10,6 +10,9 @@ import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
+
+import { modalTypeAtom } from '@util/GlobalState';
 
 const CheckWrapper = styled.div`
   input {
@@ -58,6 +61,8 @@ const TableRowHeader = ({
   nextTodoTitle: string;
 }): ReactElement => {
   const [isTodoDone, setIsTodoDone] = useState(false);
+  const [, setModalType] = useAtom(modalTypeAtom);
+
   const checkTodoStateHandler = (): void => {
     setIsTodoDone(!isTodoDone);
   };
@@ -77,7 +82,7 @@ const TableRowHeader = ({
       <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
       <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
       <div>
-        <Button context={<img src={Update} />} />
+        <Button context={<img src={Update} />} onClick={(e) => setModalType(TABLE_MODALS.update)} />
         <Button context={<img src={Delete} />} />
       </div>
     </>

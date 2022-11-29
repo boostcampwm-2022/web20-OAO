@@ -1,15 +1,16 @@
-import { memo, ReactElement, useEffect, useRef, useState } from 'react';
+import { memo, ReactElement, useEffect, useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
-import { modalTypeAtom, todoList } from '@util/GlobalState';
+import { modalTypeAtom, todoList, displayDetailAtom } from '@util/GlobalState';
 import { getModalValues } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
 import Text from '@components/Text';
 import { toast } from 'react-toastify';
+import { TodoList, InputTodo } from '@core/todo/todoList';
 
 const { create, update, none } = TABLE_MODALS;
 const { offWhite, red, blue } = PRIMARY_COLORS;
@@ -43,17 +44,49 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
+const MODAL_COMPLETE_ACTIONS = {
+  create: async (todoList: TodoList, newData: InputTodo) => {
+    return await todoList.add(newData);
+  },
+  update: async (todoList: TodoList, newData: InputTodo, id: string) => {
+    return await todoList.edit(id, newData);
+  },
+};
+
 const TableModal = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [modalHeader, setModalHeader] = useState('');
+  const [displayDetail] = useAtom(displayDetailAtom);
+
   const modalWrapper = useRef<HTMLInputElement>();
+
+  const setInitData = useCallback((): void => {
+    todoListAtom
+      .getTodoById(displayDetail)
+      .then((target) => {
+        if (modalWrapper.current === undefined || target === undefined) {
+          return;
+        }
+
+        getModalValues(modalWrapper.current).forEach((elem) => {
+          if (elem.id === 'until') {
+            return (elem.value = new Date(target.until).toJSON().split('T')[0]);
+          }
+          elem.value = target[elem.id as keyof typeof elem];
+        });
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }, [displayDetail]);
 
   useEffect(() => {
     if (modalType === create) {
       return setModalHeader('할 일 추가하기');
     }
     if (modalType === update) {
+      setInitData();
       return setModalHeader('할 일 수정하기');
     }
     setModalHeader(none);
@@ -71,12 +104,12 @@ const TableModal = (): ReactElement => {
       newData = { ...newData, [id]: value };
     });
 
-    todoListAtom
-      .add(newData)
+    // modal type에 맞게 함수 실행
+    MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](todoListAtom, newData, displayDetail)
       .then((data) => {
         setTodoListAtom(data);
         setModalType(none);
-        toast.success('추가되었습니다! ☘️');
+        toast.success('완료되었습니다! ☘️');
       })
       .catch((err) => {
         toast.error('todo 추가 실패!');
