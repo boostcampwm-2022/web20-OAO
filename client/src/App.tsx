@@ -5,7 +5,8 @@ import styled from 'styled-components';
 
 import Header from './container/Header';
 import Menubar from './container/Menubar';
-import Main from './page/Main';
+import Main from '@page/Main';
+import Todos from '@page/Todos';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,7 +21,7 @@ const App = (): ReactElement => {
           <Header />
           <Routes>
             <Route path="/" element={<Main />}></Route>
-            <Route path="/table" element={<div>table</div>}></Route>
+            <Route path="/todos" element={<Todos />}></Route>
           </Routes>
         </Wrapper>
       </BrowserRouter>

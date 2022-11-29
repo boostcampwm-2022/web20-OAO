@@ -19,7 +19,7 @@ const Menubar = (): ReactElement => {
       <Link to="/">
         <Image src={Home} margin={'30px 0 0 0'} />
       </Link>
-      <Link to="/table">
+      <Link to="/todos">
         <Image src={Table} margin={'30px 0 0 0'} />
       </Link>
     </Wrapper>
