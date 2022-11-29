@@ -1,4 +1,4 @@
-import { PlainTodo, InputTodo } from '@todo/todoList.type';
+import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';

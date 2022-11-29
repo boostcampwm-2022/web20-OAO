@@ -1,6 +1,6 @@
 import * as sortRawTestCase from './sort.data.json';
 import * as updateRawTestCase from './update.data.json';
-import { Todo } from '../todoList';
+import { Todo } from '@todo/todo';
 import {
   validateImminenceSort,
   validateImportanceSort,

@@ -1,4 +1,6 @@
-import { PlainTodo, Todo, TodoList } from '../todoList';
+import { Todo } from '@todo/todo';
+import { PlainTodo } from '@todo/todo.type';
+import { TodoList } from '@todo/todoList';
 import { toComparableTodo, validateRTL, validateWTL } from './validator';
 import { testToday, generateTodoListForUpdateTest, generateUpdateTestSet } from './generator';
 import * as updateRawTestCase from './update.data.json';

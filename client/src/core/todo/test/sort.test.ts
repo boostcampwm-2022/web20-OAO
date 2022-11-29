@@ -1,4 +1,6 @@
-import { Todo, TodoList, PlainTodo } from '../todoList';
+import { Todo } from '@todo/todo';
+import { PlainTodo } from '@todo/todo.type';
+import { TodoList } from '@todo/todoList';
 import { toComparableTodo, validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
 import { testToday, generateTodoListForSortTest, generateSortTestSet } from './generator';
 import * as sortRawTestCase from './sort.data.json';

@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import { PlainTodo, InputTodo } from '@todo/todoList.type';
+import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { isEqualDate } from '@todo/todo.util';
 
 const DAY = 24 * 60 * 60 * 1000;
