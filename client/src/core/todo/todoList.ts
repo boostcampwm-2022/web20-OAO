@@ -1,9 +1,9 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 const DAY = 24 * 60 * 60 * 1000;
 
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
-const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+export const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
 
 const compareFunctions = {
   ascendImminence: (a: Todo, b: Todo): number => {
@@ -192,7 +192,7 @@ export class TodoList {
   }
 
   async getActiveTodo(): Promise<PlainTodo> {
-    return this.getActiveTodoAsInstance().toPlain();
+    return this.getActiveTodoAsInstance()?.toPlain();
   }
 
   async getSortedRTL(today?: Date): Promise<PlainTodo[]> {
