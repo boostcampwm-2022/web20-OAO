@@ -36,6 +36,13 @@ export class MemoryDB implements ITodoListDataBase {
     return [...this.todoList.values()].map((el) => el.toPlain());
   }
 
+  async editMany(inputArr: Array<{ id: string; todo: InputTodo }>): Promise<PlainTodo[]> {
+    for (const el of inputArr) {
+      await this.edit(el.id, el.todo);
+    }
+    return [...this.todoList.values()].map((el) => el.toPlain());
+  }
+
   async remove(id: string): Promise<PlainTodo[]> {
     if (!this.todoList.has(id)) throw new Error('ERROR: 삭제하려는 ID의 Todo가 없습니다.');
     this.todoList.delete(id);
