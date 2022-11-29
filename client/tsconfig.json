@@ -21,6 +21,7 @@
       "@components/*": ["src/components/*"],
       "@container/*": ["src/container/*"],
       "@core/*": ["src/core/*"],
+      "@todo/*": ["src/core/todo/*"],
       "@images/*": ["src/images/*"],
       "@page/*": ["src/page/*"],
       "@util/*": ["src/util/*"]
