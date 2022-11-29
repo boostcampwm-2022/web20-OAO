@@ -31,7 +31,7 @@ export class MemoryDB implements ITodoListDataBase {
   async edit(id: string, todo: InputTodo): Promise<PlainTodo[]> {
     if (!this.todoList.has(id)) throw new Error('ERROR: 수정하려는 ID의 Todo가 없습니다.');
     const oldTodo = (await this.get(id)) as PlainTodo;
-    const newTodo = new Todo({ ...oldTodo, ...new Todo(todo).toPlain(), id: oldTodo.id });
+    const newTodo = new Todo({ ...oldTodo, ...todo, id: oldTodo.id });
     this.todoList.set(id, newTodo);
     return [...this.todoList.values()].map((el) => el.toPlain());
   }
