@@ -2,8 +2,9 @@ import { PlainTodo, InputTodo } from '@todo/todoList.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
+import { ITodoList } from '@todo/todoList.interface';
 
-export class TodoList {
+export class TodoList implements ITodoList {
   private readonly todoList: Todo[];
   constructor(todoList: InputTodo[]) {
     this.todoList = todoList.map((el) => new Todo(el));
