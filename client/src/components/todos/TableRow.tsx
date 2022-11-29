@@ -12,19 +12,19 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [nextTodoList, setNextTodo] = useState<PlainTodo[] | []>([]);
 
   useEffect(() => {
-    todo.prev.map((prevTodoId: string) => {
+    todo.prev.forEach((prevTodoId: string) => {
       todoListAtom
         .getTodoById(prevTodoId)
         .then((prevTodo: PlainTodo | undefined) => {
-          prevTodo != null ? setPrevTodo([...prevTodoList, prevTodo]) : setPrevTodo([]);
+          if (prevTodo != null) setPrevTodo((prevState) => [...prevState, prevTodo]);
         })
         .catch((err) => console.error(err));
     });
-    todo.next.map((nextTodoId: string) => {
+    todo.next.forEach((nextTodoId: string) => {
       todoListAtom
         .getTodoById(nextTodoId)
         .then((nextTodo: PlainTodo | undefined) => {
-          nextTodo != null ? setNextTodo([...nextTodoList, nextTodo]) : setNextTodo([]);
+          if (nextTodo != null) setNextTodo((prevState) => [...prevState, nextTodo]);
         })
         .catch((err) => console.error(err));
     });
