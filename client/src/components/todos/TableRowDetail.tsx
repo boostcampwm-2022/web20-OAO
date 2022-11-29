@@ -30,13 +30,13 @@ const TableRowDetail = ({
         {prevTodoList.length > 0 && (
           <>
             <h3>먼저 할일 목록</h3>
-            <TodoTitleList list={prevTodoList} />
+            <TodoTitleList list={prevTodoList} prevId={todo.id} />
           </>
         )}
         {nextTodoList.length > 0 && (
           <>
             <h3>이어서 할일 목록</h3>
-            <TodoTitleList list={nextTodoList} />
+            <TodoTitleList list={nextTodoList} prevId={todo.id} />
           </>
         )}
       </Wrapper>

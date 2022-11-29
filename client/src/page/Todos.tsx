@@ -32,7 +32,6 @@ const StyledButton = styled.div`
 
 const Todos = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
-
   const hanldeOnClick = (): void => {
     setModalType(TABLE_MODALS.create);
   };

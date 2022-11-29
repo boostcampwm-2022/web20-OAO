@@ -12,6 +12,8 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [nextTodoList, setNextTodo] = useState<PlainTodo[] | []>([]);
 
   useEffect(() => {
+    setPrevTodo([]);
+    setNextTodo([]);
     todo.prev.forEach((prevTodoId: string) => {
       todoListAtom
         .getTodoById(prevTodoId)

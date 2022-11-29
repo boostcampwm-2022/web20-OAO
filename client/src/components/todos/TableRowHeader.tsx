@@ -1,5 +1,6 @@
 import { PlainTodo } from '@core/todo/todoList';
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
+import { todoList, modalTypeAtom } from '@util/GlobalState';
 import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
 import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
 
@@ -11,8 +12,6 @@ import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
-
-import { modalTypeAtom } from '@util/GlobalState';
 
 const CheckWrapper = styled.div`
   input {
@@ -60,18 +59,27 @@ const TableRowHeader = ({
   prevTodoTitle: string;
   nextTodoTitle: string;
 }): ReactElement => {
-  const [isTodoDone, setIsTodoDone] = useState(false);
   const [, setModalType] = useAtom(modalTypeAtom);
-
+  const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const checkTodoStateHandler = (): void => {
-    setIsTodoDone(!isTodoDone);
+    // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
+    todo.state === 'DONE' ? (todo.state = 'WAIT') : (todo.state = 'DONE');
+    todoListAtom
+      .edit(todo.id, todo)
+      .then((newTodoList) => {
+        setTodoListAtom(newTodoList);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
     <>
       <CheckWrapper>
-        <input type="checkBox" id="todoDone" readOnly={isTodoDone} onClick={checkTodoStateHandler} />
-        <label htmlFor="todoDone">{isTodoDone ? <Image src={Checked} /> : <Image src={Unchecked} />}</label>
+        {todo.state === 'DONE' ? (
+          <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
+        ) : (
+          <Button context={<Image src={Unchecked} />} onClick={checkTodoStateHandler} />
+        )}
       </CheckWrapper>
       <TitleWrapper>{todo.title}</TitleWrapper>
       <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>

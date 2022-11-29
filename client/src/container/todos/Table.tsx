@@ -10,6 +10,11 @@ const Wrapper = styled.div`
   width: 85%;
 `;
 
+const BlankTableWrapper = styled.div`
+  text-align: center;
+  margin: 10%;
+`;
+
 const GridWrapper = styled.div`
   display: grid;
   align-items: center;
@@ -46,7 +51,7 @@ const Table = (): ReactElement => {
       .catch((err) => console.error(err));
   }, [todoListAtom]);
 
-  return (
+  return todos.length > 0 ? (
     <Wrapper>
       <GridWrapper>
         <TableHeader />
@@ -65,6 +70,11 @@ const Table = (): ReactElement => {
         ))}
       </RowWrapper>
     </Wrapper>
+  ) : (
+    <BlankTableWrapper>
+      <h1>Todo가 없습니다!</h1>
+      <h2>Todo를 추가해보는 건 어떨까요?</h2>
+    </BlankTableWrapper>
   );
 };
 
