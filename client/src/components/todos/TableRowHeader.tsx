@@ -1,6 +1,7 @@
-import { PlainTodo } from '@core/todo/todoList';
 import { ReactElement } from 'react';
-import { todoList, modalTypeAtom } from '@util/GlobalState';
+import styled from 'styled-components';
+import { useAtom } from 'jotai';
+
 import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
 import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
 
@@ -10,8 +11,11 @@ import Unchecked from '@images/Unchecked.svg';
 import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
-import styled from 'styled-components';
-import { useAtom } from 'jotai';
+
+import { PlainTodo } from '@core/todo/todoList';
+
+import { displayDetailAtom, modalTypeAtom, todoList } from '@util/GlobalState';
+import { toast } from 'react-toastify';
 
 const CheckWrapper = styled.div`
   input {
@@ -61,6 +65,8 @@ const TableRowHeader = ({
 }): ReactElement => {
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
+  const [displayDetail] = useAtom(displayDetailAtom);
+
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
     todo.state === 'DONE' ? (todo.state = 'WAIT') : (todo.state = 'DONE');
@@ -70,6 +76,21 @@ const TableRowHeader = ({
         setTodoListAtom(newTodoList);
       })
       .catch((err) => console.error(err));
+  };
+
+  const handleOnDelete = (): void => {
+    if (displayDetail === '') {
+      return;
+    }
+
+    todoListAtom
+      .remove(displayDetail)
+      .then((data) => {
+        setTodoListAtom(data);
+      })
+      .catch((err: any) => {
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -91,7 +112,12 @@ const TableRowHeader = ({
       <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
       <div>
         <Button context={<img src={Update} />} onClick={(e) => setModalType(TABLE_MODALS.update)} />
-        <Button context={<img src={Delete} />} />
+        <Button
+          context={<img src={Delete} />}
+          onClick={(e) => {
+            handleOnDelete();
+          }}
+        />
       </div>
     </>
   );
