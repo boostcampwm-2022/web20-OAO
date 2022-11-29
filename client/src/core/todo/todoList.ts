@@ -32,22 +32,28 @@ const compareFunctions = {
   },
 };
 
-export interface InputTodo {
-  id?: string; // UUIDv4, 할일의 고유 id
-  title?: string; // VARCHAR(255), 할일의 이름
-  content?: string; // TEXT, 할일의 상세 내용
-  owner?: string; // UUIDv4, 할일 소유자의 id
-  importance?: number; // INT or ENUM, 할일의 우선순위 레벨
-  until?: Date | string; // DATE, 할일의 마감기한
-  from?: Date | string; // DATE, 할일의 시작기한
-  prev?: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
-  next?: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
-  elapsedTime?: number;
-  lastPostponed?: Date | string;
-  state?: 'READY' | 'DONE' | 'WAIT';
+export interface PlainTodo {
+  id: string; // UUIDv4, 할일의 고유 id
+  title: string; // VARCHAR(255), 할일의 이름
+  content: string; // TEXT, 할일의 상세 내용
+  owner: string; // UUIDv4, 할일 소유자의 id
+  importance: number; // INT or ENUM, 할일의 우선순위 레벨
+  until: Date; // DATE, 할일의 마감기한
+  from: Date; // DATE, 할일의 시작기한
+  prev: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
+  next: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
+  elapsedTime: number;
+  lastPostponed: Date;
+  state: 'READY' | 'DONE' | 'WAIT';
 }
 
-export class Todo implements InputTodo {
+export type InputTodo = Partial<Omit<PlainTodo, 'until' | 'from' | 'lastPostponed'>> & {
+  until?: Date | string;
+  from?: Date | string;
+  lastPostponed?: Date | string;
+};
+
+export class Todo {
   id: string;
   title: string;
   content: string;
@@ -55,8 +61,8 @@ export class Todo implements InputTodo {
   importance: number;
   until: Date;
   from: Date;
-  prev: string[];
-  next: string[];
+  prev: Set<string>;
+  next: Set<string>;
   elapsedTime: number;
   lastPostponed: Date;
   state: 'READY' | 'DONE' | 'WAIT';
@@ -68,8 +74,8 @@ export class Todo implements InputTodo {
     this.importance = inputTodo.importance ?? 1;
     this.until = new Date(inputTodo.until ?? new Date(2077, 1, 1));
     this.from = new Date(inputTodo.from ?? new Date(1994, 1, 1));
-    this.prev = inputTodo.prev ?? [];
-    this.next = inputTodo.next ?? [];
+    this.prev = new Set(inputTodo.prev);
+    this.next = new Set(inputTodo.next);
     this.elapsedTime = inputTodo.elapsedTime ?? 0;
     this.lastPostponed = new Date(inputTodo.lastPostponed ?? new Date());
     this.state = inputTodo.state ?? 'READY';
@@ -141,21 +147,38 @@ export class Todo implements InputTodo {
   }
 
   clone(): Todo {
-    return new Todo({
+    return new Todo(this.toPlain());
+  }
+
+  toPlain(): PlainTodo {
+    return {
       ...this,
+      prev: [...this.prev],
+      next: [...this.next],
       from: new Date(this.from),
       until: new Date(this.until),
       lastPostponed: new Date(this.lastPostponed),
-    });
+    };
   }
 
-  toComparableTodo(): any {
-    return {
-      ...this,
-      until: this.until.getTime(),
-      from: this.from.getTime(),
-      lastPostponed: this.lastPostponed.getTime(),
-    };
+  addPrev(id: string): Todo {
+    this.prev.add(id);
+    return this;
+  }
+
+  addNext(id: string): Todo {
+    this.next.add(id);
+    return this;
+  }
+
+  removePrev(id: string): Todo {
+    this.prev.delete(id);
+    return this;
+  }
+
+  removeNext(id: string): Todo {
+    this.next.delete(id);
+    return this;
   }
 }
 export class TodoList {
@@ -168,77 +191,154 @@ export class TodoList {
     return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
   }
 
-  async getActiveTodo(): Promise<InputTodo> {
-    return { ...this.getActiveTodoAsInstance()?.clone() }; // ? 없으면 미루기 계속 누르다가 사라짐
+  async getActiveTodo(): Promise<PlainTodo> {
+    return this.getActiveTodoAsInstance()?.toPlain();
   }
 
-  getSortedRTL(today?: Date): Todo[] {
+  async getSortedRTL(today?: Date): Promise<PlainTodo[]> {
     return this.todoList
       .filter((el) => el.state === 'READY')
-      .map((el) => el.clone())
-      .sort(Todo.compare(today));
+      .sort(Todo.compare(today))
+      .map((el) => el.toPlain());
   }
 
   async postponeTemporally(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeTemporally();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async postponeDeadline(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeDeadline();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async postponeForToday(): Promise<TodoList> {
     this.getActiveTodoAsInstance().postponeForToday().setWait();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async lowerImportance(): Promise<TodoList> {
     this.getActiveTodoAsInstance().lowerImportance();
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async setDone(): Promise<TodoList> {
-    this.getActiveTodoAsInstance()
-      .setDone()
-      .next.forEach((nid) => {
-        const nextTodo = this.todoList.find((el) => el.id === nid);
-        if (nextTodo === undefined) return;
-        if (
-          nextTodo.prev.every((pid) => this.todoList.find((el) => el.id === pid)?.state === 'DONE') &&
-          nextTodo.isFromBeforeToday()
-        ) {
-          return nextTodo.setReady();
-        }
-        return nextTodo.setWait();
-      });
+    const activeTodo = this.getActiveTodoAsInstance();
+    activeTodo.setDone();
+    this.getNext(activeTodo).forEach((el) => this.updateTodoState(el));
 
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
     this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   getSummary(): any {
-    return '';
+    return {
+      numberOfImminenceTodos: this.todoList
+        .filter((el) => el.state === 'READY')
+        .filter((el) => isEqualDate(el.until, new Date())).length,
+      numberOfDistantTodos: this.todoList
+        .filter((el) => el.state === 'READY')
+        .filter((el) => !isEqualDate(el.until, new Date())).length,
+      numberOfReadyStateTodos: this.todoList.filter((el) => el.state === 'READY').length,
+      numberOfWaitStateTodos: this.todoList.filter((el) => el.state === 'WAIT').length,
+      numberOfTotalTodos: this.todoList.length,
+      numberOfRemainingTodos: -1,
+      numberOfPostpones: -1,
+      TotalElapsedTime: -1,
+      numberOfTodayDoneTodos: -1,
+    };
+  }
+
+  private checkPrev(todo: Todo): boolean {
+    return [...todo.prev].every((prevId) => this.todoList.find((el) => el.id === prevId)?.state === 'DONE');
+  }
+
+  private checkFrom(todo: Todo, date?: Date): boolean {
+    const today = date ?? new Date();
+    return todo.from < today;
+  }
+
+  private updateTodoState(todo: Todo, date?: Date): Todo {
+    if (todo.state === 'DONE') return todo;
+    if (this.checkFrom(todo, date) && this.checkPrev(todo)) todo.state = 'READY';
+    else todo.state = 'WAIT';
+    return todo;
+  }
+
+  async updateAll(date?: Date): Promise<TodoList> {
+    this.todoList.forEach((el) => this.updateTodoState(el, date));
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
+  }
+
+  getTL(): PlainTodo[] {
+    return this.todoList.map((el) => el.toPlain());
+  }
+
+  private getPrev(todo: Todo): Todo[] {
+    return [...todo.prev]
+      .map((prevId) => this.todoList.find((el) => el.id === prevId))
+      .filter((el) => el !== undefined) as Todo[];
+  }
+
+  private getNext(todo: Todo): Todo[] {
+    return [...todo.next]
+      .map((nextId) => this.todoList.find((el) => el.id === nextId))
+      .filter((el) => el !== undefined) as Todo[];
   }
 
   async add(todo: InputTodo): Promise<TodoList> {
-    this.todoList.push(new Todo(todo));
-    return new TodoList(this.todoList);
+    const newTodo = new Todo(todo);
+
+    this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
+
+    this.updateTodoState(newTodo);
+
+    this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
+
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
+    this.todoList.push(newTodo);
+
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
-    const newTodoList = this.todoList.filter((el) => el.id !== id);
-    newTodoList.push(new Todo({ ...todo, id }));
-    return new TodoList(newTodoList);
+    const oldTodo = this.todoList.find((el) => el.id === id);
+    if (oldTodo === undefined) throw new Error('ERROR: 수정하려는 ID의 Todo가 존재하지 않습니다.');
+    const newTodo = new Todo(todo);
+
+    this.getPrev(oldTodo).forEach((el) => el.removeNext(oldTodo.id));
+    this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
+
+    this.updateTodoState(newTodo);
+
+    this.getNext(oldTodo).forEach((el) => el.removePrev(oldTodo.id));
+    this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
+
+    this.getNext(oldTodo).forEach((el) => this.updateTodoState(el));
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
+    const newTodoList = this.todoList.filter((el) => el !== oldTodo);
+    newTodoList.push(newTodo);
+
+    return new TodoList(newTodoList.map((el) => el.toPlain()));
   }
 
   async remove(id: string): Promise<TodoList> {
-    return new TodoList(this.todoList.filter((el) => el.id !== id));
+    const newTodo = this.todoList.find((el) => el.id === id);
+    if (newTodo === undefined) throw new Error('ERROR: 지우려는 ID의 Todo가 존재하지 않습니다.');
+
+    this.getPrev(newTodo).forEach((el) => el.removeNext(newTodo.id));
+
+    this.getNext(newTodo).forEach((el) => el.removePrev(newTodo.id));
+
+    this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
+
+    return new TodoList(this.todoList.filter((el) => el.id !== id).map((el) => el.toPlain()));
   }
 
   async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<TodoList> {
@@ -253,6 +353,6 @@ export class TodoList {
       };
     };
     this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
-    return new TodoList(this.todoList);
+    return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
 }
