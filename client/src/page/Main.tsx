@@ -10,7 +10,7 @@ import TodoContents from '@container/TodoContents';
 
 import useTodoList from '../hooks/useTodoList';
 
-import { isFirstRenderAtom } from '@util/GlobalState';
+import { isFinishedAtom } from '@util/GlobalState';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,16 +24,13 @@ const Wrapper = styled.div`
 
 const Main = (): ReactElement => {
   const [, activeTodo] = useTodoList();
-  const [isFirst, setIsFirst] = useAtom(isFirstRenderAtom);
+  const [isFinished] = useAtom(isFinishedAtom);
 
   useEffect(() => {
-    if (isFirst) {
-      return setIsFirst(false);
+    if (isFinished) {
+      toast('오늘 주어진 일을 끝낸 멋진 사람! 😎');
     }
-    if (activeTodo.id === undefined) {
-      toast('오늘 주어진 업무를 끝냈습니다!! 😎 ');
-    }
-  }, [activeTodo]);
+  }, [isFinished]);
 
   return (
     <Wrapper>

@@ -5,12 +5,13 @@ import { toast } from 'react-toastify';
 import { isEqualDate, TodoList } from '@core/todo/todoList.js';
 
 import { POSTPONE_METHODS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants';
-import { todoList } from '@util/GlobalState.js';
+import { isFinishedAtom, todoList } from '@util/GlobalState.js';
 
 const useTodoList = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [activeTodo, setActiveTodo] = useState({ id: undefined, importance: 1, until: new Date() });
   const [postponeOptions, setPostponeOptions] = useState(POSTPONE_TEXTS);
+  const [, setIsFinished] = useAtom(isFinishedAtom);
 
   useEffect(() => {
     todoListAtom
@@ -56,6 +57,7 @@ const useTodoList = (): any[] => {
       .then(({ data, top }) => {
         setTodoListAtom(data);
         setActiveTodo(top);
+        setIsFinished(top.from === undefined);
         toast.success('완료 👏🏻👏🏻'); // toast
       })
       .catch((err) => {
