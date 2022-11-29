@@ -55,7 +55,8 @@ const Table = (): ReactElement => {
         {todos.map((todo: PlainTodo) => (
           <GridRowWrapper
             onClick={() => {
-              displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id);
+              // displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id);
+              if (displayDetail !== todo.id) setDisplayDetail(todo.id);
             }}
             key={todo.id}
           >
