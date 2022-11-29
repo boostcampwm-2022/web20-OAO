@@ -1,3 +1,4 @@
+import { Todo } from '@todo/todo';
 import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { ITodoListDataBase } from '@repository/repository.interface';
 import { IDBPDatabase, openDB } from 'idb';
@@ -6,20 +7,25 @@ const DB_NAME = 'OaO';
 const TABLE_NAME = 'todos';
 
 export class IndexedDBFactory {
-  async createDB(): Promise<IndexedDB> {
+  async createDB(todoList?: InputTodo[]): Promise<IndexedDB> {
     const db: IDBPDatabase = await openDB(DB_NAME, 1, {
       upgrade(db: IDBPDatabase) {
-        if (!db.objectStoreNames.contains(TABLE_NAME)) db.createObjectStore(TABLE_NAME);
+        if (!db.objectStoreNames.contains(TABLE_NAME)) db.createObjectStore(TABLE_NAME, { keyPath: 'id' });
       },
     });
+    const result = new IndexedDB(db);
+    if (todoList === undefined) return result;
 
-    return new IndexedDB(db);
+    for (const todo of todoList) {
+      await result.add(todo);
+    }
+    return result;
   }
 }
 
 export class IndexedDB implements ITodoListDataBase {
   private readonly db: IDBPDatabase;
-  constructor(db: IDBPDatabase, todoList?: InputTodo[]) {
+  constructor(db: IDBPDatabase) {
     this.db = db;
   }
 
