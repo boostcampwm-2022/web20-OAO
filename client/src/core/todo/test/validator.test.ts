@@ -13,14 +13,14 @@ import {
 const sortTestCase = sortRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map(
-    (todo) => new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }),
+  data: el.data.map((todo) =>
+    new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }).toPlain(),
   ),
 }));
 const updateTestCase = updateRawTestCase.map((el) => ({
   tag: el.tag,
   today: new Date(el.today),
-  data: el.data.map((todo) => new Todo({ ...todo, state: todo.state as 'DONE' | 'READY' | 'WAIT' })),
+  data: el.data.map((todo) => new Todo({ ...todo, state: todo.state as 'DONE' | 'READY' | 'WAIT' }).toPlain()),
 }));
 
 describe('검증 알고리즘 테스트', () => {
