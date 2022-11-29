@@ -40,3 +40,5 @@ export const PRIMARY_COLORS = {
   brown: '#312317',
   blue: '#6C9A8B',
 };
+
+export const INITIAL_TODO = { id: undefined, importance: 1, until: new Date() };

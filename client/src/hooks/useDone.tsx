@@ -1,4 +1,5 @@
 import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
 
 import { todoList } from '@util/GlobalState.js';
 
@@ -12,6 +13,7 @@ const useDone = (): any[] => {
         return await data.setDone();
       })
       .then((newTodoList) => {
+        toast.success('완료 👏🏻👏🏻'); // toast
         setTodoListAtom(newTodoList);
       })
       .catch((err) => {

@@ -34,7 +34,7 @@ const Main = (): ReactElement => {
 
   return (
     <Wrapper>
-      {activeTodo.id !== undefined ? (
+      {activeTodo !== undefined ? (
         <>
           <TodoStatus activeTodo={activeTodo} />
           <TodoTitle activeTodo={activeTodo} />

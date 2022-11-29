@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 
 import { isEqualDate, TodoList } from '@core/todo/todoList.js';
 
-import { POSTPONE_METHODS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants';
+import { POSTPONE_METHODS, POSTPONE_TEXTS, POSTPONE_OPTIONS, INITIAL_TODO } from '@util/Constants';
 import { isFinishedAtom, todoList } from '@util/GlobalState.js';
 
 const useTodoList = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
-  const [activeTodo, setActiveTodo] = useState({ id: undefined, importance: 1, until: new Date() });
+  const [activeTodo, setActiveTodo] = useState(INITIAL_TODO);
   const [postponeOptions, setPostponeOptions] = useState(POSTPONE_TEXTS);
   const [, setIsFinished] = useAtom(isFinishedAtom);
 
@@ -25,7 +25,7 @@ const useTodoList = (): any[] => {
   }, [todoListAtom]);
 
   useEffect(() => {
-    if (activeTodo.until === undefined) {
+    if (activeTodo === undefined) {
       return;
     }
     setPostponeOptions(() => {
@@ -56,9 +56,9 @@ const useTodoList = (): any[] => {
       })
       .then(({ data, top }) => {
         setTodoListAtom(data);
-        setActiveTodo(top);
-        setIsFinished(top.from === undefined);
-        toast.success('완료 👏🏻👏🏻'); // toast
+        setActiveTodo(INITIAL_TODO);
+        setIsFinished(top === undefined);
+        toast.error('오늘도 미루는 나, 혹시 아가리로만 하고 계시진 않으신가요? 🤔'); // toast
       })
       .catch((err) => {
         throw new Error(err);

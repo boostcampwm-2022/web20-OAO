@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { InputTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@core/todo/todoList.js';
 import { isOnProgress } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
@@ -32,7 +32,7 @@ const BlankBox = styled.div`
   height: 21px;
 `;
 
-const TodoStatus = ({ activeTodo }: { activeTodo: InputTodo }): ReactElement => {
+const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
   const [userState] = useAtom(isOnProgress);
   return (
     <>

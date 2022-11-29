@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Image from '../components/Image';
 
 import DropDown from '../images/DropDown.svg';
-import { InputTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@core/todo/todoList.js';
 
 const ContentWrapper = styled.div`
   width: 850px;
@@ -37,7 +37,7 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const TodoContents = ({ activeTodo }: { activeTodo: InputTodo }): ReactElement => {
+const TodoContents = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
   const [isTodoContentToggled, setIsTodoContentToggled] = useState(true);
   const checkHandler = (): void => {
     setIsTodoContentToggled(!isTodoContentToggled);

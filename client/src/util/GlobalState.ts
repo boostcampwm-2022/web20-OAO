@@ -1,15 +1,16 @@
 import { atom } from 'jotai';
-import { TodoList, Todo } from '@core/todo/todoList.js';
+import { TodoList } from '@core/todo/todoList.js';
+// import { Todo } from '@core/todo/todoList.js';
 
-import sortRawTestCase from '../core/todo/test/sort.data.json';
+// import sortRawTestCase from '../core/todo/test/sort.data.json';
 
-const sortTestCase = sortRawTestCase.map((el) => ({
-  tag: el.tag,
-  today: new Date(el.today),
-  data: el.data.map(
-    (todo) => new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }),
-  ),
-}));
+// const sortTestCase = sortRawTestCase.map((el) => ({
+//   tag: el.tag,
+//   today: new Date(el.today),
+//   data: el.data.map((todo) =>
+//     new Todo({ ...todo, owner: 'default owner', state: 'READY', importance: todo.importance as number }).toPlain(),
+//   ),
+// }));
 
 export const loginStateAtom = atom(true);
 export const isOnProgress = atom('relaxing');

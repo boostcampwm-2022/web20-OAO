@@ -6,7 +6,7 @@ import PostponeBox from '@components/PostponeBox';
 import TodoInteractionButton from '@components/TodoInteractionButton';
 import TodoTimeText from '@components/TodoTimeText';
 
-import { InputTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@core/todo/todoList.js';
 
 import { isOnProgress, postponeClicked } from '@util/GlobalState';
 
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const TodoTimeInteraction = ({ activeTodo }: { activeTodo: InputTodo }): ReactElement => {
+const TodoTimeInteraction = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
   const [isPostpone] = useAtom(postponeClicked);
   const [userState] = useAtom(isOnProgress);
   const [setPostpone, , postponeOptions] = useTodoList();
