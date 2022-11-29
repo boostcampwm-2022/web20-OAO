@@ -7,40 +7,42 @@ import Postpone from '../images/Postpone.svg';
 import Button from '../components/Button';
 import Image from '../components/Image';
 
-import useButtonConfig from '../hooks/useButtonConfig';
-import { isOnProgress, postponeClicked } from '../util/GlobalState';
+import { postponeClicked } from '@util/GlobalState.js';
+
+import useElapsedTime from '../hooks/useElapsedTime';
+import useDone from '../hooks/useDone';
 
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
-
-const done = (): void => {
-  console.log('done');
-};
-
-const TodoInteractionButton = (): ReactElement => {
-  const [userState] = useAtom(isOnProgress);
+interface ButtonConfig {
+  src: 'string';
+}
+interface ButtonProps {
+  buttonConfig: ButtonConfig;
+  handleOnToggle: Function;
+}
+const TodoInteractionButton = ({ buttonConfig, handleOnToggle }: ButtonProps): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
-  const [buttonConfig, handleOnToggle] = useButtonConfig(userState);
+  const [, , , time, setTime] = useElapsedTime();
+  const [setDone] = useDone();
 
   const startPauseButton = useMemo(() => {
-    return <Button context={<Image src={buttonConfig.src} />} onClick={handleOnToggle} />;
+    return <Button context={<Image src={buttonConfig.src} />} onClick={() => handleOnToggle()} />;
   }, [buttonConfig.src]);
 
-  const postponeDoneButton = useMemo(() => {
-    return <Button context={<Image src={Postpone} />} onClick={() => setIsPostpone(!isPostpone)} />;
-  }, [isPostpone]);
-
-  const doneButton = useMemo(() => {
-    return <Button context={<Image src={Done} />} onClick={done} />;
-  }, []);
+  const handleDoneClicked = (): void => {
+    setDone(time);
+    handleOnToggle();
+    setTime(0);
+  };
 
   return (
     <ButtonWrapper>
       {startPauseButton}
-      {postponeDoneButton}
-      {doneButton}
+      <Button context={<Image src={Postpone} />} onClick={() => setIsPostpone(!isPostpone)} />
+      <Button context={<Image src={Done} />} onClick={handleDoneClicked} />
     </ButtonWrapper>
   );
 };

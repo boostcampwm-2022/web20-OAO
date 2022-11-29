@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { Todo } from '@core/todo/index';
+import { InputTodo } from '@core/todo/todoList.js';
 import { isOnProgress } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
@@ -32,12 +32,17 @@ const BlankBox = styled.div`
   height: 21px;
 `;
 
-const TodoStatus = ({ activeTodo }: { activeTodo: Todo }): ReactElement => {
+const TodoStatus = ({ activeTodo }: { activeTodo: InputTodo }): ReactElement => {
   const [userState] = useAtom(isOnProgress);
   return (
     <>
       <Wrapper>
-        <Text text={todoStatusText(activeTodo.until)} fontFamily={'roboto'} fontSize={'18px'} fontWeight={'700'} />
+        <Text
+          text={todoStatusText(activeTodo.until.toString())}
+          fontFamily={'roboto'}
+          fontSize={'18px'}
+          fontWeight={'700'}
+        />
         <Image src={userState === 'working' ? Working : Relaxing} transform="translateY(54px)" />
         <BlankBox />
       </Wrapper>

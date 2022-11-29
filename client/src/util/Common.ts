@@ -22,3 +22,7 @@ const getFormattedDate = (todoUntil: string): string => {
   const untilDate = new Date(todoUntil).toJSON().match(regex);
   return untilDate != null ? untilDate[0] : '';
 };
+
+export const isSameObject = (obj1: any, obj2: any): boolean => {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};

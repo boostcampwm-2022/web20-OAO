@@ -1,22 +1,50 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 const DAY = 24 * 60 * 60 * 1000;
 
 const onlyDate = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
-const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+export const isEqualDate = (d1: Date, d2: Date): boolean => onlyDate(d1).getTime() === onlyDate(d2).getTime();
+
+const compareFunctions = {
+  ascendImminence: (a: Todo, b: Todo): number => {
+    const newToday = new Date();
+    return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
+  },
+  descendImminence: (a: Todo, b: Todo): number => {
+    const newToday = new Date();
+    return Number(isEqualDate(newToday, a.until)) - Number(isEqualDate(newToday, b.until));
+  },
+  ascendDeadline: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
+  descendDeadline: (a: Todo, b: Todo): number => -a.until.getTime() + b.until.getTime(),
+  ascendImportance: (a: Todo, b: Todo): number => -b.importance + a.importance,
+  descendImportance: (a: Todo, b: Todo): number => b.importance - a.importance,
+  ascendLastPostponed: (a: Todo, b: Todo): number => a.lastPostponed.getTime() - b.lastPostponed.getTime(),
+  descendLastPostponed: (a: Todo, b: Todo): number => -a.lastPostponed.getTime() + b.lastPostponed.getTime(),
+  ascendTitle: (a: Todo, b: Todo): number => {
+    if (a.title === b.title) return 0;
+    if (a.title < b.title) return -1;
+    return 1;
+  },
+  descendTitle: (a: Todo, b: Todo): number => {
+    if (a.title === b.title) return 0;
+    if (a.title < b.title) return 1;
+    return -1;
+  },
+};
+
 export interface InputTodo {
   id?: string; // UUIDv4, 할일의 고유 id
-  title: string; // VARCHAR(255), 할일의 이름
+  title?: string; // VARCHAR(255), 할일의 이름
   content?: string; // TEXT, 할일의 상세 내용
-  owner: string; // UUIDv4, 할일 소유자의 id
-  importance: number; // INT or ENUM, 할일의 우선순위 레벨
-  until: Date | string; // DATE, 할일의 마감기한
+  owner?: string; // UUIDv4, 할일 소유자의 id
+  importance?: number; // INT or ENUM, 할일의 우선순위 레벨
+  until?: Date | string; // DATE, 할일의 마감기한
   from?: Date | string; // DATE, 할일의 시작기한
   prev?: string[]; // or string[], 이전에 반드시 완료되어야 하는 할일 id 배열
   next?: string[]; // or string[], 본 할일 이후에 실행되어야 하는 할일 id 배열
   elapsedTime?: number;
   lastPostponed?: Date | string;
-  state: 'READY' | 'DONE' | 'WAIT';
+  state?: 'READY' | 'DONE' | 'WAIT';
 }
 
 export class Todo implements InputTodo {
@@ -130,39 +158,25 @@ export class Todo implements InputTodo {
     };
   }
 }
-
 export class TodoList {
   private readonly todoList: Todo[];
   constructor(todoList: InputTodo[]) {
     this.todoList = todoList.map((el) => new Todo(el));
   }
 
-  getRTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'READY').map((el) => el.clone());
-  }
-
-  getWTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'WAIT').map((el) => el.clone());
-  }
-
-  getDTL(): Todo[] {
-    return this.todoList.filter((el) => el.state === 'DONE').map((el) => el.clone());
+  private getActiveTodoAsInstance(): Todo {
+    return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
   }
 
   async getActiveTodo(): Promise<InputTodo> {
-    return { ...this.getSortedRTL()[0].clone() };
-  }
-
-  getActiveTodoAsInstance(): Todo {
-    return this.getSortedRTL()[0].clone();
+    return { ...this.getActiveTodoAsInstance()?.clone() }; // ? 없으면 미루기 계속 누르다가 사라짐
   }
 
   getSortedRTL(today?: Date): Todo[] {
-    return this.getRTL().sort(Todo.compare(today));
-  }
-
-  sort(): Todo[] {
-    return [];
+    return this.todoList
+      .filter((el) => el.state === 'READY')
+      .map((el) => el.clone())
+      .sort(Todo.compare(today));
   }
 
   async postponeTemporally(): Promise<TodoList> {
@@ -210,5 +224,35 @@ export class TodoList {
 
   getSummary(): any {
     return '';
+  }
+
+  async add(todo: InputTodo): Promise<TodoList> {
+    this.todoList.push(new Todo(todo));
+    return new TodoList(this.todoList);
+  }
+
+  async edit(id: string, todo: InputTodo): Promise<TodoList> {
+    const newTodoList = this.todoList.filter((el) => el.id !== id);
+    newTodoList.push(new Todo({ ...todo, id }));
+    return new TodoList(newTodoList);
+  }
+
+  async remove(id: string): Promise<TodoList> {
+    return new TodoList(this.todoList.filter((el) => el.id !== id));
+  }
+
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<TodoList> {
+    const generateCompare = (compareArr: string[]) => {
+      return (a: Todo, b: Todo): number => {
+        let result = 0;
+        for (let i = 0; i < compareArr.length; i++) {
+          result = compareFunctions[compareArr[i] as keyof typeof compareFunctions](a, b);
+          if (result !== 0) break;
+        }
+        return result;
+      };
+    };
+    this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
+    return new TodoList(this.todoList);
   }
 }
