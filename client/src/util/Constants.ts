@@ -42,3 +42,10 @@ export const PRIMARY_COLORS = {
 };
 
 export const INITIAL_TODO = { id: undefined, importance: 1, until: new Date() };
+
+export enum TABLE_MODALS {
+  create = 'create',
+  update = 'update',
+  delete = 'delete',
+  none = 'none',
+}

@@ -10,9 +10,11 @@ import TodoContents from '@container/TodoContents';
 
 import useTodoList from '../hooks/useTodoList';
 
-import { isFinishedAtom } from '@util/GlobalState';
+import { isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { TABLE_MODALS } from '@util/Constants';
+import OverLay from '@components/OverLay';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -25,6 +27,7 @@ const Wrapper = styled.div`
 const Main = (): ReactElement => {
   const [, activeTodo] = useTodoList();
   const [isFinished] = useAtom(isFinishedAtom);
+  const [modalType, setModalType] = useAtom(modalTypeAtom);
 
   useEffect(() => {
     if (isFinished) {
