@@ -4,6 +4,7 @@ import { TodoList } from '@todo/todoList';
 import { toComparableTodo, validateImminenceSort, validateImportanceSort, validateDeadlineSort } from './validator';
 import { testToday, generateTodoListForSortTest, generateSortTestSet } from './generator';
 import * as sortRawTestCase from './sort.data.json';
+import { MemoryDB } from '@repository/repository.memoryDB';
 
 const sortTestCase = sortRawTestCase.map((el) => ({
   tag: el.tag,
@@ -13,8 +14,9 @@ const sortTestCase = sortRawTestCase.map((el) => ({
   ),
 }));
 
+const mdb = new MemoryDB();
 const sort = async (todoList: PlainTodo[], today: Date): Promise<PlainTodo[]> => {
-  const newTodoList = new TodoList(todoList);
+  const newTodoList = new TodoList(todoList, mdb);
   return await newTodoList.getSortedRTL(today);
 };
 
