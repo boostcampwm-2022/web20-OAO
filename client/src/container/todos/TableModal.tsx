@@ -2,14 +2,14 @@ import { memo, ReactElement, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
-import Text from '@components/Text';
-
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
-import { modalTypeAtom } from '@util/GlobalState';
+import { modalTypeAtom, todoList } from '@util/GlobalState';
+import { getModalValues } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
-import { getModalValues } from '@util/Common';
+import Text from '@components/Text';
+import { toast } from 'react-toastify';
 
 const { create, update, none } = TABLE_MODALS;
 const { offWhite, red, blue } = PRIMARY_COLORS;
@@ -45,6 +45,7 @@ const ButtonWrapper = styled.div`
 
 const TableModal = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
+  const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [modalHeader, setModalHeader] = useState('');
   const modalWrapper = useRef<HTMLInputElement>();
 
@@ -59,12 +60,10 @@ const TableModal = (): ReactElement => {
   }, [modalType]);
 
   const setComplete = (): void => {
-    let newData = {};
-
     if (modalWrapper.current === undefined) {
       return;
     }
-
+    let newData = {};
     const userInputs = getModalValues(modalWrapper.current);
 
     userInputs.forEach((item) => {
@@ -72,7 +71,17 @@ const TableModal = (): ReactElement => {
       newData = { ...newData, [id]: value };
     });
 
-    console.log(newData);
+    todoListAtom
+      .add(newData)
+      .then((data) => {
+        setTodoListAtom(data);
+        setModalType(none);
+        toast.success('추가되었습니다! ☘️');
+      })
+      .catch((err) => {
+        toast.error('todo 추가 실패!');
+        throw new Error(err);
+      });
   };
 
   const setCancel = (): void => {
