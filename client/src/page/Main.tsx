@@ -10,7 +10,8 @@ import TodoContents from '@container/TodoContents';
 
 import useTodoList from '../hooks/useTodoList';
 
-import { isFinishedAtom } from '@util/GlobalState';
+import { isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,9 +23,18 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const { none } = TABLE_MODALS;
+
 const Main = (): ReactElement => {
   const [, activeTodo] = useTodoList();
   const [isFinished] = useAtom(isFinishedAtom);
+  const [modalType, setModalType] = useAtom(modalTypeAtom);
+
+  useEffect(() => {
+    if (modalType !== none) {
+      setModalType(none);
+    }
+  }, []);
 
   useEffect(() => {
     if (isFinished) {
@@ -44,7 +54,6 @@ const Main = (): ReactElement => {
       ) : (
         <div>Good Job bbb</div>
       )}
-      <ToastContainer />
     </Wrapper>
   );
 };

@@ -37,3 +37,11 @@ export const gethhmmFormat = (date: Date): string => {
   const mm = date.getMinutes();
   return [date.getHours(), (mm > 9 ? '' : '0') + `${mm}`].join(':');
 };
+
+export const getModalValues = (div: Element): any[] => {
+  return [...div.querySelectorAll('textarea'), ...div.querySelectorAll('select'), ...div.querySelectorAll('input')];
+};
+
+export const getTodayDate = (): string => {
+  return new Date().toJSON().split('T')[0];
+};

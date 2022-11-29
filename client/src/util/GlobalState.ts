@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { PlainTodo, TodoList } from '@core/todo/todoList.js';
+import { TABLE_MODALS } from './Constants.js';
 // import { Todo } from '@core/todo/todoList.js';
 
 // import sortRawTestCase from '../core/todo/test/sort.data.json';
@@ -103,3 +104,4 @@ export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
 
 export const displayDetailAtom = atom('');
+export const modalTypeAtom = atom(TABLE_MODALS.none);
