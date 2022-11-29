@@ -1,11 +1,13 @@
 import { ReactElement, useState, memo } from 'react';
 import Text from '@components/Text';
-import { PRIMARY_COLORS } from '@util/Constants';
+import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import { getTodayDate } from '@util/Common';
 
 import styled from 'styled-components';
 import Select from '@components/Select';
 import { toast } from 'react-toastify';
+import { useAtom } from 'jotai';
+import { displayDetailAtom, modalTypeAtom } from '@util/GlobalState';
 
 const { darkGray, lightGray } = PRIMARY_COLORS;
 
@@ -50,6 +52,7 @@ const Wrapper = styled.div`
 const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement => {
   const [input, setInput] = useState('');
   const [dateInput, setDateInput] = useState(getTodayDate());
+  const [modalType] = useAtom(modalTypeAtom);
 
   const handleOnChangeText = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target;
@@ -65,12 +68,10 @@ const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement 
 
   const handleOnChangeDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target;
-
-    if (getTodayDate() <= value) {
-      return setDateInput(value);
+    if (modalType === TABLE_MODALS.create && getTodayDate() > value) {
+      toast.error('새로 생성하는 Todo는 과거로 설정 불가능합니다.');
     }
-
-    toast.error('새로 생성하는 Todo는 과거로 설정 불가능합니다.');
+    return setDateInput(value);
   };
 
   return (

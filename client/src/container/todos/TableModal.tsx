@@ -53,6 +53,12 @@ const MODAL_COMPLETE_ACTIONS = {
   },
 };
 
+const complete = (setComplete: Function): void => {
+  setComplete()
+    .then(() => {})
+    .catch(() => {});
+};
+
 const TableModal = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
@@ -73,7 +79,7 @@ const TableModal = (): ReactElement => {
           if (elem.id === 'until') {
             return (elem.value = new Date(target.until).toJSON().split('T')[0]);
           }
-          elem.value = target[elem.id as keyof typeof elem];
+          elem.value = target[elem.id as keyof typeof target];
         });
       })
       .catch((err) => {
@@ -92,29 +98,32 @@ const TableModal = (): ReactElement => {
     setModalHeader(none);
   }, [modalType]);
 
-  const setComplete = (): void => {
+  const setComplete = async (): Promise<void> => {
     if (modalWrapper.current === undefined) {
       return;
     }
-    let newData = {};
-    const userInputs = getModalValues(modalWrapper.current);
+    try {
+      let newData = {};
 
-    userInputs.forEach((item) => {
-      const { id, value } = item;
-      newData = { ...newData, [id]: value };
-    });
-
-    // modal type에 맞게 함수 실행
-    MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](todoListAtom, newData, displayDetail)
-      .then((data) => {
-        setTodoListAtom(data);
-        setModalType(none);
-        toast.success('완료되었습니다! ☘️');
-      })
-      .catch((err) => {
-        toast.error('todo 추가 실패!');
-        throw new Error(err);
+      getModalValues(modalWrapper.current).forEach((item) => {
+        const { id, value } = item;
+        if (id === 'title' && value === '') {
+          throw new Error('제목은 필수값입니다!');
+        }
+        newData = { ...newData, [id]: value };
       });
+
+      const data = await MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](
+        todoListAtom,
+        newData,
+        displayDetail,
+      );
+      setTodoListAtom(data);
+      setModalType(none);
+      toast.success('완료되었습니다! ☘️');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   const setCancel = (): void => {
@@ -140,7 +149,7 @@ const TableModal = (): ReactElement => {
         <Button context={<Text text="취소" color={red} fontWeight={'700'} fontSize={'18px'} />} onClick={setCancel} />
         <Button
           context={<Text text="확인" color={blue} fontWeight={'700'} fontSize={'18px'} />}
-          onClick={setComplete}
+          onClick={() => complete(setComplete)}
         />
       </ButtonWrapper>
     </Wrapper>
