@@ -131,4 +131,8 @@ export class Todo {
     this.next.delete(id);
     return this;
   }
+
+  edit(input: InputTodo): PlainTodo {
+    return this.toPlain();
+  }
 }

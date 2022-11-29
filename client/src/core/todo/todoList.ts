@@ -2,16 +2,21 @@ import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
-import { ITodoList } from '@todo/todoList.interface';
-
-export class TodoList implements ITodoList {
+import { ITodoListDataBase } from '@todo/todoList.interface';
+export class TodoList {
   private readonly todoList: Todo[];
-  constructor(todoList: InputTodo[]) {
+  private readonly db: ITodoListDataBase;
+  constructor(todoList: InputTodo[], db: ITodoListDataBase) {
     this.todoList = todoList.map((el) => new Todo(el));
+    this.db = db;
   }
 
   private getActiveTodoAsInstance(): Todo {
     return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
+  }
+
+  private getActiveTodoId(): string {
+    return this.getActiveTodoAsInstance().id;
   }
 
   async getActiveTodo(): Promise<PlainTodo> {

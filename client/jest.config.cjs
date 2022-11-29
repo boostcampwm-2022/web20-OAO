@@ -5,5 +5,6 @@ module.exports = {
   reporters: ['default', 'jest-junit'],
   moduleNameMapper: {
     '^@todo/(.+)$': '<rootDir>/src/core/todo/$1',
+    '^@repository/(.+)$': '<rootDir>/src/core/repository/$1',
   },
 };

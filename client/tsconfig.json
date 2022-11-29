@@ -22,6 +22,7 @@
       "@container/*": ["src/container/*"],
       "@core/*": ["src/core/*"],
       "@todo/*": ["src/core/todo/*"],
+      "@repository/*": ["src/core/repository/*"],
       "@images/*": ["src/images/*"],
       "@page/*": ["src/page/*"],
       "@util/*": ["src/util/*"]
