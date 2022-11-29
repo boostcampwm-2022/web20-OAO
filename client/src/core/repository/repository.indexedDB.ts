@@ -18,3 +18,32 @@ export class IndexedDBFactory {
 }
 
 export class IndexedDB implements ITodoListDataBase {
+  private readonly db: IDBPDatabase;
+  constructor(db: IDBPDatabase, todoList?: InputTodo[]) {
+    this.db = db;
+  }
+
+  async get(id: string): Promise<PlainTodo | undefined> {
+    const tx = this.db.transaction(TABLE_NAME, 'readonly');
+    const store = tx.objectStore(TABLE_NAME);
+    const result = await store.get(id);
+    return result as PlainTodo | undefined;
+  }
+
+  async getAll(): Promise<PlainTodo[]> {
+    const tx = this.db.transaction(TABLE_NAME, 'readonly');
+    const store = tx.objectStore(TABLE_NAME);
+    const result = await store.getAll();
+    return result as PlainTodo[];
+  }
+
+  async add(todo: InputTodo): Promise<PlainTodo[]> {
+
+  }
+
+  async edit(id: string, todo: InputTodo): Promise<PlainTodo[]> {}
+
+  async editMany(inputArr: Array<{ id: string; todo: InputTodo }>): Promise<PlainTodo[]> {}
+
+  async remove(id: string): Promise<PlainTodo[]> {}
+}
