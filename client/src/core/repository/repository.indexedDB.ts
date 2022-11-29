@@ -45,11 +45,21 @@ export class IndexedDB implements ITodoListDataBase {
     return await this.getAll();
   }
 
+  async edit(id: string, todo: InputTodo): Promise<PlainTodo[]> {
+    const tx = this.db.transaction(TABLE_NAME, 'readwrite');
+    const store = tx.objectStore(TABLE_NAME);
+    const oldTodo = (await this.get(id)) as PlainTodo;
+    const newTodo = new Todo({ ...oldTodo, ...todo, id: oldTodo.id }).toPlain();
+    await store.put(newTodo, newTodo.id);
+    return await this.getAll();
   }
 
-  async edit(id: string, todo: InputTodo): Promise<PlainTodo[]> {}
-
-  async editMany(inputArr: Array<{ id: string; todo: InputTodo }>): Promise<PlainTodo[]> {}
+  async editMany(inputArr: Array<{ id: string; todo: InputTodo }>): Promise<PlainTodo[]> {
+    for (const el of inputArr) {
+      await this.edit(el.id, el.todo);
+    }
+    return await this.getAll();
+  }
 
   async remove(id: string): Promise<PlainTodo[]> {}
 }
