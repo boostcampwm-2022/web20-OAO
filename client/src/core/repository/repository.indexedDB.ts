@@ -38,6 +38,12 @@ export class IndexedDB implements ITodoListDataBase {
   }
 
   async add(todo: InputTodo): Promise<PlainTodo[]> {
+    const tx = this.db.transaction(TABLE_NAME, 'readwrite');
+    const store = tx.objectStore(TABLE_NAME);
+    const newTodo = new Todo(todo).toPlain();
+    await store.add(newTodo, newTodo.id);
+    return await this.getAll();
+  }
 
   }
 
