@@ -355,4 +355,8 @@ export class TodoList {
     this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
     return new TodoList(this.todoList.map((el) => el.toPlain()));
   }
+
+  async getTodoById(id: string): Promise<PlainTodo | undefined> {
+    return this.todoList.find((el) => el.id === id)?.toPlain();
+  }
 }
