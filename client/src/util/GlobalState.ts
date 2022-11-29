@@ -1,5 +1,7 @@
 import { atom } from 'jotai';
 import { TodoList } from '@core/todo/todoList.js';
+import { TABLE_MODALS } from './Constants.js';
+
 // import { Todo } from '@core/todo/todoList.js';
 
 // import sortRawTestCase from '../core/todo/test/sort.data.json';
@@ -73,3 +75,5 @@ export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());
 export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
+
+export const modalTypeAtom = atom(TABLE_MODALS.none);

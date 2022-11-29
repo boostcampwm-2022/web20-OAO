@@ -26,3 +26,11 @@ const getFormattedDate = (todoUntil: string): string => {
 export const isSameObject = (obj1: any, obj2: any): boolean => {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
+
+export const getModalValues = (div: Element): any[] => {
+  return [...div.querySelectorAll('textarea'), ...div.querySelectorAll('select'), ...div.querySelectorAll('input')];
+};
+
+export const getTodayDate = (): string => {
+  return new Date().toJSON().split('T')[0];
+};

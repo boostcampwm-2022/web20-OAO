@@ -42,3 +42,28 @@ export const PRIMARY_COLORS = {
 };
 
 export const INITIAL_TODO = { id: undefined, importance: 1, until: new Date() };
+
+export enum TABLE_MODALS {
+  create = 'create',
+  update = 'update',
+  delete = 'delete',
+  none = 'none',
+}
+
+export const MODAL_INPUT_LIST = [
+  { label: '제목', maxLength: 50, type: 'text' },
+  { label: '상세 내용', maxLength: Number.MAX_VALUE, type: 'textarea' },
+  { label: '마감일', type: 'date', maxLength: -1 },
+  { label: '중요도', type: 'select', maxLength: -1 },
+  { label: '먼저 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },
+  { label: '이어서 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },
+];
+
+export const MODAL_LABEL_ID = {
+  제목: 'title',
+  '상세 내용': 'contents',
+  마감일: 'until',
+  중요도: 'importance',
+  '먼저 할 일': 'prev',
+  '이어서 할 일': 'next',
+};
