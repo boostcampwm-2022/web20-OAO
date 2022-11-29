@@ -2,15 +2,15 @@ import { useAtom } from 'jotai';
 import { ReactElement, useMemo, memo } from 'react';
 import styled from 'styled-components';
 
-import Done from '../images/Done.svg';
-import Postpone from '../images/Postpone.svg';
-import Button from '../components/Button';
-import Image from '../components/Image';
+import Done from '../../images/Done.svg';
+import Postpone from '../../images/Postpone.svg';
+import Button from '../Button';
+import Image from '../Image';
 
 import { postponeClicked } from '@util/GlobalState.js';
 
-import useElapsedTime from '../hooks/useElapsedTime';
-import useDone from '../hooks/useDone';
+import useElapsedTime from '../../hooks/useElapsedTime';
+import useDone from '../../hooks/useDone';
 
 const ButtonWrapper = styled.div`
   display: flex;

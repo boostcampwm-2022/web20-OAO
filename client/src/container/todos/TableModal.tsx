@@ -7,7 +7,7 @@ import Text from '@components/Text';
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
 import { modalTypeAtom } from '@util/GlobalState';
 
-import LabeledInput from '@components/LabeledInput';
+import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
 import { getModalValues } from '@util/Common';
 

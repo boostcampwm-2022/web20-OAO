@@ -2,17 +2,17 @@ import { useAtom } from 'jotai';
 import { ReactElement } from 'react';
 import styled from 'styled-components';
 
-import PostponeBox from '@components/PostponeBox';
-import TodoInteractionButton from '@components/TodoInteractionButton';
-import TodoTimeText from '@components/TodoTimeText';
+import PostponeBox from '@components/main/PostponeBox';
+import TodoInteractionButton from '@components/main/TodoInteractionButton';
+import TodoTimeText from '@components/main/TodoTimeText';
 
 import { PlainTodo } from '@core/todo/todoList.js';
 
 import { isOnProgress, postponeClicked } from '@util/GlobalState';
 
-import useTodoList from '../hooks/useTodoList';
-import useElapsedTime from '../hooks/useElapsedTime';
-import useButtonConfig from '../hooks/useButtonConfig';
+import useTodoList from '../../hooks/useTodoList';
+import useElapsedTime from '../../hooks/useElapsedTime';
+import useButtonConfig from '../../hooks/useButtonConfig';
 
 const Wrapper = styled.div`
   width: 850px;

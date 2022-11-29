@@ -1,12 +1,12 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { ReactElement, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-import TodoTitle from '@container/TodoTitle';
-import TodoStatus from '@container/TodoStatus';
-import TodoTimeInteraction from '@container/TodoTimeInteraction';
-import TodoContents from '@container/TodoContents';
+import TodoTitle from '@container/main/TodoTitle';
+import TodoStatus from '@container/main/TodoStatus';
+import TodoTimeInteraction from '@container/main/TodoTimeInteraction';
+import TodoContents from '@container/main/TodoContents';
 
 import useTodoList from '../hooks/useTodoList';
 

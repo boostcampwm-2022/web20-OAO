@@ -1,6 +1,6 @@
 import { PlainTodo } from '@core/todo/todoList';
 import { ReactElement } from 'react';
-import TodoList from '@components/TodoList';
+import TodoTitleList from '@components/todos/TodoTitleList';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -30,13 +30,13 @@ const TableRowDetail = ({
         {prevTodoList.length > 0 && (
           <>
             <h3>먼저 할일 목록</h3>
-            <TodoList list={prevTodoList} />
+            <TodoTitleList list={prevTodoList} />
           </>
         )}
         {nextTodoList.length > 0 && (
           <>
             <h3>이어서 할일 목록</h3>
-            <TodoList list={nextTodoList} />
+            <TodoTitleList list={nextTodoList} />
           </>
         )}
       </Wrapper>

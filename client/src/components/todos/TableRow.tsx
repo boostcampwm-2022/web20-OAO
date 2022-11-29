@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from 'react';
-import TableRowHeader from '@components/TableRowHeader';
-import TableRowDetail from '@components/TableRowDetail';
+import TableRowHeader from '@components/todos/TableRowHeader';
+import TableRowDetail from '@components/todos/TableRowDetail';
 import { PlainTodo } from '@core/todo/todoList';
 import { displayDetailAtom, todoList } from '@util/GlobalState';
 import { useAtom } from 'jotai';
@@ -16,7 +16,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
       todoListAtom
         .getTodoById(prevTodoId)
         .then((prevTodo: PlainTodo | undefined) => {
-          prevTodo ? setPrevTodo([...prevTodoList, prevTodo]) : setPrevTodo([]);
+          prevTodo != null ? setPrevTodo([...prevTodoList, prevTodo]) : setPrevTodo([]);
         })
         .catch((err) => console.error(err));
     });
@@ -24,7 +24,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
       todoListAtom
         .getTodoById(nextTodoId)
         .then((nextTodo: PlainTodo | undefined) => {
-          nextTodo ? setNextTodo([...nextTodoList, nextTodo]) : setNextTodo([]);
+          nextTodo != null ? setNextTodo([...nextTodoList, nextTodo]) : setNextTodo([]);
         })
         .catch((err) => console.error(err));
     });

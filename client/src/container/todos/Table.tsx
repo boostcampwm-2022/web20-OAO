@@ -1,10 +1,11 @@
 import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TableHeader from '@components/TableHeader';
-import TableRow from '@components/TableRow';
+import TableHeader from '@components/todos/TableHeader';
+import TableRow from '@components/todos/TableRow';
 import { useAtom } from 'jotai';
-import { PlainTodo, TodoList } from '@core/todo/todoList';
+import { PlainTodo } from '@core/todo/todoList';
 import { todoList, displayDetailAtom } from '@util/GlobalState.js';
+
 const Wrapper = styled.div`
   width: 85%;
 `;
@@ -35,6 +36,7 @@ const Table = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
   const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
+
   useEffect(() => {
     todoListAtom
       .getSortedRTL()

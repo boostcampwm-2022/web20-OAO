@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { PlainTodo } from '@core/todo/todoList';
 
-const TodoList = ({ list }: { list: PlainTodo[] }): ReactElement => {
+const TodoTitleList = ({ list }: { list: PlainTodo[] }): ReactElement => {
   return (
     <ul>
       {list.map((todo: PlainTodo) => {
@@ -10,4 +10,4 @@ const TodoList = ({ list }: { list: PlainTodo[] }): ReactElement => {
     </ul>
   );
 };
-export default TodoList;
+export default TodoTitleList;
