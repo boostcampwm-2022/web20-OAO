@@ -61,5 +61,10 @@ export class IndexedDB implements ITodoListDataBase {
     return await this.getAll();
   }
 
-  async remove(id: string): Promise<PlainTodo[]> {}
+  async remove(id: string): Promise<PlainTodo[]> {
+    const tx = this.db.transaction(TABLE_NAME, 'readwrite');
+    const store = tx.objectStore(TABLE_NAME);
+    await store.delete(id);
+    return await this.getAll();
+  }
 }
