@@ -2,7 +2,7 @@ import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate, DAY } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
-import { ITodoListDataBase } from '@todo/todoList.interface';
+import { ITodoListDataBase } from '@repository/repository.interface';
 export class TodoList {
   private readonly todoList: Todo[];
   private readonly db: ITodoListDataBase;
@@ -31,36 +31,39 @@ export class TodoList {
   }
 
   async postponeTemporally(): Promise<TodoList> {
-    this.getActiveTodoAsInstance().postponeTemporally();
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const activeTodo = this.getActiveTodoAsInstance();
+    const newTodoList = await this.db.edit(activeTodo.id, { lastPostponed: new Date() });
+    return new TodoList(newTodoList, this.db);
   }
 
   async postponeDeadline(): Promise<TodoList> {
-    this.getActiveTodoAsInstance().postponeDeadline();
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const activeTodo = this.getActiveTodoAsInstance();
+    const newTodoList = await this.db.edit(activeTodo.id, { until: new Date(activeTodo.until.getTime() + DAY) });
+    return new TodoList(newTodoList, this.db);
   }
 
   async postponeForToday(): Promise<TodoList> {
-    this.getActiveTodoAsInstance().postponeForToday().setWait();
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const activeTodo = this.getActiveTodoAsInstance();
+    const today = new Date();
+    const newTodoList = await this.db.edit(activeTodo.id, {
+      from: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+    });
+    return new TodoList(newTodoList, this.db);
   }
 
   async lowerImportance(): Promise<TodoList> {
-    this.getActiveTodoAsInstance().lowerImportance();
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
-  }
-
-  async setDone(): Promise<TodoList> {
     const activeTodo = this.getActiveTodoAsInstance();
-    activeTodo.setDone();
-    this.getNext(activeTodo).forEach((el) => this.updateTodoState(el));
-
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    if (activeTodo.importance === 1) throw new Error('ERROR: 중요도를 낮추려는 Todo의 중요도가 이미 최하위입니다.');
+    const newTodoList = await this.db.edit(activeTodo.id, {
+      importance: Math.max(1, activeTodo.importance - 1),
+    });
+    return new TodoList(newTodoList, this.db);
   }
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
-    this.getActiveTodoAsInstance().updateElapsedTime(elapsedTime);
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const activeTodo = this.getActiveTodoAsInstance();
+    const newTodoList = await this.db.edit(activeTodo.id, { elapsedTime });
+    return new TodoList(newTodoList, this.db);
   }
 
   getSummary(): any {
@@ -97,9 +100,24 @@ export class TodoList {
     return todo;
   }
 
+  async setDone(): Promise<TodoList> {
+    const activeTodo = this.getActiveTodoAsInstance();
+    const changedTodoSet = new Set<Todo>();
+
+    changedTodoSet.add(activeTodo.setDone());
+
+    this.getNext(activeTodo).forEach((el) => {
+      changedTodoSet.add(this.updateTodoState(el));
+    });
+
+    const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
+    return new TodoList(newTodoList, this.db);
+  }
+
   async updateAll(date?: Date): Promise<TodoList> {
     this.todoList.forEach((el) => this.updateTodoState(el, date));
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const newTodoList = await this.db.editMany([...this.todoList].map((el) => ({ id: el.id, todo: el.toPlain() })));
+    return new TodoList(newTodoList, this.db);
   }
 
   getTL(): PlainTodo[] {
@@ -120,53 +138,56 @@ export class TodoList {
 
   async add(todo: InputTodo): Promise<TodoList> {
     const newTodo = new Todo(todo);
+    const changedTodoSet = new Set<Todo>();
+
+    [this.getPrev(newTodo), this.getNext(newTodo)].flat().forEach((el) => changedTodoSet.add(el));
 
     this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
-
     this.updateTodoState(newTodo);
-
     this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
-
     this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
 
-    this.todoList.push(newTodo);
-
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    await this.db.add(newTodo.toPlain());
+    const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
+    return new TodoList(newTodoList, this.db);
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
     const oldTodo = this.todoList.find((el) => el.id === id);
     if (oldTodo === undefined) throw new Error('ERROR: 수정하려는 ID의 Todo가 존재하지 않습니다.');
     const newTodo = new Todo(todo);
+    const changedTodoSet = new Set<Todo>();
+
+    [this.getPrev(oldTodo), this.getPrev(newTodo), this.getNext(oldTodo), this.getNext(newTodo), newTodo]
+      .flat()
+      .forEach((el) => changedTodoSet.add(el));
 
     this.getPrev(oldTodo).forEach((el) => el.removeNext(oldTodo.id));
     this.getPrev(newTodo).forEach((el) => el.addNext(newTodo.id));
-
     this.updateTodoState(newTodo);
-
     this.getNext(oldTodo).forEach((el) => el.removePrev(oldTodo.id));
     this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
-
     this.getNext(oldTodo).forEach((el) => this.updateTodoState(el));
     this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
 
-    const newTodoList = this.todoList.filter((el) => el !== oldTodo);
-    newTodoList.push(newTodo);
-
-    return new TodoList(newTodoList.map((el) => el.toPlain()));
+    const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
+    return new TodoList(newTodoList, this.db);
   }
 
   async remove(id: string): Promise<TodoList> {
     const newTodo = this.todoList.find((el) => el.id === id);
     if (newTodo === undefined) throw new Error('ERROR: 지우려는 ID의 Todo가 존재하지 않습니다.');
 
+    const changedTodoSet = new Set<Todo>();
+    [this.getPrev(newTodo), this.getNext(newTodo)].flat().forEach((el) => changedTodoSet.add(el));
+
     this.getPrev(newTodo).forEach((el) => el.removeNext(newTodo.id));
-
     this.getNext(newTodo).forEach((el) => el.removePrev(newTodo.id));
-
     this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
 
-    return new TodoList(this.todoList.filter((el) => el.id !== id).map((el) => el.toPlain()));
+    await this.db.remove(newTodo.id);
+    const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
+    return new TodoList(newTodoList, this.db);
   }
 
   async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<PlainTodo[]> {
