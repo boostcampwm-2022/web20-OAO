@@ -23,7 +23,7 @@ export class IndexedDBFactory {
   }
 }
 
-export class IndexedDB implements ITodoListDataBase {
+class IndexedDB implements ITodoListDataBase {
   private readonly db: IDBPDatabase;
   constructor(db: IDBPDatabase) {
     this.db = db;
