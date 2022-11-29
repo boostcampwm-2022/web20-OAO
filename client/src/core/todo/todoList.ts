@@ -3,6 +3,27 @@ import { Todo } from '@todo/todo';
 import { isEqualDate, DAY } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
 import { ITodoListDataBase } from '@repository/repository.interface';
+import { MemoryDB } from '@repository/repository.memoryDB';
+import { IndexedDBFactory } from '@repository/repository.indexedDB';
+
+class TodoListFactory {
+  async create(dbType: "MemoryDB" | "IndexedDB", todos?: InputTodo[]): Promise<TodoList> {
+    if(dbType === "MemoryDB"){
+      const mdb = new MemoryDB(todos);
+      const todoList = new TodoList(mdb);
+      return await todoList.init();
+    }
+    if(dbType === "IndexedDB"){
+      const idbFactory = new IndexedDBFactory();
+      const idb = await idbFactory.createDB(todos);
+      const todoList = new TodoList(idb);
+      return await todoList.init();
+    }
+    throw new Error("ERROR: invalid DB type for TodoList");
+  }
+}
+
+export const todoList = new TodoListFactory();
 
 export class TodoList {
   private readonly db: ITodoListDataBase;
