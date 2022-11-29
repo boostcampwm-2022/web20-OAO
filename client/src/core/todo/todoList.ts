@@ -164,7 +164,7 @@ export class TodoList implements ITodoList {
     return new TodoList(this.todoList.filter((el) => el.id !== id).map((el) => el.toPlain()));
   }
 
-  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<TodoList> {
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<PlainTodo[]> {
     const generateCompare = (compareArr: string[]) => {
       return (a: Todo, b: Todo): number => {
         let result = 0;
@@ -175,8 +175,8 @@ export class TodoList implements ITodoList {
         return result;
       };
     };
-    this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
-    return new TodoList(this.todoList.map((el) => el.toPlain()));
+    const newTodoList = this.todoList.filter((el) => el.state === type).sort(generateCompare(compareArr));
+    return newTodoList.map((el) => el.toPlain());
   }
 
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
