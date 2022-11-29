@@ -1,6 +1,6 @@
 import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
-import { isEqualDate } from '@todo/todo.util';
+import { isEqualDate, DAY } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
 import { ITodoListDataBase } from '@todo/todoList.interface';
 export class TodoList {

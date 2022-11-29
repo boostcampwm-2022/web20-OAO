@@ -1,9 +1,6 @@
 import { uuid } from 'uuidv4';
 import { PlainTodo, InputTodo } from '@todo/todo.type';
-import { isEqualDate } from '@todo/todo.util';
-
-const DAY = 24 * 60 * 60 * 1000;
-
+import { isEqualDate, DAY } from '@todo/todo.util';
 export class Todo {
   id: string;
   title: string;
