@@ -1,8 +1,10 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TableRow from '@components/TableRow';
 import TableHeader from '@components/TableHeader';
-
+import TableRow from '@components/TableRow';
+import { useAtom } from 'jotai';
+import { PlainTodo, TodoList } from '@core/todo/todoList';
+import { todoList, displayDetailAtom } from '@util/GlobalState.js';
 const Wrapper = styled.div`
   width: 85%;
 `;
@@ -16,11 +18,13 @@ const GridWrapper = styled.div`
   p {
     margin: 10px 0;
   }
-  #hi:hover {
-    background-color: #333333;
-  }
 `;
 
+const GridRowWrapper = styled(GridWrapper)`
+  div:nth-child(10) {
+    grid-column: 2/9;
+  }
+`;
 const RowWrapper = styled.div`
   ${GridWrapper}:hover {
     background-color: #e2e2e2;
@@ -28,15 +32,34 @@ const RowWrapper = styled.div`
 `;
 
 const Table = (): ReactElement => {
+  const [todoListAtom] = useAtom(todoList);
+  const [todos, setTodos] = useState<PlainTodo[]>([]);
+  const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
+  useEffect(() => {
+    todoListAtom
+      .getSortedRTL()
+      .then((sortedTodoList: PlainTodo[]) => {
+        setTodos([...sortedTodoList]);
+      })
+      .catch((err) => console.error(err));
+  }, [todoListAtom]);
+
   return (
     <Wrapper>
       <GridWrapper>
         <TableHeader />
       </GridWrapper>
       <RowWrapper>
-        <GridWrapper>
-          <TableRow />
-        </GridWrapper>
+        {todos.map((todo: PlainTodo) => (
+          <GridRowWrapper
+            onClick={() => {
+              displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id);
+            }}
+            key={todo.id}
+          >
+            <TableRow todo={todo} />
+          </GridRowWrapper>
+        ))}
       </RowWrapper>
     </Wrapper>
   );

@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { TodoList } from '@core/todo/todoList.js';
+import { PlainTodo, TodoList } from '@core/todo/todoList.js';
 // import { Todo } from '@core/todo/todoList.js';
 
 // import sortRawTestCase from '../core/todo/test/sort.data.json';
@@ -26,12 +26,12 @@ const initTodo = new TodoList([
     id: '0',
     title: '다람쥐 헌 쳇바퀴에 올라타',
     content:
-      '다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타',
+      '다람쥐 헌 쳇바퀴에 올라타 다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타',
     owner: 'default user',
     importance: 3,
     until: 'Mon Nov 28 2022 17:04:44 GMT+0900 (한국 표준시)',
     from: 'Tue Nov 29 2022 12:39:39 GMT+0900 (Korean Standard Time)',
-    next: [],
+    next: ['1', '2'],
     prev: ['18'],
     lastPostponed: '2022-11-22T09:18:36.208Z',
     state: 'READY',
@@ -39,12 +39,26 @@ const initTodo = new TodoList([
   },
   {
     id: '1',
-    title: 'default title11',
+    title: '1default title11',
     content: 'default content',
     owner: 'default user',
     importance: 2,
     until: 'Mon Nov 28 2022 17:04:44 GMT+0900 (한국 표준시)',
     from: 'Tue Nov 29 2022 12:39:39 GMT+0900 (Korean Standard Time)',
+    next: [],
+    prev: ['0'],
+    lastPostponed: '2022-11-22T09:18:36.208Z',
+    state: 'READY',
+    elapsedTime: 0,
+  },
+  {
+    id: '2',
+    title: '2default title',
+    content: 'default content',
+    owner: 'default user',
+    importance: 1,
+    until: 'Sun Nov 27 2022 12:10:26 GMT+0900 (Korean Standard Time)',
+    from: 'Tue Nov 22 2022 15:37:02 GMT+0900 (Korean Standard Time)',
     next: [],
     prev: [],
     lastPostponed: '2022-11-22T09:18:36.208Z',
@@ -52,8 +66,8 @@ const initTodo = new TodoList([
     elapsedTime: 0,
   },
   {
-    id: '2',
-    title: 'default title',
+    id: '18',
+    title: '18default title',
     content: 'default content',
     owner: 'default user',
     importance: 1,
@@ -62,7 +76,21 @@ const initTodo = new TodoList([
     next: [],
     prev: ['19'],
     lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'WAIT',
+    state: 'READY',
+    elapsedTime: 0,
+  },
+  {
+    id: '19',
+    title: '19default title',
+    content: 'default content',
+    owner: 'default user',
+    importance: 1,
+    until: 'Sun Nov 27 2022 12:10:26 GMT+0900 (Korean Standard Time)',
+    from: 'Tue Nov 22 2022 15:37:02 GMT+0900 (Korean Standard Time)',
+    next: ['18'],
+    prev: [],
+    lastPostponed: '2022-11-22T09:18:36.208Z',
+    state: 'READY',
     elapsedTime: 0,
   },
 ]);
@@ -73,3 +101,5 @@ export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());
 export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
+
+export const displayDetailAtom = atom('');

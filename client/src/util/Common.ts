@@ -26,3 +26,14 @@ const getFormattedDate = (todoUntil: string): string => {
 export const isSameObject = (obj1: any, obj2: any): boolean => {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
+
+export const getyyyymmddDateFormat = (date: Date, separator: string): string => {
+  const mm = date.getMonth() + 1;
+  const dd = date.getDate();
+  return [date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator);
+};
+
+export const gethhmmFormat = (date: Date): string => {
+  const mm = date.getMinutes();
+  return [date.getHours(), (mm > 9 ? '' : '0') + `${mm}`].join(':');
+};
