@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - 108-fix-dev-client-cicd-build-fail-해결
     paths:
       - "client/**"
 
