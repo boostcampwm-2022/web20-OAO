@@ -14,7 +14,7 @@ const updateTestCase = updateRawTestCase.map((el) => ({
 
 const update = async (todoList: PlainTodo[], today: Date): Promise<PlainTodo[]> => {
   const mdb = new MemoryDB(todoList);
-  const newTodoList = await new TodoList(todoList, mdb).updateAll(today);
+  const newTodoList = await new TodoList(mdb, todoList).updateAll(today);
   return newTodoList.getTL();
 };
 

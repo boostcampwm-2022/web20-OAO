@@ -3,12 +3,18 @@ import { Todo } from '@todo/todo';
 import { isEqualDate, DAY } from '@todo/todo.util';
 import { compareFunctions } from '@todo/todoList.util';
 import { ITodoListDataBase } from '@repository/repository.interface';
+
 export class TodoList {
-  private readonly todoList: Todo[];
   private readonly db: ITodoListDataBase;
-  constructor(todoList: InputTodo[], db: ITodoListDataBase) {
-    this.todoList = todoList.map((el) => new Todo(el));
+  private readonly todoList: Todo[];
+  constructor(db: ITodoListDataBase, todoList?: InputTodo[]) {
     this.db = db;
+    this.todoList = todoList?.map((el) => new Todo(el)) ?? [];
+  }
+
+  async init(): Promise<TodoList> {
+    const newTodoList = await this.db.getAll();
+    return new TodoList(this.db, newTodoList);
   }
 
   private getActiveTodoAsInstance(): Todo {
@@ -33,13 +39,13 @@ export class TodoList {
   async postponeTemporally(): Promise<TodoList> {
     const activeTodo = this.getActiveTodoAsInstance();
     const newTodoList = await this.db.edit(activeTodo.id, { lastPostponed: new Date() });
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async postponeDeadline(): Promise<TodoList> {
     const activeTodo = this.getActiveTodoAsInstance();
     const newTodoList = await this.db.edit(activeTodo.id, { until: new Date(activeTodo.until.getTime() + DAY) });
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async postponeForToday(): Promise<TodoList> {
@@ -48,7 +54,7 @@ export class TodoList {
     const newTodoList = await this.db.edit(activeTodo.id, {
       from: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
     });
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async lowerImportance(): Promise<TodoList> {
@@ -57,13 +63,13 @@ export class TodoList {
     const newTodoList = await this.db.edit(activeTodo.id, {
       importance: Math.max(1, activeTodo.importance - 1),
     });
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async updateElapsedTime(elapsedTime: number): Promise<TodoList> {
     const activeTodo = this.getActiveTodoAsInstance();
     const newTodoList = await this.db.edit(activeTodo.id, { elapsedTime });
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   getSummary(): any {
@@ -111,13 +117,13 @@ export class TodoList {
     });
 
     const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async updateAll(date?: Date): Promise<TodoList> {
     this.todoList.forEach((el) => this.updateTodoState(el, date));
     const newTodoList = await this.db.editMany([...this.todoList].map((el) => ({ id: el.id, todo: el.toPlain() })));
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   getTL(): PlainTodo[] {
@@ -149,7 +155,7 @@ export class TodoList {
 
     await this.db.add(newTodo.toPlain());
     const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
@@ -171,7 +177,7 @@ export class TodoList {
     this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
 
     const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async remove(id: string): Promise<TodoList> {
@@ -187,7 +193,7 @@ export class TodoList {
 
     await this.db.remove(newTodo.id);
     const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
-    return new TodoList(newTodoList, this.db);
+    return new TodoList(this.db, newTodoList);
   }
 
   async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<PlainTodo[]> {

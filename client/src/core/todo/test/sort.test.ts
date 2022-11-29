@@ -16,7 +16,7 @@ const sortTestCase = sortRawTestCase.map((el) => ({
 
 const mdb = new MemoryDB();
 const sort = async (todoList: PlainTodo[], today: Date): Promise<PlainTodo[]> => {
-  const newTodoList = new TodoList(todoList, mdb);
+  const newTodoList = new TodoList(mdb, todoList);
   return await newTodoList.getSortedRTL(today);
 };
 
