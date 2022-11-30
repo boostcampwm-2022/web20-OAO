@@ -3,10 +3,30 @@ description: 피처 구현을 위한 이슈를 작성하세요.
 title: "feat: "
 labels: ["feature"]
 body: 
-- type: textarea
+- type: input
   attributes: 
     label: 피처 개요
-    description: 필요한 피처에 대해서 간단히 설명해주세요.
+    description: 필요한 피처에 대해서 한줄로 설명해주세요.
+  validations:
+    required: true
+- type: dropdown
+  attributes: 
+    label: 중요도
+    description: 해당 피처의 중요도를 선택해주세요.
+    multiple: false
+    options:
+      - A
+      - B
+      - C
+- type: dropdown
+  attributes: 
+    label: 난이도
+    description: 해당 피처의 구현 난이도(구현 시간도 고려하여)을 선택해주세요.
+    multiple: false
+    options:
+      - 상
+      - 중
+      - 하
   validations:
     required: true
 - type: textarea
