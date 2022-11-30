@@ -18,6 +18,8 @@ body:
       - A
       - B
       - C
+  validations:
+    required: true
 - type: dropdown
   attributes: 
     label: 난이도
