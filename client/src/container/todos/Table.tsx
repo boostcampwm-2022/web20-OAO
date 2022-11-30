@@ -47,7 +47,9 @@ const Table = (): ReactElement => {
     todoListAtom
       .getSortedRTL()
       .then((sortedTodoList: PlainTodo[]) => {
-        setTodos([...sortedTodoList]);
+        setTodos(() => {
+          return [...sortedTodoList];
+        });
       })
       .catch((err) => toast.error(err));
   }, [todoListAtom]);

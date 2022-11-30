@@ -9,17 +9,17 @@ import { toast } from 'react-toastify';
 const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [displayDetail] = useAtom(displayDetailAtom);
-  const [prevTodoList, setPrevTodo] = useState<PlainTodo[] | []>([]);
-  const [nextTodoList, setNextTodo] = useState<PlainTodo[] | []>([]);
+  const [prevTodoList, setPrevTodo] = useState<PlainTodo[]>([]);
+  const [nextTodoList, setNextTodo] = useState<PlainTodo[]>([]);
 
   useEffect(() => {
-    setPrevTodo([]);
-    setNextTodo([]);
+    setPrevTodo(() => []);
+    setNextTodo(() => []);
     todo.prev.forEach((prevTodoId: string) => {
       todoListAtom
         .getTodoById(prevTodoId)
         .then((prevTodo: PlainTodo | undefined) => {
-          if (prevTodo != null) setPrevTodo((prevState) => [...prevState, prevTodo]);
+          if (prevTodo !== undefined) setPrevTodo((prevState) => [...prevState, prevTodo]);
         })
         .catch((err) => toast.error(err));
     });
@@ -27,11 +27,11 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
       todoListAtom
         .getTodoById(nextTodoId)
         .then((nextTodo: PlainTodo | undefined) => {
-          if (nextTodo != null) setNextTodo((prevState) => [...prevState, nextTodo]);
+          if (nextTodo !== undefined) setNextTodo((prevState) => [...prevState, nextTodo]);
         })
         .catch((err) => toast.error(err));
     });
-  }, [todoListAtom]);
+  }, [todo]);
 
   return (
     <>
