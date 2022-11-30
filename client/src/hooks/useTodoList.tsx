@@ -2,7 +2,8 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { isEqualDate, TodoList } from '@core/todo/todoList.js';
+import { TodoList } from '@core/todo/todoList.js';
+import { isEqualDate } from '@todo/todo.util';
 
 import { POSTPONE_METHODS, POSTPONE_TEXTS, POSTPONE_OPTIONS, INITIAL_TODO } from '@util/Constants';
 import { isFinishedAtom, todoList } from '@util/GlobalState.js';

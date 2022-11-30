@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   height: 10vh;
   padding: 25px;
   font-family: 'Roboto';
+  z-index: -10;
 `;
 
 const Header = (): ReactElement => {

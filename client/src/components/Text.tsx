@@ -7,6 +7,7 @@ interface StyleProps {
   fontWeight?: string;
   fontFamily?: string;
   margin?: string;
+  textAlign?: string;
 }
 
 interface Props extends StyleProps {
@@ -19,6 +20,7 @@ const StyledText = styled.p<StyleProps>`
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};
   margin: ${({ margin }) => margin};
+  text-align: ${({ textAlign }) => textAlign};
 `;
 
 const Text: FC<Props> = ({ text, ...props }) => {

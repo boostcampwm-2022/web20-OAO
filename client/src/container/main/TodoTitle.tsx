@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Text from '@components/Text';
 
-import { PlainTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@todo/todo.type';
 
 const Wrapper = styled.div`
   width: 850px;

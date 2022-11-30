@@ -1,16 +1,17 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { ReactElement, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-import TodoTitle from '@container/TodoTitle';
-import TodoStatus from '@container/TodoStatus';
-import TodoTimeInteraction from '@container/TodoTimeInteraction';
-import TodoContents from '@container/TodoContents';
+import TodoTitle from '@container/main/TodoTitle';
+import TodoStatus from '@container/main/TodoStatus';
+import TodoTimeInteraction from '@container/main/TodoTimeInteraction';
+import TodoContents from '@container/main/TodoContents';
 
 import useTodoList from '../hooks/useTodoList';
 
-import { isFinishedAtom } from '@util/GlobalState';
+import { isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,9 +23,18 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const { none } = TABLE_MODALS;
+
 const Main = (): ReactElement => {
   const [, activeTodo] = useTodoList();
   const [isFinished] = useAtom(isFinishedAtom);
+  const [modalType, setModalType] = useAtom(modalTypeAtom);
+
+  useEffect(() => {
+    if (modalType !== none) {
+      setModalType(none);
+    }
+  }, []);
 
   useEffect(() => {
     if (isFinished) {
@@ -44,7 +54,6 @@ const Main = (): ReactElement => {
       ) : (
         <div>Good Job bbb</div>
       )}
-      <ToastContainer />
     </Wrapper>
   );
 };

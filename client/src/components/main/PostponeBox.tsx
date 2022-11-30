@@ -2,8 +2,8 @@ import { useAtom } from 'jotai';
 import { memo, ReactElement } from 'react';
 import styled from 'styled-components';
 
-import Text from './Text';
-import Button from './Button';
+import Text from '../Text';
+import Button from '../Button';
 
 import { ACTIVE_TODO_STATE, PRIMARY_COLORS } from '@util/Constants';
 import { isOnProgress } from '@util/GlobalState';

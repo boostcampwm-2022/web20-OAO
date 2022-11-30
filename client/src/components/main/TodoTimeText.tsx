@@ -1,9 +1,9 @@
 import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 
-import Text from '../components/Text';
-import useElapsedTime from '../hooks/useElapsedTime';
-import { getTodoUntilText } from '../util/Common';
+import Text from '@components/Text';
+import useElapsedTime from '../../hooks/useElapsedTime';
+import { getTodoUntilText } from '@util/Common';
 
 const TextWrapper = styled.div`
   display: flex;

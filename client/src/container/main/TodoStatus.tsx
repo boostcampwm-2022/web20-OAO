@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { PlainTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@todo/todo.type';
 import { isOnProgress } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
@@ -10,7 +10,7 @@ import Working from '@images/Working.svg';
 import Relaxing from '@images/Relaxing.svg';
 import styled from 'styled-components';
 
-import { todoStatusText } from '../util/Common';
+import { todoStatusText } from '@util/Common';
 
 const Wrapper = styled.div`
   width: 850px;
