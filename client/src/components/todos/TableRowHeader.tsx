@@ -69,9 +69,11 @@ const TableRowHeader = ({
 
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
-    todo.state === 'DONE' ? (todo.state = 'WAIT') : (todo.state = 'DONE');
+
+    let newTodo = {};
+    newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
     todoListAtom
-      .edit(todo.id, todo)
+      .edit(todo.id, newTodo)
       .then((newTodoList) => {
         setTodoListAtom(newTodoList);
         toast.success('완료되었습니다.');
