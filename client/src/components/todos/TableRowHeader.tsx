@@ -14,7 +14,7 @@ import Update from '@images/Update.svg';
 
 import { PlainTodo } from '@core/todo/todoList';
 
-import { displayDetailAtom, modalTypeAtom, todoList } from '@util/GlobalState';
+import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { toast } from 'react-toastify';
 
 const CheckWrapper = styled.div`
@@ -65,7 +65,7 @@ const TableRowHeader = ({
 }): ReactElement => {
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
-  const [displayDetail] = useAtom(displayDetailAtom);
+  const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
 
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
@@ -78,13 +78,9 @@ const TableRowHeader = ({
       .catch((err) => console.error(err));
   };
 
-  const handleOnDelete = (): void => {
-    if (displayDetail === '') {
-      return;
-    }
-
+  const handleOnDelete = (todoId: string): void => {
     todoListAtom
-      .remove(displayDetail)
+      .remove(todoId)
       .then((data) => {
         setTodoListAtom(data);
       })
@@ -111,11 +107,17 @@ const TableRowHeader = ({
       <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
       <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
       <div>
-        <Button context={<img src={Update} />} onClick={(e) => setModalType(TABLE_MODALS.update)} />
+        <Button
+          context={<img src={Update} />}
+          onClick={(e) => {
+            setEditingTodoId(todo.id);
+            setModalType(TABLE_MODALS.update);
+          }}
+        />
         <Button
           context={<img src={Delete} />}
           onClick={(e) => {
-            handleOnDelete();
+            handleOnDelete(todo.id);
           }}
         />
       </div>

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Select from '@components/Select';
 import { toast } from 'react-toastify';
 import { useAtom } from 'jotai';
-import { displayDetailAtom, modalTypeAtom } from '@util/GlobalState';
+import { modalTypeAtom } from '@util/GlobalState';
 
 const { darkGray, lightGray } = PRIMARY_COLORS;
 

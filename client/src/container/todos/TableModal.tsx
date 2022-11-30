@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
-import { modalTypeAtom, todoList, displayDetailAtom } from '@util/GlobalState';
+import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { getModalValues } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
@@ -63,13 +63,13 @@ const TableModal = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [modalHeader, setModalHeader] = useState('');
-  const [displayDetail] = useAtom(displayDetailAtom);
+  const [editingTodoId] = useAtom(editingTodoIdAtom);
 
   const modalWrapper = useRef<HTMLInputElement>();
 
   const setInitData = useCallback((): void => {
     todoListAtom
-      .getTodoById(displayDetail)
+      .getTodoById(editingTodoId)
       .then((target) => {
         if (modalWrapper.current === undefined || target === undefined) {
           return;
@@ -85,7 +85,7 @@ const TableModal = (): ReactElement => {
       .catch((err) => {
         throw new Error(err);
       });
-  }, [displayDetail]);
+  }, [editingTodoId]);
 
   useEffect(() => {
     if (modalType === create) {
@@ -116,7 +116,7 @@ const TableModal = (): ReactElement => {
       const data = await MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](
         todoListAtom,
         newData,
-        displayDetail,
+        editingTodoId,
       );
       setTodoListAtom(data);
       setModalType(none);
