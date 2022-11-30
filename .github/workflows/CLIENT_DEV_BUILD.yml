@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - main
+      - 133-fix-vite-build-esnext로-설정
       
-    paths:
-      - "client/**"
+#     paths:
+#       - "client/**"
 
 jobs:
   build-image:
