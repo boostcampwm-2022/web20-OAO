@@ -3,10 +3,9 @@ on:
   push:
     branches:
       - main
-      - 133-fix-vite-build-esnext로-설정
       
-#     paths:
-#       - "client/**"
+    paths:
+      - "client/**"
 
 jobs:
   build-image:
@@ -75,7 +74,7 @@ jobs:
             cd oao
 
             docker-compose up -d
-            docker image prune -y
+            docker image prune
 
       - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
