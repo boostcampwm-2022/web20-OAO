@@ -191,6 +191,7 @@ export class TodoList {
     this.getNext(oldTodo).forEach((el) => el.removePrev(oldTodo.id));
     this.getNext(newTodo).forEach((el) => el.addPrev(newTodo.id));
     this.getNext(oldTodo).forEach((el) => this.updateTodoState(el));
+    oldTodo.state = newTodo.state;
     this.getNext(newTodo).forEach((el) => this.updateTodoState(el));
 
     const newTodoList = await this.db.editMany([...changedTodoSet].map((el) => ({ id: el.id, todo: el.toPlain() })));
