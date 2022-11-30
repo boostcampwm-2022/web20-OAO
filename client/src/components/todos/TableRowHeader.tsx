@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
@@ -74,6 +74,7 @@ const TableRowHeader = ({
       .edit(todo.id, todo)
       .then((newTodoList) => {
         setTodoListAtom(newTodoList);
+        toast.success('완료되었습니다.');
       })
       .catch((err) => toast.error(err));
   };
