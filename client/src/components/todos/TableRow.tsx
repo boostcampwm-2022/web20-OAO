@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from 'react';
-import TableRowHeader from '@components/TableRowHeader';
-import TableRowDetail from '@components/TableRowDetail';
+import TableRowHeader from '@components/todos/TableRowHeader';
+import TableRowDetail from '@components/todos/TableRowDetail';
 import { PlainTodo } from '@core/todo/todoList';
 import { displayDetailAtom, todoList } from '@util/GlobalState';
 import { useAtom } from 'jotai';
@@ -12,19 +12,21 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [nextTodoList, setNextTodo] = useState<PlainTodo[] | []>([]);
 
   useEffect(() => {
-    todo.prev.map((prevTodoId: string) => {
+    setPrevTodo([]);
+    setNextTodo([]);
+    todo.prev.forEach((prevTodoId: string) => {
       todoListAtom
         .getTodoById(prevTodoId)
         .then((prevTodo: PlainTodo | undefined) => {
-          prevTodo ? setPrevTodo([...prevTodoList, prevTodo]) : setPrevTodo([]);
+          if (prevTodo != null) setPrevTodo((prevState) => [...prevState, prevTodo]);
         })
         .catch((err) => console.error(err));
     });
-    todo.next.map((nextTodoId: string) => {
+    todo.next.forEach((nextTodoId: string) => {
       todoListAtom
         .getTodoById(nextTodoId)
         .then((nextTodo: PlainTodo | undefined) => {
-          nextTodo ? setNextTodo([...nextTodoList, nextTodo]) : setNextTodo([]);
+          if (nextTodo != null) setNextTodo((prevState) => [...prevState, nextTodo]);
         })
         .catch((err) => console.error(err));
     });

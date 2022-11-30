@@ -10,7 +10,7 @@ import Working from '@images/Working.svg';
 import Relaxing from '@images/Relaxing.svg';
 import styled from 'styled-components';
 
-import { todoStatusText } from '../util/Common';
+import { todoStatusText } from '@util/Common';
 
 const Wrapper = styled.div`
   width: 850px;

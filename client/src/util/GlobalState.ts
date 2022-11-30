@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { PlainTodo, TodoList } from '@core/todo/todoList.js';
+import { TodoList } from '@core/todo/todoList.js';
 import { TABLE_MODALS } from './Constants.js';
 // import { Todo } from '@core/todo/todoList.js';
 
@@ -22,79 +22,7 @@ export const readWriteAtom = atom(
 );
 
 // const initTodo = new TodoList(sortTestCase[0].data);
-const initTodo = new TodoList([
-  {
-    id: '0',
-    title: '다람쥐 헌 쳇바퀴에 올라타',
-    content:
-      '다람쥐 헌 쳇바퀴에 올라타 다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타다람쥐 헌 쳇바퀴에 올라타',
-    owner: 'default user',
-    importance: 3,
-    until: 'Mon Nov 28 2022 17:04:44 GMT+0900 (한국 표준시)',
-    from: 'Tue Nov 29 2022 12:39:39 GMT+0900 (Korean Standard Time)',
-    next: ['1', '2'],
-    prev: ['18'],
-    lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'READY',
-    elapsedTime: 0,
-  },
-  {
-    id: '1',
-    title: '1default title11',
-    content: 'default content',
-    owner: 'default user',
-    importance: 2,
-    until: 'Mon Nov 28 2022 17:04:44 GMT+0900 (한국 표준시)',
-    from: 'Tue Nov 29 2022 12:39:39 GMT+0900 (Korean Standard Time)',
-    next: [],
-    prev: ['0'],
-    lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'READY',
-    elapsedTime: 0,
-  },
-  {
-    id: '2',
-    title: '2default title',
-    content: 'default content',
-    owner: 'default user',
-    importance: 1,
-    until: 'Sun Nov 27 2022 12:10:26 GMT+0900 (Korean Standard Time)',
-    from: 'Tue Nov 22 2022 15:37:02 GMT+0900 (Korean Standard Time)',
-    next: [],
-    prev: [],
-    lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'READY',
-    elapsedTime: 0,
-  },
-  {
-    id: '18',
-    title: '18default title',
-    content: 'default content',
-    owner: 'default user',
-    importance: 1,
-    until: 'Sun Nov 27 2022 12:10:26 GMT+0900 (Korean Standard Time)',
-    from: 'Tue Nov 22 2022 15:37:02 GMT+0900 (Korean Standard Time)',
-    next: [],
-    prev: ['19'],
-    lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'READY',
-    elapsedTime: 0,
-  },
-  {
-    id: '19',
-    title: '19default title',
-    content: 'default content',
-    owner: 'default user',
-    importance: 1,
-    until: 'Sun Nov 27 2022 12:10:26 GMT+0900 (Korean Standard Time)',
-    from: 'Tue Nov 22 2022 15:37:02 GMT+0900 (Korean Standard Time)',
-    next: ['18'],
-    prev: [],
-    lastPostponed: '2022-11-22T09:18:36.208Z',
-    state: 'READY',
-    elapsedTime: 0,
-  },
-]);
+const initTodo = new TodoList([]);
 export const todoList = atom(initTodo);
 export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveTodo());
 
@@ -105,3 +33,4 @@ export const isFinishedAtom = atom(false);
 
 export const displayDetailAtom = atom('');
 export const modalTypeAtom = atom(TABLE_MODALS.none);
+export const editingTodoIdAtom = atom('');

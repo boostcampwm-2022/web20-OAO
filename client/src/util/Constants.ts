@@ -76,7 +76,7 @@ export const MODAL_INPUT_LIST = [
 
 export const MODAL_LABEL_ID = {
   제목: 'title',
-  '상세 내용': 'contents',
+  '상세 내용': 'content',
   마감일: 'until',
   중요도: 'importance',
   '먼저 할 일': 'prev',

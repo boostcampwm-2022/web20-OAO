@@ -1,6 +1,8 @@
-import { PlainTodo } from '@core/todo/todoList';
-import { ReactElement, useState } from 'react';
-import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
+import { ReactElement } from 'react';
+import styled from 'styled-components';
+import { useAtom } from 'jotai';
+
+import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
 import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
 
 import Button from '@components/Button';
@@ -9,7 +11,11 @@ import Unchecked from '@images/Unchecked.svg';
 import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
-import styled from 'styled-components';
+
+import { PlainTodo } from '@core/todo/todoList';
+
+import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { toast } from 'react-toastify';
 
 const CheckWrapper = styled.div`
   input {
@@ -57,16 +63,40 @@ const TableRowHeader = ({
   prevTodoTitle: string;
   nextTodoTitle: string;
 }): ReactElement => {
-  const [isTodoDone, setIsTodoDone] = useState(false);
+  const [, setModalType] = useAtom(modalTypeAtom);
+  const [todoListAtom, setTodoListAtom] = useAtom(todoList);
+  const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
+
   const checkTodoStateHandler = (): void => {
-    setIsTodoDone(!isTodoDone);
+    // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
+    todo.state === 'DONE' ? (todo.state = 'WAIT') : (todo.state = 'DONE');
+    todoListAtom
+      .edit(todo.id, todo)
+      .then((newTodoList) => {
+        setTodoListAtom(newTodoList);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleOnDelete = (todoId: string): void => {
+    todoListAtom
+      .remove(todoId)
+      .then((data) => {
+        setTodoListAtom(data);
+      })
+      .catch((err: any) => {
+        toast.error(err.message);
+      });
   };
 
   return (
     <>
       <CheckWrapper>
-        <input type="checkBox" id="todoDone" readOnly={isTodoDone} onClick={checkTodoStateHandler} />
-        <label htmlFor="todoDone">{isTodoDone ? <Image src={Checked} /> : <Image src={Unchecked} />}</label>
+        {todo.state === 'DONE' ? (
+          <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
+        ) : (
+          <Button context={<Image src={Unchecked} />} onClick={checkTodoStateHandler} />
+        )}
       </CheckWrapper>
       <TitleWrapper>{todo.title}</TitleWrapper>
       <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>
@@ -77,8 +107,19 @@ const TableRowHeader = ({
       <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
       <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
       <div>
-        <Button context={<img src={Update} />} />
-        <Button context={<img src={Delete} />} />
+        <Button
+          context={<img src={Update} />}
+          onClick={(e) => {
+            setEditingTodoId(todo.id);
+            setModalType(TABLE_MODALS.update);
+          }}
+        />
+        <Button
+          context={<img src={Delete} />}
+          onClick={(e) => {
+            handleOnDelete(todo.id);
+          }}
+        />
       </div>
     </>
   );
