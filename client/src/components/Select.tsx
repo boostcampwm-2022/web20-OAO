@@ -12,12 +12,18 @@ const StyledSelect = styled.select`
   color: ${black};
 `;
 
+const OPTION_VALUES = {
+  A: 3,
+  B: 2,
+  C: 1,
+};
+
 const Select = ({ options, id }: { options: string[]; id: string }): ReactElement => {
   return (
     <StyledSelect id={id}>
       {options.map((value) => {
         return (
-          <option key={value} value={value}>
+          <option key={value} value={OPTION_VALUES[value as keyof typeof OPTION_VALUES]}>
             {value}
           </option>
         );

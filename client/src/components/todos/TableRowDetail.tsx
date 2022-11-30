@@ -8,6 +8,10 @@ const Wrapper = styled.div`
   margin: 10px;
 `;
 
+const SubTitle = styled.h3`
+  font-family: 'Noto Sans';
+`;
+
 const TableRowDetail = ({
   todo,
   prevTodoList,
@@ -23,19 +27,19 @@ const TableRowDetail = ({
       <Wrapper>
         {todo.content !== '' && (
           <>
-            <h3>상세 내용</h3>
+            <SubTitle>상세 내용</SubTitle>
             <p>{todo.content}</p>
           </>
         )}
         {prevTodoList.length > 0 && (
           <>
-            <h3>먼저 할일 목록</h3>
+            <SubTitle>먼저 할일 목록</SubTitle>
             <TodoTitleList list={prevTodoList} prevId={todo.id} />
           </>
         )}
         {nextTodoList.length > 0 && (
           <>
-            <h3>이어서 할일 목록</h3>
+            <SubTitle>이어서 할일 목록</SubTitle>
             <TodoTitleList list={nextTodoList} prevId={todo.id} />
           </>
         )}
