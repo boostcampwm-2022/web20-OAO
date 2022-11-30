@@ -156,7 +156,7 @@ const TableModal = (): ReactElement => {
       {modalType === update && (
         <>
           <Text text="id" fontFamily={'SanSerif'} fontSize={'18px'} fontWeight={'500'} color={darkGray} />
-          <input value={editingTodoId} readOnly={true} />
+          <input id="id" value={editingTodoId} readOnly={true} />
         </>
       )}
       {MODAL_INPUT_LIST.map((item) => {
