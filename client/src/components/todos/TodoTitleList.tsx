@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { PlainTodo } from '@core/todo/todoList';
+import { PlainTodo } from '@todo/todo.type';
 
 const TodoTitleList = ({ list, prevId }: { list: PlainTodo[]; prevId: string }): ReactElement => {
   return (

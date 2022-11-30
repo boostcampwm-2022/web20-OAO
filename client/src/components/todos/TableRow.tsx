@@ -1,9 +1,10 @@
 import { ReactElement, useState, useEffect } from 'react';
 import TableRowHeader from '@components/todos/TableRowHeader';
 import TableRowDetail from '@components/todos/TableRowDetail';
-import { PlainTodo } from '@core/todo/todoList';
+import { PlainTodo } from '@todo/todo.type';
 import { displayDetailAtom, todoList } from '@util/GlobalState';
 import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
 
 const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
@@ -20,7 +21,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
         .then((prevTodo: PlainTodo | undefined) => {
           if (prevTodo != null) setPrevTodo((prevState) => [...prevState, prevTodo]);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => toast.error(err));
     });
     todo.next.forEach((nextTodoId: string) => {
       todoListAtom
@@ -28,7 +29,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
         .then((nextTodo: PlainTodo | undefined) => {
           if (nextTodo != null) setNextTodo((prevState) => [...prevState, nextTodo]);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => toast.error(err));
     });
   }, [todoListAtom]);
 

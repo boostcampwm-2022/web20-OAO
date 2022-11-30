@@ -6,7 +6,7 @@ import PostponeBox from '@components/main/PostponeBox';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 import TodoTimeText from '@components/main/TodoTimeText';
 
-import { PlainTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@todo/todo.type';
 
 import { isOnProgress, postponeClicked } from '@util/GlobalState';
 

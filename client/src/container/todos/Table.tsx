@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import TableHeader from '@components/todos/TableHeader';
 import TableRow from '@components/todos/TableRow';
 import { useAtom } from 'jotai';
-import { PlainTodo } from '@core/todo/todoList';
+import { PlainTodo } from '@todo/todo.type';
 import { todoList, displayDetailAtom } from '@util/GlobalState.js';
+import { toast } from 'react-toastify';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -48,7 +49,7 @@ const Table = (): ReactElement => {
       .then((sortedTodoList: PlainTodo[]) => {
         setTodos([...sortedTodoList]);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => toast.error(err));
   }, [todoListAtom]);
 
   return todos.length > 0 ? (

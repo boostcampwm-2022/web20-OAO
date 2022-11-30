@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
@@ -12,7 +12,7 @@ import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 
-import { PlainTodo } from '@core/todo/todoList';
+import { PlainTodo } from '@todo/todo.type';
 
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { toast } from 'react-toastify';
@@ -66,7 +66,9 @@ const TableRowHeader = ({
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
-
+  useEffect(() => {
+    console.log(todoListAtom);
+  });
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
     todo.state === 'DONE' ? (todo.state = 'WAIT') : (todo.state = 'DONE');
@@ -75,7 +77,7 @@ const TableRowHeader = ({
       .then((newTodoList) => {
         setTodoListAtom(newTodoList);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => toast.error(err));
   };
 
   const handleOnDelete = (todoId: string): void => {

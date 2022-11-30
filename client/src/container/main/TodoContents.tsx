@@ -1,9 +1,9 @@
 import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
-import Image from '../../components/Image';
+import Image from '@components/Image';
 
-import DropDown from '../../images/DropDown.svg';
-import { PlainTodo } from '@core/todo/todoList.js';
+import DropDown from '@images/DropDown.svg';
+import { PlainTodo } from '@todo/todo.type';
 
 const ContentWrapper = styled.div`
   width: 850px;

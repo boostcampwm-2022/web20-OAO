@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { PlainTodo } from '@core/todo/todoList.js';
+import { PlainTodo } from '@todo/todo.type';
 import { isOnProgress } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 

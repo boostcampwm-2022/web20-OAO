@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { isEqualDate, DAY } from '@todo/todo.util';
 export class Todo {

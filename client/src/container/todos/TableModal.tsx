@@ -10,10 +10,11 @@ import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
 import Text from '@components/Text';
 import { toast } from 'react-toastify';
-import { TodoList, InputTodo } from '@core/todo/todoList';
+import { TodoList } from '@core/todo/todoList';
+import { InputTodo } from '@todo/todo.type';
 
 const { create, update, none } = TABLE_MODALS;
-const { offWhite, red, blue } = PRIMARY_COLORS;
+const { offWhite, red, blue, darkGray, lightGray } = PRIMARY_COLORS;
 
 interface WrapperProps {
   ref: any;
@@ -33,6 +34,17 @@ const Wrapper = styled.div<WrapperProps>`
   align-items: flex-start;
   padding: 30px;
   gap: 10px;
+
+  input {
+    width: 100%;
+    color: ${darkGray};
+    front-family: 'SanSerif'
+    font-size: 15px;
+    padding: 5px;
+    border: 1px solid ${lightGray};
+    border-radius: 5px;
+    outline: none;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -110,6 +122,15 @@ const TableModal = (): ReactElement => {
         if (id === 'title' && value === '') {
           throw new Error('제목은 필수값입니다!');
         }
+        if (id === 'prev' || id === 'next') {
+          return (newData = {
+            ...newData,
+            [id]: value
+              .trim()
+              .split(',')
+              .filter((x: string) => x !== ''),
+          });
+        }
         newData = { ...newData, [id]: value };
       });
 
@@ -133,6 +154,12 @@ const TableModal = (): ReactElement => {
   return (
     <Wrapper ref={modalWrapper}>
       <Text text={modalHeader} fontFamily={'SanSerif'} fontSize={'24px'} fontWeight={'600'} />
+      {modalType === update && (
+        <>
+          <Text text="id" fontFamily={'SanSerif'} fontSize={'18px'} fontWeight={'500'} color={darkGray} />
+          <input value={editingTodoId} readOnly={true} />
+        </>
+      )}
       {MODAL_INPUT_LIST.map((item) => {
         const { type, label, maxLength } = item;
         return (

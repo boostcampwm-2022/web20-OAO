@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { TodoList } from '@core/todo/todoList.js';
+import { createTodoList } from '@todo/todoList.js';
 import { TABLE_MODALS } from './Constants.js';
 // import { Todo } from '@core/todo/todoList.js';
 
@@ -20,11 +20,13 @@ export const readWriteAtom = atom(
   (get) => get(loginStateAtom),
   (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
 );
-
 // const initTodo = new TodoList(sortTestCase[0].data);
-const initTodo = new TodoList([]);
-export const todoList = atom(initTodo);
-export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveTodo());
+// const initTodo = createTodoList('IndexedDB');
+// export const todoList = atom(initTodo);
+// export const todoList = atom(async () => await createTodoList('MemoryDB'));
+const todoData = await createTodoList('MemoryDB');
+export const todoList = atom(todoData);
+// export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveTodo());
 
 export const elasedTimeAtom = atom(0); // 초 단위 경과시간
 export const startTimeAtom = atom(new Date());

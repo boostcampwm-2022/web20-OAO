@@ -1,4 +1,4 @@
-import { PlainTodo } from '@core/todo/todoList';
+import { PlainTodo } from '@todo/todo.type';
 import { ReactElement } from 'react';
 import TodoTitleList from '@components/todos/TodoTitleList';
 import styled from 'styled-components';
