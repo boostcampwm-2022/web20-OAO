@@ -33,3 +33,4 @@ export const isFinishedAtom = atom(false);
 
 export const displayDetailAtom = atom('');
 export const modalTypeAtom = atom(TABLE_MODALS.none);
+export const editingTodoIdAtom = atom('');
