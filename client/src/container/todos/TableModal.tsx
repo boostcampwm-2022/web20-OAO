@@ -22,7 +22,6 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   width: 50vw;
-  height: 70vh;
   left: 21vw;
   position: absolute;
   background-color: ${offWhite};
