@@ -70,6 +70,7 @@ export class TodoList {
     const today = new Date();
     const newTodoList = await this.db.edit(activeTodo.id, {
       from: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+      state: 'WAIT',
     });
     return new TodoList(this.db, newTodoList);
   }
