@@ -1,11 +1,11 @@
 # dependencies
-/node_modules
+node_modules
 
 # testing
-/coverage
+coverage
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -17,3 +17,28 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Logs
+logs
+*.log
+pnpm-debug.log*
+lerna-debug.log*
+
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+client/src/core/todo/test/temp.ts
+
+*.xml

@@ -1,0 +1,95 @@
+name: release-client CI/CD
+on:
+  push:
+    branches:
+      - release
+    paths:
+      - "client/**"
+
+jobs:
+  build-image:
+    name: release-client CI/CD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Node 설정
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+
+      - name: node_modules 폴더 캐싱
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: "**/client/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
+
+      - name: node_modules 폴더 캐시가 없다면 dependencies 설치
+        working-directory: "./client"
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Client 소스 빌드
+        working-directory: "./client"
+        run: yarn build
+
+      - name: GitHub Container Registry 로그인
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: kumsil1006
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Github Release 최신 tag 받아오기
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker images build 및 GitHub Container Registry로 push
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: ghcr.io/kumsil1006/oao-client:${{ steps.tag_version.outputs.previous_tag }},ghcr.io/kumsil1006/oao-client:latest
+          context: ./client
+
+      - name: Docker Compose 파일 운영 서버로 복사
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.RELEASE_HOST }}
+          username: ${{ secrets.RELEASE_USERNAME }}
+          password: ${{ secrets.RELEASE_PASSWORD }}
+          port: ${{ secrets.RELEASE_PORT }}
+          source: "docker-compose.yml"
+          target: "oao"
+
+      - name: 운영 서버에서 Docker Compose 실행
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.RELEASE_HOST }}
+          username: ${{ secrets.RELEASE_USERNAME }}
+          password: ${{ secrets.RELEASE_PASSWORD }}
+          port: ${{ secrets.RELEASE_PORT }}
+          script: |
+            echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
+            docker pull ghcr.io/kumsil1006/oao-client
+            docker pull ghcr.io/kumsil1006/oao-proxy
+
+            cd oao
+
+            docker-compose up -d
+            docker image prune
+
+      - name: 실패시 슬랙 메시지 전송
+        if: ${{ failure() }}
+        uses: ./.github/actions/slack-notify
+        with:
+          slack_incoming_url: ${{ secrets.SLACK_INCOMING_URL }}
+
+      - name: 성공시 슬랙 메시지 전송
+        if: ${{ success() }}
+        uses: ./.github/actions/slack-notify
+        with:
+          status: success
+          slack_incoming_url: ${{ secrets.SLACK_INCOMING_URL }}

@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  proxy:
+    image: "ghcr.io/kumsil1006/oao-dev-proxy:latest"
+    ports:
+      - "80:80"
+    restart: always
+  frontend:
+    image: "ghcr.io/kumsil1006/oao-dev-client:latest"
+    restart: always
+    expose:
+      - "3000"
+  backend:
+    image: "ghcr.io/kumsil1006/oao-dev-server:latest"
+    restart: always
+    expose:
+      - "8080"
