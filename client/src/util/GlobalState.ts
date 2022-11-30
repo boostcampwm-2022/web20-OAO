@@ -24,7 +24,7 @@ export const readWriteAtom = atom(
 // const initTodo = createTodoList('IndexedDB');
 // export const todoList = atom(initTodo);
 // export const todoList = atom(async () => await createTodoList('MemoryDB'));
-const todoData = await createTodoList('MemoryDB');
+const todoData = await createTodoList('IndexedDB');
 export const todoList = atom(todoData);
 // export const activeTodoAtom = atom(async (get) => await get(todoList).getActiveTodo());
 
