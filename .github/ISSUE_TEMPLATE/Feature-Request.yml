@@ -21,18 +21,18 @@ body:
     description: 해당 피처의 중요도를 선택해주세요.
     multiple: false
     options:
-      - label: A
-      - label: B
-      - label: C
+      - A
+      - B
+      - C
 - type: dropdown
   attributes: 
     label: 난이도
     description: 해당 피처의 구현 난이도(구현 시간도 고려하여)을 선택해주세요.
     multiple: false
     options:
-      - label: 상
-      - label: 중
-      - label: 하
+      - 상
+      - 중
+      - 하
   validations:
     required: true
 - type: textarea
