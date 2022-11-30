@@ -1,4 +1,5 @@
-import { Todo, PlainTodo } from '../todoList';
+import { Todo } from '@todo/todo';
+import { PlainTodo } from '@todo/todo.type';
 
 const testToday = new Date();
 const DAY = 24 * 60 * 60 * 1000;
