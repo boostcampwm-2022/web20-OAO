@@ -1,10 +1,9 @@
 import { Todo } from '@todo/todo';
 import { PlainTodo } from '@todo/todo.type';
-import { TodoList } from '@todo/todoList';
+import { createTodoList } from '@todo/todoList';
 import { toComparableTodo, validateRTL, validateWTL } from './validator';
 import { testToday, generateTodoListForUpdateTest, generateUpdateTestSet } from './generator';
 import * as updateRawTestCase from './update.data.json';
-import { MemoryDB } from '@repository/repository.memoryDB';
 
 const updateTestCase = updateRawTestCase.map((el) => ({
   tag: el.tag,
@@ -13,8 +12,7 @@ const updateTestCase = updateRawTestCase.map((el) => ({
 }));
 
 const update = async (todoList: PlainTodo[], today: Date): Promise<PlainTodo[]> => {
-  const mdb = new MemoryDB(todoList);
-  const newTodoList = await new TodoList(mdb, todoList).updateAll(today);
+  const newTodoList = await (await createTodoList('MemoryDB', todoList)).updateAll(today);
   return newTodoList.getTL();
 };
 
