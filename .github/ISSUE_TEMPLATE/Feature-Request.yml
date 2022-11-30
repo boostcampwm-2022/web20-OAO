@@ -53,3 +53,9 @@ body:
     description: 관련된 Project Wiki 페이지가 있다면 링크해주세요.
   validations:
     required: false
+- type: checkboxes
+  attributes: 
+    label: 담당자 지정
+    options:
+      - label: assignee에 담당자를 제대로 지정하였나요?
+        required: true
