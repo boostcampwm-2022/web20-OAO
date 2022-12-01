@@ -179,7 +179,7 @@ export class TodoList {
   async edit(id: string, todo: InputTodo): Promise<TodoList> {
     const oldTodo = this.todoList.find((el) => el.id === id);
     if (oldTodo === undefined) throw new Error('ERROR: 수정하려는 ID의 Todo가 존재하지 않습니다.');
-    const newTodo = new Todo({ ...todo, id: oldTodo.id });
+    const newTodo = new Todo({ ...oldTodo.toPlain(), ...todo, id: oldTodo.id });
     const changedTodoSet = new Set<Todo>();
 
     [this.getPrev(oldTodo), this.getPrev(newTodo), this.getNext(oldTodo), this.getNext(newTodo), newTodo]
