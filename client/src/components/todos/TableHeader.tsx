@@ -3,7 +3,8 @@ import Text from '@components/Text';
 import Button from '@components/Button';
 import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
-
+import { PRIMARY_COLORS } from '@util/Constants';
+const { black, gray, lightGray } = PRIMARY_COLORS;
 interface Props {
   filter: 'DONE' | 'READY' | 'WAIT';
   setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
@@ -11,9 +12,19 @@ interface Props {
   setSort: React.Dispatch<React.SetStateAction<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>>;
 }
 
-const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): ReactElement => {
-  const [filterDropdown, setFilterDropdown] = useState<boolean>(false);
-  const [sortDropdown, setSortDropdown] = useState<string>('');
+const TableHeaderUnit = ({
+  type,
+  sort,
+}: {
+  type: string;
+  sort: Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>;
+}): ReactElement => {
+  const index = [...sort]
+    .filter((el) => el[1] !== 'NONE')
+    .map((el) => el[0])
+    .reverse()
+    .findIndex((el) => el === type);
+  const color = ['#1D1D1D', '#888888', '#CCCCCC'];
   const getSortSymbol = (type: string): string => {
     if (sort.has(type)) {
       if (sort.get(type) === 'ASCEND') return '▲';
@@ -21,6 +32,22 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
     }
     return '';
   };
+  const typeMap = {
+    title: '제목',
+    importance: '중요도',
+    until: '마감일',
+  };
+  return (
+    <>
+      <span style={{ color: `${color[index]}` }}>{getSortSymbol(type)}</span>
+      <span>{typeMap[type as keyof typeof typeMap]}</span>
+    </>
+  );
+};
+
+const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): ReactElement => {
+  const [filterDropdown, setFilterDropdown] = useState<boolean>(false);
+  const [sortDropdown, setSortDropdown] = useState<string>('');
 
   return (
     <>
@@ -32,7 +59,9 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'title' ? '' : 'title'));
           }}
         >
-          <Text text={`${getSortSymbol('title')}제목`} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'} />
+          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+            <TableHeaderUnit type={'title'} sort={sort} />
+          </Text>
         </Button>
         {sortDropdown === 'title' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
@@ -56,12 +85,9 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'until' ? '' : 'until'));
           }}
         >
-          <Text
-            text={`${getSortSymbol('until')}마감일`}
-            fontFamily={'Noto Sans'}
-            fontWeight={'700'}
-            textAlign={'center'}
-          />
+          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+            <TableHeaderUnit type={'until'} sort={sort} />
+          </Text>
         </Button>
         {sortDropdown === 'until' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
@@ -74,12 +100,9 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'importance' ? '' : 'importance'));
           }}
         >
-          <Text
-            text={`${getSortSymbol('importance')}중요도`}
-            fontFamily={'Noto Sans'}
-            fontWeight={'700'}
-            textAlign={'center'}
-          />
+          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+            <TableHeaderUnit type={'importance'} sort={sort} />
+          </Text>
         </Button>
         {sortDropdown === 'importance' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />

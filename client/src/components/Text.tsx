@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface StyleProps {
@@ -8,6 +8,7 @@ interface StyleProps {
   fontFamily?: string;
   margin?: string;
   textAlign?: string;
+  children?: ReactNode;
 }
 
 interface Props extends StyleProps {
@@ -23,8 +24,13 @@ const StyledText = styled.p<StyleProps>`
   text-align: ${({ textAlign }) => textAlign};
 `;
 
-const Text: FC<Props> = ({ text, ...props }) => {
-  return <StyledText {...props}>{text}</StyledText>;
+const Text: FC<Props> = ({ text, children, ...props }) => {
+  return (
+    <StyledText {...props}>
+      {text}
+      {children}
+    </StyledText>
+  );
 };
 
 export default memo(Text);
