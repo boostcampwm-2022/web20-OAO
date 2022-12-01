@@ -26,9 +26,11 @@ const Wrapper = styled.div`
 const { none } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
-  const [, activeTodo] = useTodoList();
+  const useTodoListHook = useTodoList();
   const [isFinished] = useAtom(isFinishedAtom);
   const [modalType, setModalType] = useAtom(modalTypeAtom);
+
+  const { activeTodo } = useTodoListHook;
 
   useEffect(() => {
     if (modalType !== none) {
@@ -44,11 +46,11 @@ const Main = (): ReactElement => {
 
   return (
     <Wrapper>
-      {activeTodo !== undefined ? (
+      {activeTodo?.id !== undefined ? (
         <>
           <TodoStatus activeTodo={activeTodo} />
           <TodoTitle activeTodo={activeTodo} />
-          <TodoTimeInteraction activeTodo={activeTodo} />
+          <TodoTimeInteraction {...useTodoListHook} />
           <TodoContents activeTodo={activeTodo} />
         </>
       ) : (

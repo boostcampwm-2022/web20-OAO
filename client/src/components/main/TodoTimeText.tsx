@@ -1,8 +1,8 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo, memo } from 'react';
 import styled from 'styled-components';
 
 import Text from '@components/Text';
-import useElapsedTime from '../../hooks/useElapsedTime';
+
 import { getTodoUntilText } from '@util/Common';
 
 const TextWrapper = styled.div`
@@ -12,9 +12,7 @@ const TextWrapper = styled.div`
   text-align: right;
 `;
 
-const TodoTimeText = ({ until }: { until: string }): ReactElement => {
-  const [displayTime] = useElapsedTime();
-
+const TodoTimeText = ({ until, displayTime }: { until: string; displayTime: string }): ReactElement => {
   const todoUntilText = useMemo(() => {
     return getTodoUntilText(until);
   }, [until]);
@@ -27,4 +25,4 @@ const TodoTimeText = ({ until }: { until: string }): ReactElement => {
   );
 };
 
-export default TodoTimeText;
+export default memo(TodoTimeText);

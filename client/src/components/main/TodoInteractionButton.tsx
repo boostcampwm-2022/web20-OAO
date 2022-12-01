@@ -10,8 +10,7 @@ import Image from '../Image';
 import { postponeClicked, isOnProgress } from '@util/GlobalState.js';
 import { ACTIVE_TODO_STATE } from '@util/Constants';
 
-import useElapsedTime from '../../hooks/useElapsedTime.js';
-import useDone from '../../hooks/useDone.js';
+import { PlainTodo } from '@todo/todo.type';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -23,21 +22,20 @@ interface ButtonConfig {
 interface ButtonProps {
   buttonConfig: ButtonConfig;
   handleOnToggle: Function;
+  activeTodo: PlainTodo;
+  setDone: Function;
 }
 
-const TodoInteractionButton = ({ buttonConfig, handleOnToggle }: ButtonProps): ReactElement => {
+const TodoInteractionButton = ({ buttonConfig, handleOnToggle, activeTodo, setDone }: ButtonProps): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
   const [progressState] = useAtom(isOnProgress);
-  const [, , , time, setTime] = useElapsedTime();
-  const [setDone] = useDone();
 
   const startPauseButton = useMemo(() => {
     return <Button context={<Image src={buttonConfig.src} />} onClick={() => handleOnToggle()} />;
   }, [buttonConfig.src]);
 
   const handleDoneClicked = (): void => {
-    setDone(time);
-    setTime(0);
+    setDone(activeTodo.elapsedTime);
     if (progressState === ACTIVE_TODO_STATE.working) {
       handleOnToggle();
     }

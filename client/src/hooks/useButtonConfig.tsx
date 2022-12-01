@@ -5,7 +5,6 @@ import Start from '../images/Start.svg';
 import Pause from '../images/Pause.svg';
 
 import { isOnProgress } from '../util/GlobalState';
-import useElapsedTime from './useElapsedTime';
 
 interface ButtonConfig {
   src: string;
@@ -32,10 +31,9 @@ const START_PAUSE: StartPause = {
   },
 };
 
-const useButtonConfig = (userState: String): any[] => {
+const useButtonConfig = (userState: String, startTimer: Function, stopTimer: Function): any[] => {
   const [buttonConfig, setButtonConfig] = useState(START_PAUSE[userState as keyof StartPause]);
   const [, setIsOnProgress] = useAtom(isOnProgress);
-  const [, startTimer, stopTimer] = useElapsedTime();
 
   const handleOnToggle = (): void => {
     if (buttonConfig.src === Start) {
