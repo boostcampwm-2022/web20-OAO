@@ -14,6 +14,13 @@ interface Props {
 const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): ReactElement => {
   const [filterDropdown, setFilterDropdown] = useState<boolean>(false);
   const [sortDropdown, setSortDropdown] = useState<string>('');
+  const getSortSymbol = (type: string): string => {
+    if (sort.has(type)) {
+      if (sort.get(type) === 'ASCEND') return '▲';
+      if (sort.get(type) === 'DESCEND') return '▼';
+    }
+    return '';
+  };
 
   return (
     <>
@@ -25,7 +32,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'title' ? '' : 'title'));
           }}
         >
-          <Text text={'제목'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'} />
+          <Text text={`${getSortSymbol('title')}제목`} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'} />
         </Button>
         {sortDropdown === 'title' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
@@ -49,7 +56,12 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'until' ? '' : 'until'));
           }}
         >
-          <Text text={'마감일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
+          <Text
+            text={`${getSortSymbol('until')}마감일`}
+            fontFamily={'Noto Sans'}
+            fontWeight={'700'}
+            textAlign={'center'}
+          />
         </Button>
         {sortDropdown === 'until' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
@@ -62,7 +74,12 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
             setSortDropdown((prev) => (prev === 'importance' ? '' : 'importance'));
           }}
         >
-          <Text text={'중요도'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
+          <Text
+            text={`${getSortSymbol('importance')}중요도`}
+            fontFamily={'Noto Sans'}
+            fontWeight={'700'}
+            textAlign={'center'}
+          />
         </Button>
         {sortDropdown === 'importance' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
