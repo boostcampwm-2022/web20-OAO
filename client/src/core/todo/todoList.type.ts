@@ -1,7 +1,7 @@
 import { Todo } from '@todo/todo';
 
 export interface SortCommand {
-  type: 'title' | 'until' | 'importance' | 'imminence' | 'lastpostponed';
+  type: string;
   direction: 'ASCEND' | 'DESCEND' | 'NONE';
 }
 

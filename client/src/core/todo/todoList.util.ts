@@ -1,36 +1,45 @@
 import { Todo } from '@todo/todo';
 import { isEqualDate } from '@todo/todo.util';
-import { CompareFunc, CompareFuncObj } from '@todo/todoList.type';
+import { CompareFunc, CompareFuncObj, SortCommand } from '@todo/todoList.type';
 
 const compareFunctions: CompareFuncObj = {
-  ascendImminence: (a: Todo, b: Todo): number => {
+  imminence: (a: Todo, b: Todo): number => {
     const newToday = new Date();
     return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
   },
-  descendImminence: (a: Todo, b: Todo): number => {
-    const newToday = new Date();
-    return Number(isEqualDate(newToday, a.until)) - Number(isEqualDate(newToday, b.until));
-  },
-  ascendDeadline: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
-  descendDeadline: (a: Todo, b: Todo): number => -a.until.getTime() + b.until.getTime(),
-  ascendImportance: (a: Todo, b: Todo): number => -b.importance + a.importance,
-  descendImportance: (a: Todo, b: Todo): number => b.importance - a.importance,
-  ascendLastPostponed: (a: Todo, b: Todo): number => a.lastPostponed.getTime() - b.lastPostponed.getTime(),
-  descendLastPostponed: (a: Todo, b: Todo): number => -a.lastPostponed.getTime() + b.lastPostponed.getTime(),
-  ascendTitle: (a: Todo, b: Todo): number => {
+  until: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
+  importance: (a: Todo, b: Todo): number => -b.importance + a.importance,
+  lastPostponed: (a: Todo, b: Todo): number => a.lastPostponed.getTime() - b.lastPostponed.getTime(),
+  title: (a: Todo, b: Todo): number => {
     if (a.title === b.title) return 0;
     if (a.title < b.title) return -1;
     return 1;
   },
-  descendTitle: (a: Todo, b: Todo): number => {
-    if (a.title === b.title) return 0;
-    if (a.title < b.title) return 1;
-    return -1;
-  },
 };
 
-export const compareFunctionsMap: Map<string, CompareFunc> = new Map(
-  Object.entries(compareFunctions).map(([name, func]) => [name.toLowerCase(), func]),
-);
+const getCompareFunction = ({ type, direction }: SortCommand): CompareFunc => {
+  const multiplier = direction === 'ASCEND' ? 1 : direction === 'DESCEND' ? -1 : 0;
+  return (a: Todo, b: Todo) => {
+    return multiplier * compareFunctions[type](a, b);
+  };
+};
 
-export const defaultCompareFunctions = ['ascendimminence', 'ascendImportance', 'ascenddeadline', 'ascendlastpostponed'];
+const defaultCompareFunctions: SortCommand[] = [
+  { type: 'imminence', direction: 'ASCEND' },
+  { type: 'importance', direction: 'DESCEND' },
+  { type: 'until', direction: 'ASCEND' },
+  { type: 'lastPostponed', direction: 'ASCEND' },
+];
+
+export const generateCompare = (compareArr: SortCommand[]) => {
+  return (a: Todo, b: Todo): number => {
+    const compareFunctionArr = compareArr.map((el) => getCompareFunction(el));
+    for (const comp of compareFunctionArr) {
+      const result = comp(a, b);
+      if (result !== 0) return result;
+    }
+    return 0;
+  };
+};
+
+export const defaultCompare = generateCompare(defaultCompareFunctions);
