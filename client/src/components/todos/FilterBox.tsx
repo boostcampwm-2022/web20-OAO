@@ -6,7 +6,7 @@ import Button from '../Button';
 
 import { PRIMARY_COLORS } from '@util/Constants';
 
-const { lightGray, black } = PRIMARY_COLORS;
+const { lightGray, gray, blue } = PRIMARY_COLORS;
 
 const StyledFilterBox = styled.div`
   display: flex;
@@ -25,24 +25,33 @@ const StyledFilterBox = styled.div`
 `;
 
 interface FilterProps {
+  filter: 'DONE' | 'READY' | 'WAIT';
   setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
   setFilterDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const filterOptions: Array<{ text: string; state: 'DONE' | 'READY' | 'WAIT' }> = [
-  { text: '완료', state: 'DONE' },
   { text: '작업 가능', state: 'READY' },
+  { text: '완료', state: 'DONE' },
   { text: '대기 중', state: 'WAIT' },
 ];
 
-const FilterBox = ({ setFilter, setFilterDropDown }: FilterProps): ReactElement => {
+const FilterBox = ({ filter, setFilter, setFilterDropDown }: FilterProps): ReactElement => {
   return (
     <StyledFilterBox>
       {filterOptions.map(({ text, state }: { text: string; state: 'DONE' | 'READY' | 'WAIT' }): ReactElement => {
         return (
           <Button
             key={text}
-            context={<Text text={text} color={black} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
+            context={
+              <Text
+                text={text}
+                color={filter === state ? blue : gray}
+                fontFamily={'Noto Sans'}
+                fontSize={'18px'}
+                fontWeight={'700'}
+              />
+            }
             onClick={() => {
               setFilter(state);
               setFilterDropDown(false);

@@ -5,11 +5,13 @@ import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
 
 interface Props {
+  filter: 'DONE' | 'READY' | 'WAIT';
   setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
+  sort: Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>;
   setSort: React.Dispatch<React.SetStateAction<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>>;
 }
 
-const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
+const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): ReactElement => {
   const [filterDropdown, setFilterDropdown] = useState<boolean>(false);
   const [sortDropdown, setSortDropdown] = useState<string>('');
 
@@ -25,7 +27,9 @@ const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
         >
           <Text text={'제목'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'} />
         </Button>
-        {sortDropdown === 'title' && <SortBox setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />}
+        {sortDropdown === 'title' && (
+          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
+        )}
       </div>
       <div>
         <Button
@@ -36,7 +40,7 @@ const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
         >
           <Text text={'상태'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
         </Button>
-        {filterDropdown && <FilterBox setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
+        {filterDropdown && <FilterBox filter={filter} setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
       </div>
       <div>
         <Button
@@ -47,7 +51,9 @@ const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
         >
           <Text text={'마감일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
         </Button>
-        {sortDropdown === 'until' && <SortBox setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />}
+        {sortDropdown === 'until' && (
+          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
+        )}
       </div>
       <div>
         <Button
@@ -59,7 +65,7 @@ const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
           <Text text={'중요도'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
         </Button>
         {sortDropdown === 'importance' && (
-          <SortBox setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
+          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
         )}
       </div>
       <div>

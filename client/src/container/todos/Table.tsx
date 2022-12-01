@@ -65,7 +65,7 @@ const Table = (): ReactElement => {
   return todos.length > 0 ? (
     <Wrapper>
       <GridWrapper>
-        <TableHeader setFilter={setFilter} setSort={setSort} />
+        <TableHeader filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
       </GridWrapper>
       <RowWrapper>
         {todos.map((todo: PlainTodo) => (

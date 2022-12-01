@@ -6,7 +6,7 @@ import Button from '../Button';
 
 import { PRIMARY_COLORS } from '@util/Constants';
 
-const { lightGray, black } = PRIMARY_COLORS;
+const { lightGray, black, blue, gray } = PRIMARY_COLORS;
 
 const StyledSortBox = styled.div`
   display: flex;
@@ -25,6 +25,7 @@ const StyledSortBox = styled.div`
 `;
 
 interface SortProps {
+  sort: Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>;
   setSort: React.Dispatch<React.SetStateAction<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>>;
   setSortDropDown: React.Dispatch<React.SetStateAction<string>>;
   type: string;
@@ -47,7 +48,7 @@ const updateSort = (
   return newSort;
 };
 
-const SortBox = ({ type, setSort, setSortDropDown }: SortProps): ReactElement => {
+const SortBox = ({ type, sort, setSort, setSortDropDown }: SortProps): ReactElement => {
   return (
     <StyledSortBox>
       {filterOptions.map(
@@ -55,7 +56,19 @@ const SortBox = ({ type, setSort, setSortDropDown }: SortProps): ReactElement =>
           return (
             <Button
               key={text}
-              context={<Text text={text} color={black} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
+              context={
+                <Text
+                  text={text}
+                  color={
+                    (!sort.has(type) && direction === 'NONE') || (sort.has(type) && sort.get(type) === direction)
+                      ? blue
+                      : gray
+                  }
+                  fontFamily={'Noto Sans'}
+                  fontSize={'18px'}
+                  fontWeight={'700'}
+                />
+              }
               onClick={() => {
                 setSort((prev) => updateSort(prev, type, direction));
                 setSortDropDown('');
