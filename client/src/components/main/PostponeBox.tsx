@@ -55,7 +55,16 @@ const PostponeBox = (props: PostponeProps): ReactElement => {
         return (
           <Button
             key={text}
-            context={<Text text={text} color={white} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
+            context={
+              <Text
+                text={text}
+                color={white}
+                fontFamily={'Noto Sans'}
+                fontSize={'18px'}
+                fontWeight={'700'}
+                textAlign={'left'}
+              />
+            }
             onClick={() => {
               handlePosponeClicked(text);
             }}
