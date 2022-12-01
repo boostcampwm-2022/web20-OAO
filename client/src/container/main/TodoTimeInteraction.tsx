@@ -8,11 +8,7 @@ import TodoTimeText from '@components/main/TodoTimeText';
 
 import { PlainTodo } from '@todo/todo.type';
 
-import { isOnProgress, postponeClicked } from '@util/GlobalState';
-
-import useTodoList from '../../hooks/useTodoList';
-import useElapsedTime from '../../hooks/useElapsedTime';
-import useButtonConfig from '../../hooks/useButtonConfig';
+import { postponeClicked } from '@util/GlobalState';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -22,25 +18,42 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const TodoTimeInteraction = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
-  const [isPostpone] = useAtom(postponeClicked);
-  const [userState] = useAtom(isOnProgress);
-  const [setPostpone, , postponeOptions] = useTodoList();
-  const [, , , time, setTime] = useElapsedTime();
-  const [buttonConfig, handleOnToggle] = useButtonConfig(userState);
+interface ComponentTodo {
+  setPostpone: Function;
+  postpone?: boolean;
+  activeTodo: PlainTodo;
+  postponeOptions: string[];
+  elapsedTime: number;
+  setElapsedTime: Function;
+  setDone: Function;
+  displayTime: string;
+  handleOnToggle: Function;
+  buttonConfig: any;
+}
 
+const TodoTimeInteraction = ({
+  activeTodo,
+  setDone,
+  postponeOptions,
+  setPostpone,
+  displayTime,
+  handleOnToggle,
+  buttonConfig,
+}: ComponentTodo): ReactElement => {
+  const [isPostpone] = useAtom(postponeClicked);
   return (
     <Wrapper>
-      <TodoInteractionButton buttonConfig={buttonConfig} handleOnToggle={handleOnToggle} />
-      {activeTodo.until !== undefined && <TodoTimeText until={activeTodo.until.toString()} />}
+      <TodoInteractionButton
+        buttonConfig={buttonConfig}
+        handleOnToggle={handleOnToggle}
+        activeTodo={activeTodo}
+        setDone={setDone}
+      />
+      {activeTodo?.until !== undefined && (
+        <TodoTimeText until={activeTodo.until.toString()} displayTime={displayTime} />
+      )}
       {isPostpone && (
-        <PostponeBox
-          postponeOptions={postponeOptions}
-          setPostpone={setPostpone}
-          time={time}
-          setTime={setTime}
-          handleOnToggle={handleOnToggle}
-        />
+        <PostponeBox postponeOptions={postponeOptions} setPostpone={setPostpone} handleOnToggle={handleOnToggle} />
       )}
     </Wrapper>
   );

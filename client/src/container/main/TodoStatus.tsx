@@ -38,7 +38,7 @@ const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => 
     <>
       <Wrapper>
         <Text
-          text={todoStatusText(activeTodo.until.toString())}
+          text={todoStatusText(activeTodo.until?.toString())}
           fontFamily={'roboto'}
           fontSize={'18px'}
           fontWeight={'700'}

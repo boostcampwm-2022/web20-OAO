@@ -31,19 +31,17 @@ const StyledPostponeBox = styled.div`
 interface PostponeProps {
   setPostpone: Function;
   postponeOptions: string[];
-  time: number;
-  setTime: Function;
+  time?: number;
+  setTime?: Function;
   handleOnToggle: Function;
 }
 
 const PostponeBox = (props: PostponeProps): ReactElement => {
-  const { setPostpone, postponeOptions, time, setTime, handleOnToggle } = props;
+  const { setPostpone, postponeOptions, handleOnToggle } = props;
   const [progressState] = useAtom(isOnProgress);
 
   const handlePosponeClicked = (text: string): void => {
-    setPostpone(time, text);
-    setTime(0);
-
+    setPostpone(text);
     if (progressState === ACTIVE_TODO_STATE.working) {
       handleOnToggle();
     }
