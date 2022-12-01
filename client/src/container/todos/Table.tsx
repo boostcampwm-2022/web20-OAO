@@ -43,11 +43,17 @@ const Table = (): ReactElement => {
   const [todos, setTodos] = useState<PlainTodo[]>([]);
   const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
-  const [sort, setSort] = useState<Array<Map<string, string>>>([]);
+  const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
 
   useEffect(() => {
     todoListAtom
-      .getSortedList(filter, [])
+      .getSortedList(
+        filter,
+        [...sort]
+          .map((el) => ({ type: el[0], direction: el[1] }))
+          .filter((el) => el.direction !== 'NONE')
+          .reverse(),
+      )
       .then((sortedTodoList: PlainTodo[]) => {
         setTodos(() => {
           return [...sortedTodoList];
