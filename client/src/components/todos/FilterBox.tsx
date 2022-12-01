@@ -1,4 +1,4 @@
-import { memo, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 
 import Text from '../Text';
@@ -18,34 +18,34 @@ const StyledFilterBox = styled.div`
   justify-content: center;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  width: 161px;
+  width: max-content;
   padding: 20px;
   gap: 20px;
   position: absolute;
-  left: 40px;
-  top: 60px;
 `;
 
 interface FilterProps {
-  setPostpone: Function;
-  postponeOptions: string[];
-  time: number;
-  setTime: Function;
-  handleOnToggle: Function;
+  setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
+  setFilterDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const filterOptions = ['설정 안함', '내림차순', '오름차순'];
+const filterOptions: Array<{ text: string; state: 'DONE' | 'READY' | 'WAIT' }> = [
+  { text: '완료', state: 'DONE' },
+  { text: '작업 가능', state: 'READY' },
+  { text: '대기 중', state: 'WAIT' },
+];
 
-const FilterBox = (props: FilterProps): ReactElement => {
+const FilterBox = ({ setFilter, setFilterDropDown }: FilterProps): ReactElement => {
   return (
     <StyledFilterBox>
-      {filterOptions.map((text: string): ReactElement => {
+      {filterOptions.map(({ text, state }: { text: string; state: 'DONE' | 'READY' | 'WAIT' }): ReactElement => {
         return (
           <Button
             key={text}
             context={<Text text={text} color={black} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
             onClick={() => {
-              console.log(`clicked: ${text}`);
+              setFilter(state);
+              setFilterDropDown(false);
             }}
           />
         );
@@ -53,4 +53,5 @@ const FilterBox = (props: FilterProps): ReactElement => {
     </StyledFilterBox>
   );
 };
-export default memo(FilterBox);
+
+export default FilterBox;
