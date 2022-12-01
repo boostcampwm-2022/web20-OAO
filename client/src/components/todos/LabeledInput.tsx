@@ -1,7 +1,7 @@
 import { ReactElement, useState, memo } from 'react';
 import Text from '@components/Text';
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
-import { getTodayDate } from '@util/Common';
+import { getTodayDate, gethhmmFormat } from '@util/Common';
 
 import styled from 'styled-components';
 import Select from '@components/Select';
@@ -42,7 +42,7 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
-  > input[type='date'] {
+  > input[type='datetime-local'] {
     &:last-child {
       width: 30%;
     }
@@ -74,13 +74,29 @@ const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement 
     return setDateInput(value);
   };
 
+  const blockUntilDateAtCreateMode = (): string => {
+    const todayDate = getTodayDate();
+    const nowTime = gethhmmFormat(new Date());
+    if (modalType === TABLE_MODALS.create) {
+      return todayDate + 'T' + nowTime;
+    } else return '';
+  };
+
   return (
     <Wrapper>
       <Text text={label} fontFamily={'SanSerif'} fontSize={'18px'} color={darkGray} fontWeight={'500'} />
       {type === 'text' && <input value={input} onChange={handleOnChangeText} type={type} id={id} />}
       {type === 'textarea' && <textarea id={id} />}
       {type === 'select' && <Select options={['A', 'B', 'C']} id={id} />}
-      {type === 'date' && <input type="date" value={dateInput} id={id} onChange={handleOnChangeDate} />}
+      {type === 'datetime-local' && (
+        <input
+          type="datetime-local"
+          value={dateInput}
+          id={id}
+          onChange={handleOnChangeDate}
+          min={blockUntilDateAtCreateMode()}
+        />
+      )}
     </Wrapper>
   );
 };

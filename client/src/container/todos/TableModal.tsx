@@ -37,7 +37,7 @@ const Wrapper = styled.div<WrapperProps>`
   input {
     width: 100%;
     color: ${darkGray};
-    front-family: 'SanSerif'
+    font-family: 'SanSerif';
     font-size: 15px;
     padding: 5px;
     border: 1px solid ${lightGray};
