@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { getModalValues } from '@util/Common';
+import { copyToClipboard, getModalValues, getDateTimeInputFormatString } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
@@ -12,6 +12,8 @@ import Text from '@components/Text';
 import { toast } from 'react-toastify';
 import { TodoList } from '@core/todo/todoList';
 import { InputTodo } from '@todo/todo.type';
+
+import Copy from '@images/Copy.svg';
 
 const { create, update, none } = TABLE_MODALS;
 const { offWhite, red, blue, darkGray, lightGray } = PRIMARY_COLORS;
@@ -37,7 +39,7 @@ const Wrapper = styled.div<WrapperProps>`
   input {
     width: 100%;
     color: ${darkGray};
-    front-family: 'SanSerif'
+    font-family: 'SanSerif';
     font-size: 15px;
     padding: 5px;
     border: 1px solid ${lightGray};
@@ -53,6 +55,37 @@ const ButtonWrapper = styled.div`
   padding-top: 15px;
   text-align: right;
   justify-content: flex-end;
+`;
+
+const StyledIdWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  gap: 5px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  color: ${darkGray};
+  front-family: 'SanSerif'
+  font-size: 15px;
+  padding: 5px;
+  border: 1px solid ${lightGray};
+  border-radius: 5px;
+  outline: none;
+`;
+
+const StyledCopyButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  img {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const MODAL_COMPLETE_ACTIONS = {
@@ -88,7 +121,7 @@ const TableModal = (): ReactElement => {
 
         getModalValues(modalWrapper.current).forEach((elem) => {
           if (elem.id === 'until') {
-            return (elem.value = new Date(target.until).toJSON().split('T')[0]);
+            return (elem.value = getDateTimeInputFormatString(new Date(target.until)));
           }
           elem.value = target[elem.id as keyof typeof target];
         });
@@ -126,6 +159,9 @@ const TableModal = (): ReactElement => {
           if (validateUuidArray) {
             return (newData = { ...newData, [id]: uuidArray });
           }
+        }
+        if (id === 'until') {
+          return (newData = { ...newData, [id]: new Date(value) });
         }
         newData = { ...newData, [id]: value };
       });
@@ -171,10 +207,18 @@ const TableModal = (): ReactElement => {
     <Wrapper ref={modalWrapper}>
       <Text text={modalHeader} fontFamily={'SanSerif'} fontSize={'24px'} fontWeight={'600'} />
       {modalType === update && (
-        <>
+        <StyledIdWrapper>
           <Text text="id" fontFamily={'SanSerif'} fontSize={'18px'} fontWeight={'500'} color={darkGray} />
-          <input id="id" value={editingTodoId} readOnly={true} />
-        </>
+          <Container>
+            <Text text={editingTodoId} />
+            <StyledCopyButton
+              context={<img src={Copy} />}
+              onClick={() => {
+                copyToClipboard(editingTodoId);
+              }}
+            />
+          </Container>
+        </StyledIdWrapper>
       )}
       {MODAL_INPUT_LIST.map((item) => {
         const { type, label, maxLength, placeHolder } = item;
