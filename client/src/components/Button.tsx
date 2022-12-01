@@ -1,4 +1,4 @@
-import { FC, ReactElement, memo } from 'react';
+import { FC, ReactElement, memo, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface StyleProps {
@@ -9,10 +9,11 @@ interface StyleProps {
   borderRadius?: string;
   margin?: string;
   flexGrow?: number;
+  children?: ReactNode;
 }
 
 interface Props extends StyleProps {
-  context: string | ReactElement;
+  context?: string | ReactElement;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -26,10 +27,11 @@ const StyledButton = styled.button<StyleProps>`
   flex-grow: ${({ flexGrow }) => flexGrow};
 `;
 
-const Button: FC<Props> = ({ context, onClick, ...props }) => {
+const Button: FC<Props> = ({ context, onClick, children, ...props }) => {
   return (
     <StyledButton onClick={onClick} {...props}>
       {context}
+      {children}
     </StyledButton>
   );
 };
