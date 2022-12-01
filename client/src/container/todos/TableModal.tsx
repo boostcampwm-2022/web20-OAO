@@ -88,7 +88,7 @@ const TableModal = (): ReactElement => {
 
         getModalValues(modalWrapper.current).forEach((elem) => {
           if (elem.id === 'until') {
-            return (elem.value = new Date(target.until).toJSON().split('T')[0]);
+            return (elem.value = new Date(target.until).toISOString().slice(0, -5));
           }
           elem.value = target[elem.id as keyof typeof target];
         });

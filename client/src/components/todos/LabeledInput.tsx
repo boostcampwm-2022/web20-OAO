@@ -1,7 +1,7 @@
 import { ReactElement, useState, memo } from 'react';
 import Text from '@components/Text';
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
-import { getTodayDate, gethhmmFormat } from '@util/Common';
+import { getTodayDate } from '@util/Common';
 
 import styled from 'styled-components';
 import Select from '@components/Select';
@@ -75,10 +75,9 @@ const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement 
   };
 
   const blockUntilDateAtCreateMode = (): string => {
-    const todayDate = getTodayDate();
-    const nowTime = gethhmmFormat(new Date());
+    const todayDate = new Date().toISOString().slice(0, -5);
     if (modalType === TABLE_MODALS.create) {
-      return todayDate + 'T' + nowTime;
+      return todayDate;
     } else return '';
   };
 
