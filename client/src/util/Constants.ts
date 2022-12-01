@@ -68,7 +68,7 @@ export enum TABLE_MODALS {
 export const MODAL_INPUT_LIST = [
   { label: '제목', maxLength: 50, type: 'text' },
   { label: '상세 내용', maxLength: Number.MAX_VALUE, type: 'textarea' },
-  { label: '마감일', type: 'date', maxLength: -1 },
+  { label: '마감일', type: 'datetime-local', maxLength: -1 },
   { label: '중요도', type: 'select', maxLength: -1 },
   { label: '먼저 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },
   { label: '이어서 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },

@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { copyToClipboard, getModalValues } from '@util/Common';
+import { copyToClipboard, getModalValues, getDateTimeInputFormatString } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
@@ -39,7 +39,7 @@ const Wrapper = styled.div<WrapperProps>`
   input {
     width: 100%;
     color: ${darkGray};
-    front-family: 'SanSerif'
+    font-family: 'SanSerif';
     font-size: 15px;
     padding: 5px;
     border: 1px solid ${lightGray};
@@ -121,7 +121,7 @@ const TableModal = (): ReactElement => {
 
         getModalValues(modalWrapper.current).forEach((elem) => {
           if (elem.id === 'until') {
-            return (elem.value = new Date(target.until).toJSON().split('T')[0]);
+            return (elem.value = getDateTimeInputFormatString(new Date(target.until)));
           }
           elem.value = target[elem.id as keyof typeof target];
         });
@@ -162,6 +162,9 @@ const TableModal = (): ReactElement => {
               .split(',')
               .filter((x: string) => x !== ''),
           });
+        }
+        if (id === 'until') {
+          return (newData = { ...newData, [id]: new Date(value) });
         }
         newData = { ...newData, [id]: value };
       });
