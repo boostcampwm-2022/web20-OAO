@@ -1,12 +1,18 @@
-name: 피처 템플릿
-description: 피처 구현을 위한 이슈를 작성하세요.
-title: "feat: "
-labels: ["feature"]
+name: 피처 요청 템플릿
+description: 서비스에 필요한 새로운 피처 명세를 작성하고 개발자에게 요청하세요.
+title: "request: "
+labels: ["request"]
 body: 
 - type: input
   attributes: 
     label: 피처 개요
     description: 필요한 피처에 대해서 한줄로 설명해주세요.
+  validations:
+    required: true
+- type: textarea
+  attributes: 
+    label: 요청 사유
+    description: 해당 피처가 필요한 이유, 필요한 상황에 대해서 기술해주세요.
   validations:
     required: true
 - type: dropdown
@@ -49,3 +55,9 @@ body:
     description: 관련된 Project Wiki 페이지가 있다면 링크해주세요.
   validations:
     required: false
+- type: checkboxes
+  attributes: 
+    label: 담당자 지정
+    options:
+      - label: assignee에 담당자를 제대로 지정하였나요?
+        required: true
