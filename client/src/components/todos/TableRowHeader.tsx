@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
 import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
-import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
+import { getyyyymmddDateFormat, gethhmmFormat, copyToClipboard } from '@util/Common';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
@@ -11,6 +11,7 @@ import Unchecked from '@images/Unchecked.svg';
 import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
+import Copy from '@images/Copy.svg';
 
 import { PlainTodo } from '@todo/todo.type';
 
@@ -121,6 +122,12 @@ const TableRowHeader = ({
           context={<img src={Delete} />}
           onClick={(e) => {
             handleOnDelete(todo.id);
+          }}
+        />
+        <Button
+          context={<img src={Copy} />}
+          onClick={(e) => {
+            copyToClipboard(todo.id);
           }}
         />
       </div>
