@@ -30,12 +30,15 @@ export const isSameObject = (obj1: any, obj2: any): boolean => {
 export const getyyyymmddDateFormat = (date: Date, separator: string): string => {
   const mm = date.getMonth() + 1;
   const dd = date.getDate();
+  console.log([date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator));
+
   return [date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator);
 };
 
 export const gethhmmFormat = (date: Date): string => {
+  const hh = date.getHours();
   const mm = date.getMinutes();
-  return [date.getHours(), (mm > 9 ? '' : '0') + `${mm}`].join(':');
+  return [(hh > 9 ? '' : '0') + `${hh}`, (mm > 9 ? '' : '0') + `${mm}`].join(':');
 };
 
 export const getModalValues = (div: Element): any[] => {
@@ -43,5 +46,10 @@ export const getModalValues = (div: Element): any[] => {
 };
 
 export const getTodayDate = (): string => {
-  return new Date().toJSON().split('T')[0];
+  const todayDate = new Date();
+  return new Date(-todayDate.getTimezoneOffset() * 60000 + todayDate.getTime()).toISOString().slice(0, -8);
+};
+
+export const getDateTimeInputFormatString = (date: Date): string => {
+  return new Date(-date.getTimezoneOffset() * 60000 + date.getTime()).toISOString().slice(0, -8);
 };
