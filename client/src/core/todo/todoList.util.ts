@@ -8,7 +8,7 @@ const compareFunctions: CompareFuncObj = {
     return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
   },
   until: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
-  importance: (a: Todo, b: Todo): number => -b.importance + a.importance,
+  importance: (a: Todo, b: Todo): number => a.importance - b.importance,
   lastPostponed: (a: Todo, b: Todo): number => a.lastPostponed.getTime() - b.lastPostponed.getTime(),
   title: (a: Todo, b: Todo): number => {
     if (a.title === b.title) return 0;
