@@ -16,6 +16,7 @@ interface InputProps {
   maxLength: number | string;
   type: string;
   id: string;
+  placeHolder: string;
 }
 
 const Wrapper = styled.div`
@@ -49,7 +50,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement => {
+const LabeledInput = ({ label, maxLength, type, id, placeHolder }: InputProps): ReactElement => {
   const [input, setInput] = useState('');
   const [dateInput, setDateInput] = useState(getTodayDate());
   const [modalType] = useAtom(modalTypeAtom);
@@ -77,8 +78,10 @@ const LabeledInput = ({ label, maxLength, type, id }: InputProps): ReactElement 
   return (
     <Wrapper>
       <Text text={label} fontFamily={'SanSerif'} fontSize={'18px'} color={darkGray} fontWeight={'500'} />
-      {type === 'text' && <input value={input} onChange={handleOnChangeText} type={type} id={id} />}
-      {type === 'textarea' && <textarea id={id} />}
+      {type === 'text' && (
+        <input value={input} onChange={handleOnChangeText} type={type} id={id} placeholder={placeHolder} />
+      )}
+      {type === 'textarea' && <textarea id={id} placeholder={placeHolder} />}
       {type === 'select' && <Select options={['A', 'B', 'C']} id={id} />}
       {type === 'date' && <input type="date" value={dateInput} id={id} onChange={handleOnChangeDate} />}
     </Wrapper>

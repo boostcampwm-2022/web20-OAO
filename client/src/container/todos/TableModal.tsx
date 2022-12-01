@@ -115,20 +115,17 @@ const TableModal = (): ReactElement => {
     }
     try {
       let newData = {};
-
       getModalValues(modalWrapper.current).forEach((item) => {
         const { id, value } = item;
         if (id === 'title' && value === '') {
           throw new Error('제목은 필수값입니다!');
         }
         if (id === 'prev' || id === 'next') {
-          return (newData = {
-            ...newData,
-            [id]: value
-              .trim()
-              .split(',')
-              .filter((x: string) => x !== ''),
-          });
+          const uuidArray = uuidSeriesTextToUuidArray(value);
+          const validateUuidArray = validatePrevAndNextId(uuidArray);
+          if (validateUuidArray) {
+            return (newData = { ...newData, [id]: uuidArray });
+          }
         }
         newData = { ...newData, [id]: value };
       });
@@ -150,6 +147,26 @@ const TableModal = (): ReactElement => {
     setModalType(none);
   };
 
+  const validatePrevAndNextId = (uuidArray: string[]): boolean => {
+    const regex = /(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/;
+    if (uuidArray.length > 0) {
+      uuidArray.forEach((uuid: string) => {
+        if (!regex.test(uuid)) throw new Error('id가 올바르지 않게 입력되었습니다');
+      });
+    } else {
+      return true;
+    }
+    return true;
+  };
+
+  const uuidSeriesTextToUuidArray = (uuidSeriesText: string): string[] => {
+    return uuidSeriesText
+      .replaceAll('\n', '')
+      .replaceAll(' ', '')
+      .split(',')
+      .filter((id: string) => id !== '');
+  };
+
   return (
     <Wrapper ref={modalWrapper}>
       <Text text={modalHeader} fontFamily={'SanSerif'} fontSize={'24px'} fontWeight={'600'} />
@@ -160,7 +177,7 @@ const TableModal = (): ReactElement => {
         </>
       )}
       {MODAL_INPUT_LIST.map((item) => {
-        const { type, label, maxLength } = item;
+        const { type, label, maxLength, placeHolder } = item;
         return (
           <LabeledInput
             key={`${label}-${type}`}
@@ -168,6 +185,7 @@ const TableModal = (): ReactElement => {
             label={label}
             maxLength={maxLength}
             type={type}
+            placeHolder={placeHolder}
           />
         );
       })}

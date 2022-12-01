@@ -66,12 +66,22 @@ export enum TABLE_MODALS {
 }
 
 export const MODAL_INPUT_LIST = [
-  { label: '제목', maxLength: 50, type: 'text' },
-  { label: '상세 내용', maxLength: Number.MAX_VALUE, type: 'textarea' },
-  { label: '마감일', type: 'date', maxLength: -1 },
-  { label: '중요도', type: 'select', maxLength: -1 },
-  { label: '먼저 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },
-  { label: '이어서 할 일', maxLength: Number.MAX_VALUE, type: 'textarea' },
+  { label: '제목', maxLength: 50, type: 'text', placeHolder: '할 일의 제목을 입력해주세요' },
+  { label: '상세 내용', maxLength: Number.MAX_VALUE, type: 'textarea', placeHolder: '할 일의 상세내용을 입력해주세요' },
+  { label: '마감일', type: 'date', maxLength: -1, placeHolder: '' },
+  { label: '중요도', type: 'select', maxLength: -1, placeHolder: '' },
+  {
+    label: '먼저 할 일',
+    maxLength: Number.MAX_VALUE,
+    type: 'textarea',
+    placeHolder: '먼저 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
+  },
+  {
+    label: '이어서 할 일',
+    maxLength: Number.MAX_VALUE,
+    type: 'textarea',
+    placeHolder: '이어서 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
+  },
 ];
 
 export const MODAL_LABEL_ID = {
