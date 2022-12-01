@@ -62,27 +62,29 @@ const Table = (): ReactElement => {
       .catch((err) => toast.error(err));
   }, [todoListAtom, filter, sort]);
 
-  return todos.length > 0 ? (
+  return (
     <Wrapper>
       <GridWrapper>
         <TableHeader filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
       </GridWrapper>
-      <RowWrapper>
-        {todos.map((todo: PlainTodo) => (
-          <GridRowWrapper
-            onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
-            key={todo.id}
-          >
-            <TableRow todo={todo} />
-          </GridRowWrapper>
-        ))}
-      </RowWrapper>
+      {todos.length > 0 ? (
+        <RowWrapper>
+          {todos.map((todo: PlainTodo) => (
+            <GridRowWrapper
+              onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
+              key={todo.id}
+            >
+              <TableRow todo={todo} />
+            </GridRowWrapper>
+          ))}
+        </RowWrapper>
+      ) : (
+        <BlankTableWrapper>
+          <h1>Todo가 없습니다!</h1>
+          <h2>Todo를 추가해보는 건 어떨까요?</h2>
+        </BlankTableWrapper>
+      )}
     </Wrapper>
-  ) : (
-    <BlankTableWrapper>
-      <h1>Todo가 없습니다!</h1>
-      <h2>Todo를 추가해보는 건 어떨까요?</h2>
-    </BlankTableWrapper>
   );
 };
 
