@@ -22,6 +22,8 @@ const StyledSortBox = styled.div`
   padding: 20px;
   gap: 20px;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 interface SortProps {

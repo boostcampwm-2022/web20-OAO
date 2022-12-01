@@ -25,7 +25,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   return (
     <>
       <div></div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Button
           onClick={() => {
             setFilterDropdown(() => false);
@@ -38,7 +38,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
         )}
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Button
           onClick={() => {
             setFilterDropdown((prev) => !prev);
@@ -49,7 +49,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
         </Button>
         {filterDropdown && <FilterBox filter={filter} setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Button
           onClick={() => {
             setFilterDropdown(() => false);
@@ -67,7 +67,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
         )}
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Button
           onClick={() => {
             setFilterDropdown(() => false);
@@ -85,10 +85,10 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
         )}
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Text text={'먼저 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
       </div>
-      <div>
+      <div style={{ position: 'relative' }}>
         <Text text={'이어서 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
       </div>
       <div></div>
