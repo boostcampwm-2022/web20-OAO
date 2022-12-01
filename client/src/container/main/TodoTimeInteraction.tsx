@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
 import PostponeBox from '@components/main/PostponeBox';
@@ -8,7 +8,7 @@ import TodoTimeText from '@components/main/TodoTimeText';
 
 import { PlainTodo } from '@todo/todo.type';
 
-import { postponeClicked } from '@util/GlobalState';
+import { postponeClicked, isOnProgress } from '@util/GlobalState';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -29,6 +29,8 @@ interface ComponentTodo {
   displayTime: string;
   handleOnToggle: Function;
   buttonConfig: any;
+  beforeMovePage: Function;
+  stopTimer: Function;
 }
 
 const TodoTimeInteraction = ({
@@ -39,8 +41,18 @@ const TodoTimeInteraction = ({
   displayTime,
   handleOnToggle,
   buttonConfig,
+  stopTimer,
 }: ComponentTodo): ReactElement => {
   const [isPostpone] = useAtom(postponeClicked);
+  const [, setIsOnProgressAtom] = useAtom(isOnProgress);
+
+  useEffect(() => {
+    return () => {
+      setIsOnProgressAtom('relaxing');
+      stopTimer();
+    };
+  }, []);
+
   return (
     <Wrapper>
       <TodoInteractionButton
