@@ -1,7 +1,8 @@
 import { Todo } from '@todo/todo';
 import { isEqualDate } from '@todo/todo.util';
+import { CompareFunc, CompareFuncObj } from '@todo/todoList.type';
 
-export const compareFunctions = {
+const compareFunctions: CompareFuncObj = {
   ascendImminence: (a: Todo, b: Todo): number => {
     const newToday = new Date();
     return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
@@ -27,3 +28,9 @@ export const compareFunctions = {
     return -1;
   },
 };
+
+export const compareFunctionsMap: Map<string, CompareFunc> = new Map(
+  Object.entries(compareFunctions).map(([name, func]) => [name.toLowerCase(), func]),
+);
+
+export const defaultCompareFunctions = ['ascendimminence', 'ascendImportance', 'ascenddeadline', 'ascendlastpostponed'];

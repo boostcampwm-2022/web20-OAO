@@ -1,10 +1,11 @@
 import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate, DAY } from '@todo/todo.util';
-import { compareFunctions } from '@todo/todoList.util';
+import { compareFunctionsMap, defaultCompareFunctions } from '@todo/todoList.util';
 import { ITodoListDataBase } from '@repository/repository.interface';
 import { MemoryDB } from '@repository/repository.memoryDB';
 import { IndexedDBFactory } from '@repository/repository.indexedDB';
+import { CompareFunc, SortCommand } from '@todo/todoList.type';
 
 export const createTodoList = async (dbType: 'MemoryDB' | 'IndexedDB', todos?: InputTodo[]): Promise<TodoList> => {
   if (dbType === 'MemoryDB') {
@@ -215,12 +216,20 @@ export class TodoList {
     return new TodoList(this.db, newTodoList);
   }
 
-  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: string[]): Promise<PlainTodo[]> {
-    const generateCompare = (compareArr: string[]) => {
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: SortCommand[]): Promise<PlainTodo[]> {
+    const generateCompare = (compareArr: SortCommand[]) => {
       return (a: Todo, b: Todo): number => {
         let result = 0;
-        for (let i = 0; i < compareArr.length; i++) {
-          result = compareFunctions[compareArr[i] as keyof typeof compareFunctions](a, b);
+        let filteredCompareArr = compareArr
+          .filter((el) => el.direction !== 'NONE')
+          .map((el) => el.direction.toLowerCase() + el.type.toLowerCase());
+        if (filteredCompareArr.length === 0) {
+          filteredCompareArr = defaultCompareFunctions;
+        }
+        for (const sortCommand of filteredCompareArr) {
+          if (compareFunctionsMap.has(sortCommand)) {
+            result = (compareFunctionsMap.get(sortCommand) as CompareFunc)(a, b);
+          }
           if (result !== 0) break;
         }
         return result;
