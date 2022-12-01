@@ -42,22 +42,24 @@ const Table = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
   const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
+  const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
+  const [sort, setSort] = useState<Array<Map<string, string>>>([]);
 
   useEffect(() => {
     todoListAtom
-      .getSortedRTL()
+      .getSortedList(filter, [])
       .then((sortedTodoList: PlainTodo[]) => {
         setTodos(() => {
           return [...sortedTodoList];
         });
       })
       .catch((err) => toast.error(err));
-  }, [todoListAtom]);
+  }, [todoListAtom, filter, sort]);
 
   return todos.length > 0 ? (
     <Wrapper>
       <GridWrapper>
-        <TableHeader />
+        <TableHeader setFilter={setFilter} setSort={setSort} />
       </GridWrapper>
       <RowWrapper>
         {todos.map((todo: PlainTodo) => (
