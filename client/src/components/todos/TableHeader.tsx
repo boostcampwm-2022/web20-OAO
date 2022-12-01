@@ -21,7 +21,7 @@ const TableHeader = ({ setFilter, setSort, ...props }: Props): ReactElement => {
       <div>
         <Button
           onClick={() => {
-            setFilterDropdown(true);
+            setFilterDropdown((prev) => !prev);
           }}
         >
           <Text text={'상태'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
