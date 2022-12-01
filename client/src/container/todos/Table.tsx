@@ -19,7 +19,7 @@ const BlankTableWrapper = styled.div`
 const GridWrapper = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 3.5fr 1fr 2fr 1fr 2fr 2fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
   border-bottom: 2px solid #e2e2e2;
   text-align: center;
   p {

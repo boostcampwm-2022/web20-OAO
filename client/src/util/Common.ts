@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const todoStatusText = (todoUntil: string): string => {
   return isTodoImminence(todoUntil) ? '오늘까지 해야하는 일!' : '오늘 안해도 되는 일';
 };
@@ -44,4 +46,15 @@ export const getModalValues = (div: Element): any[] => {
 
 export const getTodayDate = (): string => {
   return new Date().toJSON().split('T')[0];
+};
+
+export const copyToClipboard = (text: string): void => {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      toast.success('복사 성공');
+    },
+    () => {
+      toast.error('복사 실패');
+    },
+  );
 };
