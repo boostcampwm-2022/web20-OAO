@@ -1,3 +1,4 @@
+name: test-report
 on:
   pull_request:
     branches:
