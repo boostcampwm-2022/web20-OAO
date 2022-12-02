@@ -33,7 +33,7 @@ jobs:
           yarn -s test
 
       - name: 테스트 결과 발행
-        uses: n-ryu/test-reporter@v0.0.1
+        uses: n-ryu/test-reporter@v0.0.2
         if: success() || failure()
         with:
           name: JEST Tests # Name of the check run which will be created
