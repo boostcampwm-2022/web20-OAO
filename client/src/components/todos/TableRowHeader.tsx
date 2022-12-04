@@ -18,15 +18,6 @@ import { PlainTodo } from '@todo/todo.type';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { toast } from 'react-toastify';
 
-const CheckWrapper = styled.div`
-  input {
-    display: none;
-  }
-  img {
-    cursor: pointer;
-  }
-`;
-
 const TextWrapper = styled.div`
   overflow: hidden;
   white-space: nowrap;
@@ -59,10 +50,12 @@ const TableRowHeader = ({
   todo,
   prevTodoTitle,
   nextTodoTitle,
+  onClick,
 }: {
   todo: PlainTodo;
   prevTodoTitle: string;
   nextTodoTitle: string;
+  onClick: React.MouseEventHandler<HTMLTableRowElement>;
 }): ReactElement => {
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
@@ -94,23 +87,33 @@ const TableRowHeader = ({
   };
 
   return (
-    <>
-      <CheckWrapper>
+    <tr onClick={onClick}>
+      <td>
         {todo.state === 'DONE' ? (
           <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
         ) : (
           <Button context={<Image src={Unchecked} />} onClick={checkTodoStateHandler} />
         )}
-      </CheckWrapper>
-      <TitleWrapper>{todo.title}</TitleWrapper>
-      <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>
-      <TextWrapper>
-        {getyyyymmddDateFormat(todo.until, '.')} {gethhmmFormat(todo.until)}
-      </TextWrapper>
-      <div>{IMPORTANCE_ALPHABET[todo.importance]}</div>
-      <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
-      <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
-      <div>
+      </td>
+      <td>
+        <TitleWrapper>{todo.title}</TitleWrapper>
+      </td>
+      <td>
+        <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>
+      </td>
+      <td>
+        <TextWrapper>
+          {getyyyymmddDateFormat(todo.until, '.')} {gethhmmFormat(todo.until)}
+        </TextWrapper>
+      </td>
+      <td>{IMPORTANCE_ALPHABET[todo.importance]}</td>
+      <td>
+        <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
+      </td>
+      <td>
+        <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
+      </td>
+      <td>
         <Button
           context={<img src={Update} />}
           onClick={(e) => {
@@ -130,8 +133,8 @@ const TableRowHeader = ({
             copyToClipboard(todo.id);
           }}
         />
-      </div>
-    </>
+      </td>
+    </tr>
   );
 };
 

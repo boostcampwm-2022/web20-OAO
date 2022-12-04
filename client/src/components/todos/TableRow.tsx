@@ -2,13 +2,13 @@ import { ReactElement, useState, useEffect } from 'react';
 import TableRowHeader from '@components/todos/TableRowHeader';
 import TableRowDetail from '@components/todos/TableRowDetail';
 import { PlainTodo } from '@todo/todo.type';
-import { displayDetailAtom, todoList } from '@util/GlobalState';
+import { todoList } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
-  const [displayDetail] = useAtom(displayDetailAtom);
+  const [displayDetail, setDisplayDetail] = useState(false);
   const [prevTodoList, setPrevTodo] = useState<PlainTodo[]>([]);
   const [nextTodoList, setNextTodo] = useState<PlainTodo[]>([]);
 
@@ -33,12 +33,19 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
     });
   }, [todo]);
 
+  const showRowDetailHandler = (): void => {
+    setDisplayDetail(!displayDetail);
+  };
+
   return (
     <>
-      <TableRowHeader todo={todo} prevTodoTitle={prevTodoList[0]?.title} nextTodoTitle={nextTodoList[0]?.title} />
-      {displayDetail === todo.id && (
-        <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />
-      )}
+      <TableRowHeader
+        todo={todo}
+        prevTodoTitle={prevTodoList[0]?.title}
+        nextTodoTitle={nextTodoList[0]?.title}
+        onClick={showRowDetailHandler}
+      />
+      {displayDetail && <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />}
     </>
   );
 };

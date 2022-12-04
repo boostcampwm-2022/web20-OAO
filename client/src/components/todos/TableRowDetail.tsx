@@ -3,9 +3,14 @@ import { ReactElement } from 'react';
 import TodoTitleList from '@components/todos/TodoTitleList';
 import styled from 'styled-components';
 
+const TrWrapper = styled.tr`
+  border-bottom: 2px solid #e2e2e2;
+`;
+
 const Wrapper = styled.div`
+  width: 100%;
+  margin: 20% 0;
   text-align: left;
-  margin: 10px;
 `;
 
 const SubTitle = styled.h3`
@@ -21,10 +26,18 @@ const TableRowDetail = ({
   prevTodoList: PlainTodo[];
   nextTodoList: PlainTodo[];
 }): ReactElement => {
+  const getAbsenceTodoDetailText = (): string => {
+    if (todo.content === '' && prevTodoList.length === 0 && nextTodoList.length === 0) return '상세정보가 없습니다 😚';
+    return '';
+  };
+
   return (
-    <>
-      <div></div>
+    <TrWrapper>
+      <th></th>
       <Wrapper>
+        <SubTitle>
+          <h2>{getAbsenceTodoDetailText()}</h2>
+        </SubTitle>
         {todo.content !== '' && (
           <>
             <SubTitle>상세 내용</SubTitle>
@@ -43,8 +56,9 @@ const TableRowDetail = ({
             <TodoTitleList list={nextTodoList} prevId={todo.id} />
           </>
         )}
+        {}
       </Wrapper>
-    </>
+    </TrWrapper>
   );
 };
 export default TableRowDetail;

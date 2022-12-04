@@ -50,72 +50,86 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   const [sortDropdown, setSortDropdown] = useState<string>('');
 
   return (
-    <>
-      <div></div>
-      <div style={{ position: 'relative' }}>
-        <Button
-          onClick={() => {
-            setFilterDropdown(() => false);
-            setSortDropdown((prev) => (prev === 'title' ? '' : 'title'));
-          }}
-        >
-          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
-            <TableHeaderUnit type={'title'} sort={sort} />
-          </Text>
-        </Button>
-        {sortDropdown === 'title' && (
-          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
-        )}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
-          onClick={() => {
-            setFilterDropdown((prev) => !prev);
-            setSortDropdown(() => '');
-          }}
-        >
-          <Text text={'상태'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-        </Button>
-        {filterDropdown && <FilterBox filter={filter} setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
-          onClick={() => {
-            setFilterDropdown(() => false);
-            setSortDropdown((prev) => (prev === 'until' ? '' : 'until'));
-          }}
-        >
-          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
-            <TableHeaderUnit type={'until'} sort={sort} />
-          </Text>
-        </Button>
-        {sortDropdown === 'until' && (
-          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
-        )}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
-          onClick={() => {
-            setFilterDropdown(() => false);
-            setSortDropdown((prev) => (prev === 'importance' ? '' : 'importance'));
-          }}
-        >
-          <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
-            <TableHeaderUnit type={'importance'} sort={sort} />
-          </Text>
-        </Button>
-        {sortDropdown === 'importance' && (
-          <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
-        )}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Text text={'먼저 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Text text={'이어서 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-      </div>
-      <div></div>
-    </>
+    <tr>
+      <th />
+      <th>
+        <div style={{ position: 'relative', textAlign: 'left' }}>
+          <Button
+            onClick={() => {
+              setFilterDropdown(() => false);
+              setSortDropdown((prev) => (prev === 'title' ? '' : 'title'));
+            }}
+          >
+            <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+              <TableHeaderUnit type={'title'} sort={sort} />
+            </Text>
+          </Button>
+          {sortDropdown === 'title' && (
+            <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
+          )}
+        </div>
+      </th>
+      <th>
+        <div style={{ position: 'relative' }}>
+          <Button
+            onClick={() => {
+              setFilterDropdown((prev) => !prev);
+              setSortDropdown(() => '');
+            }}
+          >
+            <Text text={'상태'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
+          </Button>
+          {filterDropdown && <FilterBox filter={filter} setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
+        </div>
+      </th>
+      <th>
+        <div style={{ position: 'relative' }}>
+          <Button
+            onClick={() => {
+              setFilterDropdown(() => false);
+              setSortDropdown((prev) => (prev === 'until' ? '' : 'until'));
+            }}
+          >
+            <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+              <TableHeaderUnit type={'until'} sort={sort} />
+            </Text>
+          </Button>
+          {sortDropdown === 'until' && (
+            <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
+          )}
+        </div>
+      </th>
+      <th>
+        <div style={{ position: 'relative' }}>
+          <Button
+            onClick={() => {
+              setFilterDropdown(() => false);
+              setSortDropdown((prev) => (prev === 'importance' ? '' : 'importance'));
+            }}
+          >
+            <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
+              <TableHeaderUnit type={'importance'} sort={sort} />
+            </Text>
+          </Button>
+          {sortDropdown === 'importance' && (
+            <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
+          )}
+        </div>
+      </th>
+      <th>
+        <div style={{ position: 'relative' }}>
+          <Text text={'먼저 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
+        </div>
+      </th>
+      <th>
+        <div style={{ position: 'relative' }}>
+          <Text text={'이어서 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
+        </div>
+      </th>
+      <th>
+        <div></div>
+      </th>
+    </tr>
   );
 };
 
