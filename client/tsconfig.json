@@ -17,7 +17,6 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@": ["src/*"],
       "@components/*": ["src/components/*"],
       "@container/*": ["src/container/*"],
       "@core/*": ["src/core/*"],
@@ -25,7 +24,8 @@
       "@repository/*": ["src/core/repository/*"],
       "@images/*": ["src/images/*"],
       "@page/*": ["src/page/*"],
-      "@util/*": ["src/util/*"]
+      "@util/*": ["src/util/*"],
+      "@": ["src/*"]
     }
   },
   "include": [".eslintrc.cjs", "src", "jest.config.cjs"],
