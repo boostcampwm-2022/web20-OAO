@@ -1,16 +1,9 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, Suspense } from 'react';
 import { toast } from 'react-toastify';
 
-import TodoTitle from '@container/main/TodoTitle';
-import TodoStatus from '@container/main/TodoStatus';
-import TodoTimeInteraction from '@container/main/TodoTimeInteraction';
-import TodoContents from '@container/main/TodoContents';
-
-import useTodoList from '../hooks/useTodoList';
-
-import { isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { activeTodo, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,15 +15,17 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
+const TodoTimeInteraction = React.lazy(async () => await import('@container/main/TodoTimeInteraction'));
+const TodoStatus = React.lazy(async () => await import('@container/main/TodoStatus'));
+const TodoTitle = React.lazy(async () => await import('@container/main/TodoTitle'));
+const TodoContents = React.lazy(async () => await import('@container/main/TodoContents'));
 
 const { none } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
-  const useTodoListHook = useTodoList();
   const [isFinished] = useAtom(isFinishedAtom);
+  const [activeTodoAtom] = useAtom(activeTodo);
   const [modalType, setModalType] = useAtom(modalTypeAtom);
-
-  const { activeTodo } = useTodoListHook;
 
   useEffect(() => {
     if (modalType !== none) {
@@ -45,18 +40,20 @@ const Main = (): ReactElement => {
   }, [isFinished]);
 
   return (
-    <Wrapper>
-      {activeTodo?.id !== undefined ? (
-        <>
-          <TodoStatus activeTodo={activeTodo} />
-          <TodoTitle activeTodo={activeTodo} />
-          <TodoTimeInteraction {...useTodoListHook} />
-          <TodoContents activeTodo={activeTodo} />
-        </>
-      ) : (
-        <div>Good Job bbb</div>
-      )}
-    </Wrapper>
+    <Suspense fallback={<div>loading</div>}>
+      <Wrapper>
+        {activeTodoAtom !== undefined ? (
+          <>
+            <TodoStatus />
+            <TodoTitle />
+            <TodoTimeInteraction />
+            <TodoContents />
+          </>
+        ) : (
+          <div>Todo가 없습니다.</div>
+        )}
+      </Wrapper>
+    </Suspense>
   );
 };
 

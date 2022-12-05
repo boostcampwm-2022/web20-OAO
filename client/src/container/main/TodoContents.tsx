@@ -1,9 +1,10 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, memo } from 'react';
 import styled from 'styled-components';
 import Image from '@components/Image';
 
 import DropDown from '@images/DropDown.svg';
-import { PlainTodo } from '@todo/todo.type';
+import { useAtom } from 'jotai';
+import { getActiveTodoAtom } from '@util/GlobalState';
 
 const ContentWrapper = styled.div`
   width: 850px;
@@ -37,8 +38,10 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const TodoContents = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
+const TodoContents = (): ReactElement => {
   const [isTodoContentToggled, setIsTodoContentToggled] = useState(true);
+  const [activeTodo] = useAtom(getActiveTodoAtom);
+
   const checkHandler = (): void => {
     setIsTodoContentToggled(!isTodoContentToggled);
   };
@@ -48,7 +51,7 @@ const TodoContents = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement =
       <ToggleWrapper>
         <input type="checkBox" id="toggleCheck" readOnly={isTodoContentToggled} onClick={checkHandler} />
         <label htmlFor="toggleCheck">
-          {isTodoContentToggled ? <></> : <ContentWrapper>{activeTodo.content}</ContentWrapper>}
+          {isTodoContentToggled ? <></> : <ContentWrapper>{activeTodo?.content}</ContentWrapper>}
           <hr />
           <Image src={DropDown} />
         </label>
@@ -56,4 +59,4 @@ const TodoContents = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement =
     </>
   );
 };
-export default TodoContents;
+export default memo(TodoContents);

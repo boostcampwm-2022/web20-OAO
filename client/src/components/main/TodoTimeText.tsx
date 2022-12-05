@@ -1,9 +1,11 @@
-import { ReactElement, useMemo, memo } from 'react';
+import { ReactElement, memo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Text from '@components/Text';
 
 import { getTodoUntilText } from '@util/Common';
+import { useAtom } from 'jotai';
+import { elapsedTimeAtom, getActiveTodoAtom } from '@util/GlobalState';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -12,15 +14,27 @@ const TextWrapper = styled.div`
   text-align: right;
 `;
 
-const TodoTimeText = ({ until, displayTime }: { until: string; displayTime: string }): ReactElement => {
-  const todoUntilText = useMemo(() => {
-    return getTodoUntilText(until);
-  }, [until]);
+const TodoTimeText = (): ReactElement => {
+  const [activeTodo] = useAtom(getActiveTodoAtom);
+  const [displayTime, setDisplayTime] = useState('');
+  const [time, setTime] = useAtom(elapsedTimeAtom);
+
+  useEffect(() => {
+    setTime(activeTodo.elapsedTime);
+  }, [activeTodo]);
+
+  useEffect(() => {
+    const hour = Math.floor(time / 60 / 60);
+    const minute = Math.floor((time % 3600) / 60);
+    const second = time % 60;
+
+    setDisplayTime(`소요시간: ${hour}h ${minute}m ${second}s`);
+  }, [time]);
 
   return (
     <TextWrapper>
-      <Text text={todoUntilText} />
-      <Text text={displayTime} />
+      <Text text={getTodoUntilText(activeTodo.until.toDateString())} />
+      <Text text={displayTime.toString()} />
     </TextWrapper>
   );
 };

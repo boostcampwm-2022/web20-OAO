@@ -1,9 +1,8 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { PlainTodo } from '@todo/todo.type';
-import { isOnProgress } from '@util/GlobalState';
+import { isOnProgress, getActiveTodoAtom } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
 import Working from '@images/Working.svg';
@@ -32,13 +31,15 @@ const BlankBox = styled.div`
   height: 21px;
 `;
 
-const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
+const TodoStatus = (): ReactElement => {
   const [userState] = useAtom(isOnProgress);
+  const [activeTodo] = useAtom(getActiveTodoAtom);
+
   return (
     <>
       <Wrapper>
         <Text
-          text={todoStatusText(activeTodo.until?.toString())}
+          text={todoStatusText(activeTodo?.until?.toString())}
           fontFamily={'roboto'}
           fontSize={'18px'}
           fontWeight={'700'}
@@ -51,4 +52,4 @@ const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => 
   );
 };
 
-export default TodoStatus;
+export default memo(TodoStatus);
