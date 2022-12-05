@@ -216,11 +216,15 @@ export class TodoList {
     return new TodoList(this.db, newTodoList);
   }
 
-  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: SortCommand[]): Promise<PlainTodo[]> {
+  async getSortedListWithFilter(filter: (todo: Todo) => boolean, compareArr: SortCommand[]): Promise<PlainTodo[]> {
     const filteredCompareArr = compareArr.filter((el) => el.direction !== 'NONE');
     const combinedCompare = filteredCompareArr.length !== 0 ? generateCompare(filteredCompareArr) : defaultCompare;
-    const newTodoList = this.todoList.filter((el) => el.state === type).sort(combinedCompare);
+    const newTodoList = this.todoList.filter((el) => filter(el)).sort(combinedCompare);
     return newTodoList.map((el) => el.toPlain());
+  }
+
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: SortCommand[]): Promise<PlainTodo[]> {
+    return await this.getSortedListWithFilter((todo) => type === todo.state, compareArr);
   }
 
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
