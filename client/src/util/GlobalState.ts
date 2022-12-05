@@ -59,10 +59,6 @@ export const getActiveTodoAtom = atom(
 
 export const targetElapsedTimeAtom = atom(0);
 
-asyncActiveTodo.onMount = (setAtom) => {
-  console.log('atom is mounted in provider');
-};
-
 export const elapsedTimeAtom = atom(0); // 초 단위 경과시간
 
 export const startTimeAtom = atom(new Date());

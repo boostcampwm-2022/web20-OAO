@@ -1,20 +1,19 @@
-import { useAtom, useSetAtom } from 'jotai';
+import { useSetAtom, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
-import { POSTPONE_METHODS } from '@util/Constants.js';
-import { todoList, elapsedTimeAtom, stopTimerAtom } from '@util/GlobalState.js';
+import { stopTimerAtom, todoList, elapsedTimeAtom } from '@util/GlobalState.js';
 
-const usePostpone = (): any[] => {
+const useDone = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
   const stopTimer = useSetAtom(stopTimerAtom);
 
-  const setPostpone = (type: string): void => {
+  const setDone = (): void => {
     stopTimer();
     todoListAtom
       .updateElapsedTime(elapsedTime)
       .then(async (updatedTodoList) => {
-        return await POSTPONE_METHODS[type as keyof typeof POSTPONE_METHODS](updatedTodoList);
+        return await updatedTodoList.setDone();
       })
       .then(async (newTodoList) => {
         setTodoListAtom(newTodoList);
@@ -22,14 +21,13 @@ const usePostpone = (): any[] => {
       })
       .then((newActiveTodo) => {
         setElapsedTime(newActiveTodo !== undefined ? newActiveTodo.elapsedTime : 0);
-        toast.error('오늘도 할 일을 미룬 당신! 혹시 말로만 하는 사람은 아니겠죠? 🤔');
+        toast.success('완료되었습니다! 👏🏻👏🏻👏🏻');
       })
       .catch((err) => {
         toast.error(err);
       });
   };
 
-  return [setPostpone];
+  return [setDone];
 };
-
-export default usePostpone;
+export default useDone;

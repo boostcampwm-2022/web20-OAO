@@ -16,7 +16,7 @@ const TodoTitle = (): ReactElement => {
 
   return (
     <Wrapper>
-      <Text text={activeTodo.title} fontSize={'54px'} fontWeight={'700'} margin={'35px 0'} />
+      <Text text={activeTodo?.title} fontSize={'54px'} fontWeight={'700'} margin={'35px 0'} />
     </Wrapper>
   );
 };

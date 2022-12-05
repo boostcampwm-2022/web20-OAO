@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Text from '@components/Text';
 
 import { getTodoUntilText } from '@util/Common';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { elapsedTimeAtom, getActiveTodoAtom } from '@util/GlobalState';
 
 const TextWrapper = styled.div`
@@ -16,11 +16,14 @@ const TextWrapper = styled.div`
 
 const TodoTimeText = (): ReactElement => {
   const [activeTodo] = useAtom(getActiveTodoAtom);
+  const elapsedTime = useAtomValue(elapsedTimeAtom);
   const [displayTime, setDisplayTime] = useState('');
   const [time, setTime] = useAtom(elapsedTimeAtom);
 
   useEffect(() => {
-    setTime(activeTodo.elapsedTime);
+    if (elapsedTime <= 0 && activeTodo !== undefined) {
+      setTime(activeTodo?.elapsedTime);
+    }
   }, [activeTodo]);
 
   useEffect(() => {
@@ -33,7 +36,7 @@ const TodoTimeText = (): ReactElement => {
 
   return (
     <TextWrapper>
-      <Text text={getTodoUntilText(activeTodo.until.toDateString())} />
+      <Text text={getTodoUntilText(activeTodo?.until.toDateString())} />
       <Text text={displayTime.toString()} />
     </TextWrapper>
   );

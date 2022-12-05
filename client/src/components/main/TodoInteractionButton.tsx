@@ -13,6 +13,7 @@ import Postpone from '@images/Postpone.svg';
 
 import { postponeClicked, isOnProgress, setTimerAtom } from '@util/GlobalState.js';
 import { ACTIVE_TODO_STATE } from '@util/Constants';
+import useDone from '../../hooks/useDone';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const ButtonWrapper = styled.div`
 const TodoInteractionButton = (): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
   const [progressState] = useAtom(isOnProgress);
+  const [setDone] = useDone();
   const setTimer = useSetAtom(setTimerAtom);
 
   const startPauseButton = useMemo(() => {
@@ -29,7 +31,7 @@ const TodoInteractionButton = (): ReactElement => {
   }, [progressState]);
 
   const handleDoneClicked = (): void => {
-    // setDone(activeTodo.elapsedTime);
+    setDone();
     if (progressState === ACTIVE_TODO_STATE.working) {
       // handleOnToggle();
     }
