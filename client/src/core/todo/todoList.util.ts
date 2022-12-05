@@ -1,11 +1,14 @@
 import { Todo } from '@todo/todo';
-import { isEqualDate } from '@todo/todo.util';
+import { onlyDate } from '@todo/todo.util';
 import { CompareFunc, CompareFuncObj, SortCommand } from '@todo/todoList.type';
 
 const compareFunctions: CompareFuncObj = {
   imminence: (a: Todo, b: Todo): number => {
-    const newToday = new Date();
-    return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
+    const newToday = onlyDate(new Date());
+    return (
+      -Math.sign(newToday.getTime() - onlyDate(a.until).getTime()) +
+      Math.sign(newToday.getTime() - onlyDate(b.until).getTime())
+    );
   },
   until: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
   importance: (a: Todo, b: Todo): number => a.importance - b.importance,
