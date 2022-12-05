@@ -1,7 +1,7 @@
 import { PlainTodo, InputTodo } from '@todo/todo.type';
 import { Todo } from '@todo/todo';
 import { isEqualDate, DAY } from '@todo/todo.util';
-import { generateCompare, defaultCompare } from '@todo/todoList.util';
+import { generateCompare, defaultCompare, getDefaultCompareForSpecificDate } from '@todo/todoList.util';
 import { ITodoListDataBase } from '@repository/repository.interface';
 import { MemoryDB } from '@repository/repository.memoryDB';
 import { IndexedDBFactory } from '@repository/repository.indexedDB';
@@ -48,10 +48,7 @@ export class TodoList {
   }
 
   async getSortedRTL(today?: Date): Promise<PlainTodo[]> {
-    return this.todoList
-      .filter((el) => el.state === 'READY')
-      .sort(Todo.compare(today))
-      .map((el) => el.toPlain());
+    return await this.getSortedList('READY', [], today);
   }
 
   async postponeTemporally(): Promise<TodoList> {
@@ -216,15 +213,25 @@ export class TodoList {
     return new TodoList(this.db, newTodoList);
   }
 
-  async getSortedListWithFilter(filter: (todo: Todo) => boolean, compareArr: SortCommand[]): Promise<PlainTodo[]> {
+  async getSortedListWithFilter(
+    filter: (todo: Todo) => boolean,
+    compareArr: SortCommand[],
+    today?: Date,
+  ): Promise<PlainTodo[]> {
     const filteredCompareArr = compareArr.filter((el) => el.direction !== 'NONE');
-    const combinedCompare = filteredCompareArr.length !== 0 ? generateCompare(filteredCompareArr) : defaultCompare;
+    const combinedCompare =
+      filteredCompareArr.length === 0
+        ? today === undefined
+          ? defaultCompare
+          : getDefaultCompareForSpecificDate(today)
+        : generateCompare(filteredCompareArr, today);
+
     const newTodoList = this.todoList.filter((el) => filter(el)).sort(combinedCompare);
     return newTodoList.map((el) => el.toPlain());
   }
 
-  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: SortCommand[]): Promise<PlainTodo[]> {
-    return await this.getSortedListWithFilter((todo) => type === todo.state, compareArr);
+  async getSortedList(type: 'READY' | 'WAIT' | 'DONE', compareArr: SortCommand[], today?: Date): Promise<PlainTodo[]> {
+    return await this.getSortedListWithFilter((todo) => type === todo.state, compareArr, today);
   }
 
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
