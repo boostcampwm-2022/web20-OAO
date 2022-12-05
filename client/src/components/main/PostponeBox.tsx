@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import Text from '../Text';
 import Button from '../Button';
 
-import { ACTIVE_TODO_STATE, PRIMARY_COLORS } from '@util/Constants';
+import { ACTIVE_TODO_STATE, PRIMARY_COLORS, POSTPONE_TOOLTIP_MESSAGE } from '@util/Constants';
 import { isOnProgress } from '@util/GlobalState';
+import { Tooltip } from '@components/Tooltip';
 
 const { red, white } = PRIMARY_COLORS;
 
@@ -49,26 +50,19 @@ const PostponeBox = (props: PostponeProps): ReactElement => {
 
   return (
     <StyledPostponeBox>
-      {postponeOptions.map((text: string): ReactElement => {
-        return (
-          <Button
-            key={text}
-            context={
-              <Text
-                text={text}
-                color={white}
-                fontFamily={'Noto Sans'}
-                fontSize={'18px'}
-                fontWeight={'700'}
-                textAlign={'left'}
-              />
-            }
-            onClick={() => {
-              handlePosponeClicked(text);
-            }}
-          />
-        );
-      })}
+      {postponeOptions.map(
+        (text: string): ReactElement => (
+          <Tooltip key={text} message={POSTPONE_TOOLTIP_MESSAGE[text]}>
+            <Button
+              onClick={() => {
+                handlePosponeClicked(text);
+              }}
+            >
+              {<Text text={text} color={white} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
+            </Button>
+          </Tooltip>
+        ),
+      )}
     </StyledPostponeBox>
   );
 };

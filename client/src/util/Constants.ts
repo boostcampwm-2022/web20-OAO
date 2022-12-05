@@ -18,6 +18,13 @@ export const POSTPONE_OPTIONS = {
   '데드라인 미루기': '데드라인 미루기',
 };
 
+export const POSTPONE_TOOLTIP_MESSAGE: { [command: string]: string } = {
+  '잠시 미루기': '중요도, 마감일이 같은 할 일들의 최후순위로 변경합니다.',
+  '하루 미루기': '마감일이 오늘이 아닌 할 일의 마감일을 하루 늘립니다.',
+  '우선순위 낮추기': '중요도를 한단계 낮춥니다.',
+  '데드라인 미루기': '마감일이 오늘 이내인 할 일의 마감일을 하루 늘립니다.',
+};
+
 export const POSTPONE_METHODS = {
   '잠시 미루기': async (todoList: TodoList) => {
     return await todoList.postponeTemporally();
