@@ -94,7 +94,6 @@ export const setTimerAtom = atom(
       set(
         globalTimerAtom,
         window.setInterval(() => {
-          console.log(get(elapsedTimeAtom));
           set(elapsedTimeAtom, get(elapsedTimeAtom) + 1);
         }, 1000),
       );
