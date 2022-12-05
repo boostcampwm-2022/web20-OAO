@@ -10,15 +10,15 @@ export const isTodoImminence = (todoUntil: string): boolean => {
   return todoDate.getDate() === today.getDate() && todoDate.getMonth() === today.getMonth();
 };
 
-export const getTodoUntilText = (todoUntil: string): string => {
+export const getTodoUntilText = (todoUntil: Date): string => {
   if (todoUntil === undefined || todoUntil === null) {
     return '';
   }
-  const untilDate = new Date(todoUntil);
+
   return '마감일: '.concat(
-    isTodoImminence(todoUntil)
-      ? `오늘 ${untilDate.getHours()}시 ${untilDate.getMinutes()}분`
-      : getFormattedDate(todoUntil),
+    isTodoImminence(todoUntil.toString())
+      ? `오늘 ${todoUntil.getHours()}시 ${todoUntil.getMinutes()}분`
+      : getFormattedDate(todoUntil.toString()),
   );
 };
 

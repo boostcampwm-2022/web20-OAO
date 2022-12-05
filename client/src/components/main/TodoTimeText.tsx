@@ -1,10 +1,10 @@
 import { ReactElement, memo, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useAtom, useAtomValue } from 'jotai';
 
 import Text from '@components/Text';
 
 import { getTodoUntilText } from '@util/Common';
-import { useAtom, useAtomValue } from 'jotai';
 import { elapsedTimeAtom, getActiveTodoAtom } from '@util/GlobalState';
 
 const TextWrapper = styled.div`
@@ -36,7 +36,7 @@ const TodoTimeText = (): ReactElement => {
 
   return (
     <TextWrapper>
-      <Text text={getTodoUntilText(activeTodo?.until.toDateString())} />
+      <Text text={getTodoUntilText(activeTodo?.until)} />
       <Text text={displayTime.toString()} />
     </TextWrapper>
   );
