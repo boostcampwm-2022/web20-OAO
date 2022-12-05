@@ -2,12 +2,13 @@ import { useAtom } from 'jotai';
 import { memo, ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
-import Text from '../Text';
-import Button from '../Button';
+import Text from '@components/Text.js';
+import Button from '@components/Button.js';
 
 import { PRIMARY_COLORS } from '@util/Constants';
 import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
-import usePostpone from '../../hooks/usePostpone.js';
+
+import usePostpone from '@hooks/usePostpone.js';
 
 const { red, white } = PRIMARY_COLORS;
 

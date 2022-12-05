@@ -2,10 +2,10 @@ import { useAtom, useSetAtom } from 'jotai';
 import { ReactElement, useMemo, memo } from 'react';
 import styled from 'styled-components';
 
-import Done from '../../images/Done.svg';
+import Done from '@images/Done.svg';
 
-import Button from '../Button';
-import Image from '../Image';
+import Button from '@components/Button';
+import Image from '@components/Image';
 
 import Start from '@images/Start.svg';
 import Pause from '@images/Pause.svg';
@@ -13,7 +13,7 @@ import Postpone from '@images/Postpone.svg';
 
 import { postponeClicked, isOnProgress, setTimerAtom } from '@util/GlobalState.js';
 import { ACTIVE_TODO_STATE } from '@util/Constants';
-import useDone from '../../hooks/useDone';
+import useDone from '@hooks/useDone.js';
 
 const ButtonWrapper = styled.div`
   display: flex;

@@ -1,12 +1,17 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import React, { ReactElement, Suspense, useEffect } from 'react';
+import { ReactElement, Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { getActiveTodoAtom, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
+
+import TodoTimeInteraction from '@container/main/TodoTimeInteraction';
+import TodoStatus from '@container/main/TodoStatus';
+import TodoTitle from '@container/main/TodoTitle';
+import TodoContents from '@container/main/TodoContents';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -15,10 +20,6 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-const TodoTimeInteraction = React.lazy(async () => await import('@container/main/TodoTimeInteraction'));
-const TodoStatus = React.lazy(async () => await import('@container/main/TodoStatus'));
-const TodoTitle = React.lazy(async () => await import('@container/main/TodoTitle'));
-const TodoContents = React.lazy(async () => await import('@container/main/TodoContents'));
 
 const { none } = TABLE_MODALS;
 
