@@ -1,9 +1,9 @@
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
-import React, { ReactElement, useEffect, Suspense } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { activeTodo, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { getActiveTodoAtom, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,7 +24,7 @@ const { none } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
   const [isFinished] = useAtom(isFinishedAtom);
-  const [activeTodoAtom] = useAtom(activeTodo);
+  const [activeTodoAtom] = useAtom(getActiveTodoAtom);
   const [modalType, setModalType] = useAtom(modalTypeAtom);
 
   useEffect(() => {
@@ -40,20 +40,18 @@ const Main = (): ReactElement => {
   }, [isFinished]);
 
   return (
-    <Suspense fallback={<div>loading</div>}>
-      <Wrapper>
-        {activeTodoAtom !== undefined ? (
-          <>
-            <TodoStatus />
-            <TodoTitle />
-            <TodoTimeInteraction />
-            <TodoContents />
-          </>
-        ) : (
-          <div>Todo가 없습니다.</div>
-        )}
-      </Wrapper>
-    </Suspense>
+    <Wrapper>
+      {activeTodoAtom !== undefined ? (
+        <>
+          <TodoStatus />
+          <TodoTitle />
+          <TodoTimeInteraction />
+          <TodoContents />
+        </>
+      ) : (
+        <div>Todo가 없습니다.</div>
+      )}
+    </Wrapper>
   );
 };
 

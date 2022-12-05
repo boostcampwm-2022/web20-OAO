@@ -43,19 +43,7 @@ export const asyncActiveTodo = atom(
   },
 );
 
-export const getActiveTodoAtom = atom(
-  (get) => get(asyncActiveTodo),
-  (get, set, newValue) => {
-    get(todoList)
-      .getActiveTodo()
-      .then(async (data) => {
-        return await set(asyncActiveTodo, data);
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
-  },
-);
+export const getActiveTodoAtom = atom((get) => get(asyncActiveTodo));
 
 export const targetElapsedTimeAtom = atom(0);
 

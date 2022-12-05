@@ -21,16 +21,18 @@ const App = (): ReactElement => {
   return (
     <Provider>
       <BrowserRouter>
-        <ToastContainer />
-        <OverLay />
-        <Menubar />
-        <Wrapper>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Main />}></Route>
-            <Route path="/todos" element={<Todos />}></Route>
-          </Routes>
-        </Wrapper>
+        <Suspense fallback={<div>loading...</div>}>
+          <ToastContainer />
+          <OverLay />
+          <Menubar />
+          <Wrapper>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Main />}></Route>
+              <Route path="/todos" element={<Todos />}></Route>
+            </Routes>
+          </Wrapper>
+        </Suspense>
       </BrowserRouter>
     </Provider>
   );
