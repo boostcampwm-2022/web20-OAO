@@ -8,10 +8,11 @@ class Queue<T> {
   private head: QueueObj<T>;
   private tail: QueueObj<T>;
   #length: number;
-  constructor() {
+  constructor(defaultArr: T[]) {
     this.head = {prev: undefined, next: undefined, value: undefined};
     this.tail = {prev: this.head, next: undefined, value: undefined};
     this.head.next = this.tail;
+    defaultArr.forEach(el => this.push(el));
     this.#length = 0;
   }
   length() : number {
