@@ -239,12 +239,12 @@ export class TodoList {
     return this.todoList.find((el) => el.id === id)?.toPlain();
   }
 
-  async getTopologySortedList(): Promise<Map<string, DiagramTodo>> {
+  async getTopologySortedList(filter: (todo: Todo) => boolean): Promise<Map<string, DiagramTodo>> {
     const cloneTodoList = new Map<string, Todo>(
-      (await this.getSortedListWithFilter(() => true, [])).map((el) => [el.id, new Todo(el)]),
+      (await this.getSortedListWithFilter(filter, [])).map((el) => [el.id, new Todo(el)]),
     );
     const resultTodoList = new Map<string, DiagramTodo>(
-      (await this.getSortedListWithFilter(() => true, [])).map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
+      (await this.getSortedListWithFilter(filter, [])).map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
     );
 
     const updateDepth = (id: string, depth: number): void => {
@@ -255,7 +255,9 @@ export class TodoList {
     };
 
     const forwardQueue = new Queue(
-      this.todoList.filter((el) => this.checkPrev(el) && el.state !== 'DONE').map((el) => ({ depth: 0, id: el.id })),
+      this.todoList
+        .filter((el) => filter(el) && this.checkPrev(el) && el.state !== 'DONE')
+        .map((el) => ({ depth: 0, id: el.id })),
     );
     while (!forwardQueue.isEmpty()) {
       const target = forwardQueue.pop();
