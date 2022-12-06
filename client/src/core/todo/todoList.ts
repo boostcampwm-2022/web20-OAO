@@ -237,4 +237,72 @@ export class TodoList {
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
     return this.todoList.find((el) => el.id === id)?.toPlain();
   }
+
+  async getTopologySortedList(): Promise<void> {
+    interface DiagramTodo {
+      depth: number;
+      todo: Todo;
+    }
+    const todoMap = new Map<string, Todo>(
+      (await this.getSortedListWithFilter(() => true, [])).map((el) => [el.id, new Todo(el)]),
+    );
+    const depthMap = new Map<string, DiagramTodo>(
+      (await this.getSortedListWithFilter(() => true, [])).map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
+    );
+    const todoForwardDepthArr: string[][] = [];
+    const todoBackwardDepthArr: string[][] = [];
+    // ZeroDepth Todo만 추출
+    todoForwardDepthArr.push(
+      this.todoList.filter((el) => this.checkPrev(el) && el.state !== 'DONE').map((el) => el.id),
+    );
+    todoBackwardDepthArr.push(
+      this.todoList.filter((el) => this.checkPrev(el) && el.state !== 'DONE').map((el) => el.id),
+    );
+
+    for (let i = 0; i < todoForwardDepthArr.length; i++) {
+      if (todoForwardDepthArr[i].length === 0) break;
+      todoForwardDepthArr[i].forEach((el) => {
+        const target = depthMap.get(el);
+        if (target !== undefined) {
+          target.depth = i;
+        }
+      });
+      todoForwardDepthArr.push([]);
+      todoForwardDepthArr[i].forEach((id) => {
+        const todo = todoMap.get(id);
+        if (todo === undefined) return;
+        [...todo.next].forEach((nextId) => {
+          const nextTodo = todoMap.get(nextId);
+          if (nextTodo === undefined) return;
+          nextTodo.prev.delete(id);
+          if (nextTodo.prev.size === 0) {
+            todoForwardDepthArr[i + 1].push(nextId);
+          }
+        });
+      });
+    }
+    for (let i = 0; i < todoBackwardDepthArr.length; i++) {
+      if (todoBackwardDepthArr[i].length === 0) break;
+      todoBackwardDepthArr[i].forEach((el) => {
+        const target = depthMap.get(el);
+        if (target !== undefined) {
+          target.depth = -i;
+        }
+      });
+      todoBackwardDepthArr.push([]);
+      todoBackwardDepthArr[i].forEach((id) => {
+        const todo = todoMap.get(id);
+        if (todo === undefined) return;
+        [...todo.prev].forEach((prevId) => {
+          const prevTodo = todoMap.get(prevId);
+          if (prevTodo === undefined) return;
+          prevTodo.next.delete(id);
+          if (prevTodo.next.size === 0) {
+            todoBackwardDepthArr[i + 1].push(prevId);
+          }
+        });
+      });
+    }
+    console.log(depthMap);
+  }
 }
