@@ -10,3 +10,8 @@ export type CompareFunc = (a: Todo, b: Todo, today?: Date) => number;
 export interface CompareFuncObj {
   [id: string]: CompareFunc;
 }
+
+export interface DiagramTodo {
+  depth: number;
+  todo: Todo;
+}
