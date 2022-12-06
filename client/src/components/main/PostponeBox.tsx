@@ -1,12 +1,14 @@
 import { useAtom } from 'jotai';
-import { memo, ReactElement } from 'react';
+import { memo, ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
-import Text from '../Text';
-import Button from '../Button';
+import Text from '@components/Text.js';
+import Button from '@components/Button.js';
 
-import { ACTIVE_TODO_STATE, PRIMARY_COLORS } from '@util/Constants';
-import { isOnProgress } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
+import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
+
+import usePostpone from '@hooks/usePostpone.js';
 
 const { red, white } = PRIMARY_COLORS;
 
@@ -28,23 +30,17 @@ const StyledPostponeBox = styled.div`
   top: 60px;
 `;
 
-interface PostponeProps {
-  setPostpone: Function;
-  postponeOptions: string[];
-  time?: number;
-  setTime?: Function;
-  handleOnToggle: Function;
-}
+const PostponeBox = (): ReactElement => {
+  const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
+  const [activeTodo] = useAtom(asyncActiveTodo);
+  const [setPostpone] = usePostpone();
 
-const PostponeBox = (props: PostponeProps): ReactElement => {
-  const { setPostpone, postponeOptions, handleOnToggle } = props;
-  const [progressState] = useAtom(isOnProgress);
+  useEffect(() => {
+    setPostponeOptions();
+  }, [activeTodo]);
 
-  const handlePosponeClicked = (text: string): void => {
-    setPostpone(text);
-    if (progressState === ACTIVE_TODO_STATE.working) {
-      handleOnToggle();
-    }
+  const handlePosponeClicked = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    setPostpone((e.target as Element).innerHTML);
   };
 
   return (
@@ -63,9 +59,7 @@ const PostponeBox = (props: PostponeProps): ReactElement => {
                 textAlign={'left'}
               />
             }
-            onClick={() => {
-              handlePosponeClicked(text);
-            }}
+            onClick={handlePosponeClicked}
           />
         );
       })}

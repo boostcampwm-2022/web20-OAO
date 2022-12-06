@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
@@ -11,7 +11,7 @@ import Button from '@components/Button';
 import TodosHeader from '@container/todos/TodosHeader';
 import Table from '@container/todos/Table';
 
-import Create from '../images/Create.svg';
+import Create from '@images/Create.svg';
 
 const Wrapper = styled.div`
   height: 90vh;
@@ -37,14 +37,16 @@ const Todos = (): ReactElement => {
   };
 
   return (
-    <Wrapper>
-      <TodosHeader />
-      <Table />
-      <StyledButton>
-        <Button context={<Image src={Create} height={'80px;'} width={'80px;'} />} onClick={hanldeOnClick} />
-      </StyledButton>
-      {modalType !== TABLE_MODALS.none && <TableModal />}
-    </Wrapper>
+    <Suspense fallback={<div>loading</div>}>
+      <Wrapper>
+        <TodosHeader />
+        <Table />
+        <StyledButton>
+          <Button context={<Image src={Create} height={'80px;'} width={'80px;'} />} onClick={hanldeOnClick} />
+        </StyledButton>
+        {modalType !== TABLE_MODALS.none && <TableModal />}
+      </Wrapper>
+    </Suspense>
   );
 };
 

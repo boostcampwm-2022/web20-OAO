@@ -15,6 +15,8 @@ import { InputTodo } from '@todo/todo.type';
 
 import Copy from '@images/Copy.svg';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 const { create, update, none } = TABLE_MODALS;
 const { offWhite, red, blue, darkGray, lightGray } = PRIMARY_COLORS;
 
