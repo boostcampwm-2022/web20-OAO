@@ -10,12 +10,15 @@ export const isTodoImminence = (todoUntil: string): boolean => {
   return todoDate.getDate() === today.getDate() && todoDate.getMonth() === today.getMonth();
 };
 
-export const getTodoUntilText = (todoUntil: string): string => {
-  const untilDate = new Date(todoUntil);
+export const getTodoUntilText = (todoUntil: Date): string => {
+  if (todoUntil === undefined || todoUntil === null) {
+    return '';
+  }
+
   return '마감일: '.concat(
-    isTodoImminence(todoUntil)
-      ? `오늘 ${untilDate.getHours()}시 ${untilDate.getMinutes()}분`
-      : getFormattedDate(todoUntil),
+    isTodoImminence(todoUntil.toString())
+      ? `오늘 ${todoUntil.getHours()}시 ${todoUntil.getMinutes()}분`
+      : getFormattedDate(todoUntil.toString()),
   );
 };
 
@@ -32,7 +35,7 @@ export const isSameObject = (obj1: any, obj2: any): boolean => {
 export const getyyyymmddDateFormat = (date: Date, separator: string): string => {
   const mm = date.getMonth() + 1;
   const dd = date.getDate();
-  console.log([date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator));
+  // console.log([date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator));
 
   return [date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator);
 };

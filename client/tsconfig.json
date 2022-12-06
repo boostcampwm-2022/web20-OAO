@@ -17,15 +17,16 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@repository/*": ["src/core/repository/*"],
+      "@todo/*": ["src/core/todo/*"],
       "@components/*": ["src/components/*"],
       "@container/*": ["src/container/*"],
       "@core/*": ["src/core/*"],
-      "@todo/*": ["src/core/todo/*"],
-      "@repository/*": ["src/core/repository/*"],
       "@images/*": ["src/images/*"],
       "@page/*": ["src/page/*"],
       "@util/*": ["src/util/*"],
-      "@": ["src/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@": ["src/*"],
     }
   },
   "include": [".eslintrc.cjs", "src", "jest.config.cjs"],
