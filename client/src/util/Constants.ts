@@ -37,6 +37,7 @@ export const PRIMARY_COLORS = {
   red: '#FE654F',
   white: '#FFFFFF',
   offWhite: '#FCFCFC',
+  lightestGray: '#F4F4F4',
   lightGray: '#E2E2E2',
   gray: '#5C5C5C',
   darkGray: '#3F3F3F',
@@ -44,6 +45,8 @@ export const PRIMARY_COLORS = {
   black: '#1D1D1D',
   brown: '#312317',
   blue: '#6C9A8B',
+  green: '#93C692',
+  yellow: '#FEA34F',
 };
 
 export const IMPORTANCE_ALPHABET: ImportanceType = {
