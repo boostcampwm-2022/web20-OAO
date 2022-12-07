@@ -1,6 +1,7 @@
 import { TodoList } from '@todo/todoList';
 import { Todo } from '@todo/todo';
 import Queue from '@util/queue';
+import { todoList } from './GlobalState';
 
 export interface DiagramTodo {
   order?: number;
@@ -8,11 +9,11 @@ export interface DiagramTodo {
   todo: Todo;
 }
 
-export const topologySort = async (
+const topologySort = async (
   todoList: TodoList,
-  filter: (todo: Todo) => boolean,
+  filter?: (todo: Todo) => boolean,
 ): Promise<Map<string, DiagramTodo>> => {
-  const sortedTodoList = await todoList.getSortedListWithFilter(filter, []);
+  const sortedTodoList = await todoList.getSortedListWithFilter(filter ?? ((todo: Todo) => todo.state !== 'DONE'), []);
   const cloneTodoList = new Map<string, Todo>(sortedTodoList.map((el) => [el.id, new Todo(el)]));
   const resultTodoList = new Map<string, DiagramTodo>(
     sortedTodoList.map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
@@ -70,7 +71,7 @@ export const topologySort = async (
   return resultTodoList;
 };
 
-export const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo> => {
+const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo> => {
   const todoListArr = [...todoList];
   let j = 0;
   todoListArr.forEach((el, i, arr) => {
@@ -79,4 +80,11 @@ export const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, Diagr
     todo.order = i + j;
   });
   return new Map(todoListArr);
+};
+
+export const getDiagramData = async (
+  todoList: TodoList,
+  filter?: (todo: Todo) => boolean,
+): Promise<Map<string, DiagramTodo>> => {
+  return calcOrder(await topologySort(todoList, filter));
 };
