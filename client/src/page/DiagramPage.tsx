@@ -1,22 +1,23 @@
-import { ReactElement } from 'react';
+import { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
 import DiagramHeader from '@container/diagram/DiagramHeader';
-import Diagram from '@container/diagram/Diagram';
+import DiagramFrame from '@container/diagram/DiagramFrame';
 
 const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
   height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  position: relative;
 `;
 
 const DiagramPage = (): ReactElement => {
   return (
     <Wrapper>
       <DiagramHeader />
-      <Diagram />
+      <DiagramFrame />
     </Wrapper>
   );
 };

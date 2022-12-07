@@ -8,8 +8,9 @@ import Image from '@components/Image';
 import Diagram from '@images/Diagram.svg';
 
 const Wrapper = styled.div`
-  width: auto;
-  padding-inline: 15px;
+  position: relative;
+  width: max-content;
+  padding-inline: 8px;
   display: flex;
   flex-direction: column;
   height: 100vh;
