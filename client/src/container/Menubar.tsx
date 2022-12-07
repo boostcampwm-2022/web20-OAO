@@ -9,6 +9,7 @@ import Button from '@components/Button';
 
 const Wrapper = styled.div`
   height: 100vh;
+  width: 8vh;
   background: #fcfcfc;
   box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
   text-align: center;

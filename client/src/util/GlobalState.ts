@@ -30,11 +30,8 @@ export const asyncActiveTodo = atom(
 
 export const getActiveTodoAtom = atom((get) => get(asyncActiveTodo));
 
-export const targetElapsedTimeAtom = atom(0);
-
 export const elapsedTimeAtom = atom(0); // 초 단위 경과시간
 
-export const startTimeAtom = atom(new Date());
 export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
 
@@ -99,3 +96,16 @@ export const stopTimerAtom = atom(null, (get, set) => {
     set(isOnProgress, 'relaxing'); // stop
   }
 });
+
+export const displayTime = atom('');
+export const displayTimeAtom = atom(
+  (get) => get(displayTime),
+  (get, set) => {
+    const time = get(elapsedTimeAtom);
+    const hour = Math.floor(time / 60 / 60);
+    const minute = Math.floor((time % 3600) / 60);
+    const second = time % 60;
+
+    set(displayTime, `소요시간: ${hour}h ${minute}m ${second}s`);
+  },
+);
