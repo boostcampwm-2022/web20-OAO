@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div<{ x: number; y: number }>`
+const Wrapper = styled.div`
   position: absolute;
-  transform: ${(props) => `translate(${props.x}px, ${props.y}px)`};
+  transform: translate(var(--x), var(--y));
 `;
 
 const toPathString = (width: number, height: number): string => {
@@ -16,9 +16,12 @@ const TodoVertex = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2
   const y = Math.min(y1, y2);
   const width = x2 - x1;
   const height = y2 - y1;
-
+  const style = {
+    '--x': `${x}px`,
+    '--y': `${y}px`,
+  };
   return (
-    <Wrapper x={x} y={y}>
+    <Wrapper style={style as React.CSSProperties}>
       <svg
         width={Math.abs(width)}
         height={height}

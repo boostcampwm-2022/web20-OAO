@@ -8,7 +8,7 @@ const { green, yellow, gray, lightestGray, black } = PRIMARY_COLORS;
 
 const DAY = 1000 * 60 * 60 * 24;
 
-const Wrapper = styled.div<{ x: number; y: number }>`
+const Wrapper = styled.div`
   position: absolute;
   width: max-content;
   height: max-content;
@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ x: number; y: number }>`
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: ${lightestGray};
-  transform: translate(${(props) => props.x}px, ${(props) => props.y}px);
+  transform: translate(var(--x), var(--y));
   cursor: pointer;
 `;
 
@@ -63,8 +63,12 @@ const remainingDayToString = (until: Date): string => {
 };
 
 const TodoBlock = ({ todo, x, y }: { todo: Todo; x: number; y: number }): ReactElement => {
+  const style = {
+    '--x': `${x}px`,
+    '--y': `${y}px`,
+  };
   return (
-    <Wrapper x={x} y={y}>
+    <Wrapper style={style as React.CSSProperties}>
       <UpperRow>
         <Marker state={todo.state} />
         <Title
