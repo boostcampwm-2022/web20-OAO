@@ -10,7 +10,7 @@ import { postponeOptionsAtom, asyncActiveTodo, needTodoControllerAtom } from '@u
 
 import usePostpone from '@hooks/usePostpone.js';
 
-const { red, white, black, darkGray } = PRIMARY_COLORS;
+const { red, white, darkGray } = PRIMARY_COLORS;
 
 interface Props {
   isBottom: boolean;
