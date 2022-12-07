@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Home from '@images/Home.svg';
 import Table from '@images/Table.svg';
+
 import Image from '@components/Image';
-import Button from '@components/Button';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -19,13 +19,13 @@ const Menubar = (): ReactElement => {
   return (
     <Wrapper>
       <Link to="/">
-        <Image src={Home} margin={'30px 0 0 0'} />
+        <Image src={Home} />
       </Link>
       <Link to="/todos">
-        <Button context={<Image src={Table} margin={'30px 0 0 0'} />} />
+        <Image src={Table} />
       </Link>
     </Wrapper>
   );
 };
 
-export default Menubar;
+export default memo(Menubar);
