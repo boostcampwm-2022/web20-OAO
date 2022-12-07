@@ -7,9 +7,10 @@ import Text from '@components/Text';
 import ElapsedTimeText from '@components/ElapsedTimeText';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 
-import { getActiveTodoAtom, isMainPageAtom, needTodoControllerAtom } from '@util/GlobalState';
+import { getActiveTodoAtom, isMainPageAtom, needTodoControllerAtom, postponeClicked } from '@util/GlobalState';
 import { getTodoUntilText } from '@util/Common';
 import { PRIMARY_COLORS } from '@util/Constants';
+import PostponeBox from '@components/main/PostponeBox';
 
 const { white, darkGray, offWhite } = PRIMARY_COLORS;
 
@@ -55,6 +56,7 @@ const TodoController = (): ReactElement => {
   const activeTodo = useAtomValue(getActiveTodoAtom);
   const [needTodoController, setNeedTodoController] = useAtom(needTodoControllerAtom);
   const [isMainPage, setIsMainPage] = useAtom(isMainPageAtom);
+  const isPostpone = useAtomValue(postponeClicked);
 
   useEffect(() => {
     setIsMainPage();
@@ -73,6 +75,7 @@ const TodoController = (): ReactElement => {
     <Wrapper active={needTodoController}>
       <ButtonWrapper>
         <TodoInteractionButton {...imageButtonStyle} />
+        {isPostpone && <PostponeBox />}
       </ButtonWrapper>
       <Text text={activeTodo?.title} fontFamily="NanumMyeongjo" fontSize="24px" color={offWhite} />
       <TextWrapper>

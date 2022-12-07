@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { memo, ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -6,16 +6,20 @@ import Text from '@components/Text.js';
 import Button from '@components/Button.js';
 
 import { PRIMARY_COLORS } from '@util/Constants';
-import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
+import { postponeOptionsAtom, asyncActiveTodo, needTodoControllerAtom } from '@util/GlobalState';
 
 import usePostpone from '@hooks/usePostpone.js';
 
-const { red, white } = PRIMARY_COLORS;
+const { red, white, black, darkGray } = PRIMARY_COLORS;
 
-const StyledPostponeBox = styled.div`
+interface Props {
+  isBottom: boolean;
+}
+
+const StyledPostponeBox = styled.div<Props>`
   display: flex;
   flex-direction: column;
-  background-color: ${red};
+  background-color: ${(props) => (props.isBottom ? darkGray : red)};
   line-height: 25px;
   letter-spacing: 0em;
   align-items: flex-start;
@@ -27,12 +31,15 @@ const StyledPostponeBox = styled.div`
   gap: 20px;
   position: absolute;
   left: 40px;
-  top: 60px;
+  top: ${(props) => (props.isBottom ? '' : '60px')};
+  bottom: ${(props) => (props.isBottom ? '100%' : '')};
+  transform: ${(props) => (props.isBottom ? 'translateY(-3px)' : '')};
 `;
 
 const PostponeBox = (): ReactElement => {
   const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
   const [activeTodo] = useAtom(asyncActiveTodo);
+  const needTodoController = useAtomValue(needTodoControllerAtom);
   const [setPostpone] = usePostpone();
 
   useEffect(() => {
@@ -44,7 +51,7 @@ const PostponeBox = (): ReactElement => {
   };
 
   return (
-    <StyledPostponeBox>
+    <StyledPostponeBox isBottom={needTodoController}>
       {postponeOptions.map((text: string): ReactElement => {
         return (
           <Button
