@@ -8,9 +8,15 @@ import Menubar from '@container/Menubar';
 
 import Todos from '@page/Todos';
 import OverLay from '@components/OverLay';
+import TodoController from '@container/TodoController';
 
 const Wrapper = styled.div`
   width: 100%;
+`;
+
+const BottomWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
 `;
 
 const Main = lazy(async () => await import('@page/Main'));
@@ -29,6 +35,9 @@ const App = (): ReactElement => {
             <Route path="/todos" element={<Todos />}></Route>
           </Routes>
         </Wrapper>
+        <BottomWrapper>
+          <TodoController />
+        </BottomWrapper>
       </BrowserRouter>
     </Suspense>
   );
