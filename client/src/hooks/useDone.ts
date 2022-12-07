@@ -1,11 +1,12 @@
 import { useSetAtom, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
-import { stopTimerAtom, todoList, elapsedTimeAtom } from '@util/GlobalState.js';
+import { stopTimerAtom, todoList, elapsedTimeAtom, postponeClicked } from '@util/GlobalState.js';
 
 const useDone = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
+  const setPostponeClicked = useSetAtom(postponeClicked);
   const stopTimer = useSetAtom(stopTimerAtom);
 
   const setDone = (): void => {
@@ -20,6 +21,7 @@ const useDone = (): any[] => {
         return await newTodoList.getActiveTodo();
       })
       .then((newActiveTodo) => {
+        if (newActiveTodo === undefined) setPostponeClicked(false);
         setElapsedTime(newActiveTodo !== undefined ? newActiveTodo.elapsedTime : 0);
         toast.success('완료되었습니다! 👏🏻👏🏻👏🏻');
       })
