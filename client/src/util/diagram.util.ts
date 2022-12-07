@@ -3,7 +3,8 @@ import { Todo } from '@todo/todo';
 import Queue from '@util/queue';
 
 export interface DiagramTodo {
-  depth: number;
+  order?: number;
+  depth?: number;
   todo: Todo;
 }
 
@@ -65,5 +66,17 @@ export const topologySort = async (
       }
     });
   }
+
   return resultTodoList;
+};
+
+export const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo> => {
+  const todoListArr = [...todoList];
+  let j = 0;
+  todoListArr.forEach((el, i, arr) => {
+    const todo = el[1];
+    if (i !== 0 && todo.depth === arr[i - 1][1].depth) j++;
+    todo.order = i + j;
+  });
+  return new Map(todoListArr);
 };
