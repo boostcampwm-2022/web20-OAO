@@ -6,7 +6,7 @@ import Text from '@components/Text';
 import ElapsedTimeText from '@components/ElapsedTimeText';
 
 import { getTodoUntilText } from '@util/Common';
-import { getActiveTodoAtom } from '@util/GlobalState';
+import { asyncActiveTodo } from '@util/GlobalState';
 
 import { PRIMARY_COLORS } from '@util/Constants';
 
@@ -18,7 +18,7 @@ const TextWrapper = styled.div`
 `;
 
 const TodoTimeText = (): ReactElement => {
-  const [activeTodo] = useAtom(getActiveTodoAtom);
+  const [activeTodo] = useAtom(asyncActiveTodo);
   return (
     <TextWrapper>
       <Text text={getTodoUntilText(activeTodo?.until)} />

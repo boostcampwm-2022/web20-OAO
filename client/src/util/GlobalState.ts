@@ -28,8 +28,6 @@ export const asyncActiveTodo = atom(
   },
 );
 
-export const getActiveTodoAtom = atom((get) => get(asyncActiveTodo));
-
 export const elapsedTimeAtom = atom(0); // 초 단위 경과시간
 
 export const postponeClicked = atom(false);
