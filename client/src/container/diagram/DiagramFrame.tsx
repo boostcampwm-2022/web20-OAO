@@ -12,8 +12,8 @@ const Wrapper = styled.div`
   height: 100%;
   border-top: 2px solid ${darkestGray};
   background-color: ${offWhite};
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 const DiagramFrame = (): ReactElement => {
   return (

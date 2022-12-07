@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
 import styled from 'styled-components';
@@ -16,16 +16,26 @@ import TodoVertex from '@components/diagram/TodoVertex';
 
 const { offWhite } = PRIMARY_COLORS;
 
-const Wrapper = styled.div<{ w: number; h: number }>`
+const Wrapper = styled.div`
   position: relative;
-  width: ${(props) => props.w}px;
-  height: ${(props) => props.h}px;
   background-color: ${offWhite};
+  transform: translate(var(--offsetX), var(--offsetY));
 `;
+
+const Detector = styled.div`
+  position: absolute;
+  background-color: ${offWhite};
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+`;
+
 const Diagram = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [diagramData, setDiagramData] = useState<Map<string, DiagramTodo> | undefined>();
   const [diagramVertice, setDiagramVertice] = useState<Vertex[] | undefined>();
+  const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
+  const isWheelDown = useRef<boolean>(false);
 
   useEffect(() => {
     getDiagramData(todoListAtom)
@@ -38,19 +48,47 @@ const Diagram = (): ReactElement => {
       });
   }, [todoListAtom]);
 
+  const style = {
+    '--offsetX': `${offset.x}px`,
+    '--offsetY': `${offset.y}px`,
+  };
+
+  const onWheelDown = (event: React.MouseEvent): void => {
+    if (event.button === 1) {
+      isWheelDown.current = true;
+    }
+  };
+
+  const onWheelUp = (event: React.MouseEvent): void => {
+    isWheelDown.current = false;
+  };
+
+  const onWheelLeave = (event: React.MouseEvent): void => {
+    isWheelDown.current = false;
+  };
+
+  const onMouseMove = (event: React.MouseEvent): void => {
+    if (isWheelDown.current) {
+      setOffset((prev) => ({ x: prev.x + event.movementX, y: prev.y + event.movementY }));
+    }
+  };
+
   return (
-    <Wrapper w={2000} h={2000}>
-      {diagramData !== undefined &&
-        diagramVertice?.map((el) => {
-          const { x1, y1, x2, y2 } = getVertexDimension(diagramData, el);
-          return <TodoVertex key={`${el.from}+${el.to}`} x1={x1} y1={y1} x2={x2} y2={y2} />;
-        })}
-      {diagramData !== undefined &&
-        [...diagramData].map((el) => {
-          const pos = calculatePosition(el[1].order as number, el[1].depth as number);
-          return <TodoBlock key={el[1].todo.id} todo={el[1].todo} x={pos.x} y={pos.y} />;
-        })}
-    </Wrapper>
+    <div onMouseDown={onWheelDown} onMouseUp={onWheelUp} onMouseMove={onMouseMove} onMouseLeave={onWheelLeave}>
+      <Detector />
+      <Wrapper style={style as React.CSSProperties}>
+        {diagramData !== undefined &&
+          diagramVertice?.map((el) => {
+            const { x1, y1, x2, y2 } = getVertexDimension(diagramData, el);
+            return <TodoVertex key={`${el.from}+${el.to}`} x1={x1} y1={y1} x2={x2} y2={y2} />;
+          })}
+        {diagramData !== undefined &&
+          [...diagramData].map((el) => {
+            const pos = calculatePosition(el[1].order as number, el[1].depth as number);
+            return <TodoBlock key={el[1].todo.id} todo={el[1].todo} x={pos.x} y={pos.y} />;
+          })}
+      </Wrapper>
+    </div>
   );
 };
 
