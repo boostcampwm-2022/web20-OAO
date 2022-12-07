@@ -8,11 +8,13 @@ import Menubar from '@container/Menubar';
 
 import Main from '@page/Main';
 import Todos from '@page/Todos';
-import Diagram from '@page/Diagram';
+import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
 
 const Wrapper = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const App = (): ReactElement => {
@@ -27,7 +29,7 @@ const App = (): ReactElement => {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/todos" element={<Todos />}></Route>
-            <Route path="/diagram" element={<Diagram />}></Route>
+            <Route path="/diagram" element={<DiagramPage />}></Route>
           </Routes>
         </Wrapper>
       </BrowserRouter>
