@@ -40,6 +40,7 @@ export const PRIMARY_COLORS = {
   lightGray: '#E2E2E2',
   gray: '#5C5C5C',
   darkGray: '#3F3F3F',
+  darkestGray: '#262626',
   black: '#1D1D1D',
   brown: '#312317',
   blue: '#6C9A8B',
