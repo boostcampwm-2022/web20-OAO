@@ -9,6 +9,8 @@ import Menubar from '@container/Menubar';
 import Todos from '@page/Todos';
 import OverLay from '@components/OverLay';
 import TodoController from '@container/TodoController';
+import { useAtomValue } from 'jotai';
+import { isMainPageAtom } from '@util/GlobalState';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,6 +24,8 @@ const BottomWrapper = styled.div`
 const Main = lazy(async () => await import('@page/Main'));
 
 const App = (): ReactElement => {
+  const isMainPage = useAtomValue(isMainPageAtom);
+
   return (
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
@@ -35,9 +39,11 @@ const App = (): ReactElement => {
             <Route path="/todos" element={<Todos />}></Route>
           </Routes>
         </Wrapper>
-        <BottomWrapper>
-          <TodoController />
-        </BottomWrapper>
+        {!isMainPage && (
+          <BottomWrapper>
+            <TodoController />
+          </BottomWrapper>
+        )}
       </BrowserRouter>
     </Suspense>
   );

@@ -109,3 +109,11 @@ export const displayTimeAtom = atom(
     set(displayTime, `소요시간: ${hour}h ${minute}m ${second}s`);
   },
 );
+
+export const isMainPage = atom(true);
+export const isMainPageAtom = atom(
+  (get) => get(isMainPage),
+  (_get, set) => {
+    set(isMainPage, location.pathname === '/');
+  },
+);
