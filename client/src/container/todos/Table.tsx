@@ -46,13 +46,6 @@ const Table = (): ReactElement => {
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
   const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
 
-  topologySort(todoListAtom, () => true)
-    .then(calcOrder)
-    .then((value) => console.log(value))
-    .catch(() => {
-      console.log('error');
-    });
-
   useEffect(() => {
     todoListAtom
       .getSortedList(
