@@ -226,4 +226,14 @@ export class TodoList {
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
     return this.todoList.find((el) => el.id === id)?.toPlain();
   }
+
+  async getTodoBySearchKeyword(keyword: string, numberOfReturnTodo: number): Promise<PlainTodo[]> {
+    const regExp = new RegExp(`${keyword}`, 'g');
+
+    const searchTodoList = this.todoList
+      .filter((el) => el.title.match(regExp))
+      .sort((prev, next) => prev.title.length - next.title.length)
+      .slice(0, numberOfReturnTodo);
+    return searchTodoList.map((el) => el.toPlain());
+  }
 }

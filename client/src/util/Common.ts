@@ -35,8 +35,6 @@ export const isSameObject = (obj1: any, obj2: any): boolean => {
 export const getyyyymmddDateFormat = (date: Date, separator: string): string => {
   const mm = date.getMonth() + 1;
   const dd = date.getDate();
-  // console.log([date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator));
-
   return [date.getFullYear(), (mm > 9 ? '' : '0') + `${mm}`, (dd > 9 ? '' : '0') + `${dd}`].join(separator);
 };
 
