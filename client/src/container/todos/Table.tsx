@@ -6,6 +6,7 @@ import { useAtom } from 'jotai';
 import { PlainTodo } from '@todo/todo.type';
 import { todoList, displayDetailAtom } from '@util/GlobalState.js';
 import { toast } from 'react-toastify';
+import { topologySort, calcOrder } from '@util/diagram.util';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -44,6 +45,13 @@ const Table = (): ReactElement => {
   const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
   const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
+
+  topologySort(todoListAtom, () => true)
+    .then(calcOrder)
+    .then((value) => console.log(value))
+    .catch(() => {
+      console.log('error');
+    });
 
   useEffect(() => {
     todoListAtom
