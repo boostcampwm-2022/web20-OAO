@@ -24,6 +24,7 @@ const Ul = styled.ul`
 
 const UlWrapper = styled.div`
   position: absolute;
+  z-index: 110;
   width: 100%;
   margin: 10px 0;
   background-color: white;
@@ -71,16 +72,17 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
 
   const onInput = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     setInputValue(event.target.value);
-    if (event.target.value.length > 1) {
-      return await todoListAtom
-        .getTodoBySearchKeyword(event.target.value, 10)
-        .then((data: PlainTodo[]) => {
-          setSearchTodoList((prev) => [...data]);
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    }
+
+    if (event.target.value.length === 0) return setSearchTodoList([]);
+
+    return await todoListAtom
+      .getTodoBySearchKeyword(event.target.value, 10)
+      .then((data: PlainTodo[]) => {
+        setSearchTodoList(() => [...data]);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   };
 
   const listOnClick = (selectTodo: PlainTodo): void => {
