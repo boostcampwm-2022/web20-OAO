@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReactElement, Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { getActiveTodoAtom, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { asyncActiveTodo, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,7 +25,7 @@ const { none } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
   const [isFinished] = useAtom(isFinishedAtom);
-  const [activeTodoAtom] = useAtom(getActiveTodoAtom); // -> aync로 activeTodo()
+  const [activeTodoAtom] = useAtom(asyncActiveTodo); // -> aync로 activeTodo()
   const [modalType, setModalType] = useAtom(modalTypeAtom);
 
   useEffect(() => {

@@ -226,4 +226,11 @@ export class TodoList {
   async getTodoById(id: string): Promise<PlainTodo | undefined> {
     return this.todoList.find((el) => el.id === id)?.toPlain();
   }
+
+  clone(): TodoList {
+    return new TodoList(
+      this.db,
+      this.todoList.map((el) => el.toPlain()),
+    );
+  }
 }

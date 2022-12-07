@@ -11,15 +11,25 @@ export const readWriteAtom = atom(
   (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
 );
 
-const todoData = await createTodoList('IndexedDB');
+let todoData = await createTodoList('IndexedDB');
+let tutorialTodoData = await createTodoList('MemoryDB');
+export const isTutorialAtom = atom(false);
 export const todoList = atom(todoData);
-export const activeTodo = atom([]);
+export const toggleTodoListAtom = atom(null, (get, set) => {
+  if (get(isTutorialAtom)) {
+    todoData = get(todoList).clone();
+    set(todoList, tutorialTodoData);
+    return;
+  }
+  tutorialTodoData = get(todoList).clone();
+  set(todoList, todoData);
+});
 export const asyncActiveTodo = atom(
   async (get) => await get(todoList).getActiveTodo(),
   async (get, set, newValue) => {
     get(todoList)
       .getActiveTodo()
-      .catch(async (newActiveTodo) => {
+      .then(async (newActiveTodo) => {
         return await set(asyncActiveTodo, newActiveTodo);
       })
       .catch((err) => {
@@ -27,8 +37,6 @@ export const asyncActiveTodo = atom(
       });
   },
 );
-
-export const getActiveTodoAtom = atom((get) => get(asyncActiveTodo));
 
 export const targetElapsedTimeAtom = atom(0);
 

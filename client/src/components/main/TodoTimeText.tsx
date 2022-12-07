@@ -5,7 +5,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import Text from '@components/Text';
 
 import { getTodoUntilText } from '@util/Common';
-import { elapsedTimeAtom, getActiveTodoAtom } from '@util/GlobalState';
+import { elapsedTimeAtom, asyncActiveTodo } from '@util/GlobalState';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const TextWrapper = styled.div`
 `;
 
 const TodoTimeText = (): ReactElement => {
-  const [activeTodo] = useAtom(getActiveTodoAtom);
+  const [activeTodo] = useAtom(asyncActiveTodo);
   const elapsedTime = useAtomValue(elapsedTimeAtom);
   const [displayTime, setDisplayTime] = useState('');
   const [time, setTime] = useAtom(elapsedTimeAtom);
