@@ -1,7 +1,8 @@
 import { TodoList } from '@todo/todoList';
 import { Todo } from '@todo/todo';
+import { PlainTodo } from '@todo/todo.type';
 import Queue from '@util/queue';
-import { todoList } from './GlobalState';
+import { Id } from 'react-toastify';
 
 export interface DiagramTodo {
   order?: number;
@@ -11,12 +12,14 @@ export interface DiagramTodo {
 
 const topologySort = async (
   todoList: TodoList,
-  filter?: (todo: Todo) => boolean,
+  filter?: (todo: PlainTodo) => boolean,
 ): Promise<Map<string, DiagramTodo>> => {
-  const sortedTodoList = await todoList.getSortedListWithFilter(filter ?? ((todo: Todo) => todo.state !== 'DONE'), []);
+  const sortedTodoList = await todoList.getSortedListWithFilter(() => true, []);
   const cloneTodoList = new Map<string, Todo>(sortedTodoList.map((el) => [el.id, new Todo(el)]));
   const resultTodoList = new Map<string, DiagramTodo>(
-    sortedTodoList.map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
+    sortedTodoList
+      .filter(filter ?? ((el) => el.state !== 'DONE'))
+      .map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
   );
 
   const updateDepth = (id: string, depth: number): void => {
@@ -33,7 +36,7 @@ const topologySort = async (
   };
 
   const zeroDepthTodoList = sortedTodoList
-    .filter((el) => checkPrev(el.id) && el.state !== 'DONE')
+    .filter((el) => el.state !== 'DONE' && checkPrev(el.id))
     .map((el) => ({ depth: 0, id: el.id }));
 
   const forwardQueue = new Queue(zeroDepthTodoList);
@@ -84,7 +87,66 @@ const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo>
 
 export const getDiagramData = async (
   todoList: TodoList,
-  filter?: (todo: Todo) => boolean,
+  filter?: (todo: PlainTodo) => boolean,
 ): Promise<Map<string, DiagramTodo>> => {
   return calcOrder(await topologySort(todoList, filter));
+};
+
+const MARGIN = {
+  top: 100,
+  bottom: 100,
+  left: 100,
+  right: 100,
+};
+
+const GAP = {
+  x: 55,
+  y: 85,
+};
+
+const BLOCK = {
+  x: 225,
+  y: 75,
+};
+
+export const calculatePosition = (order: number, depth: number): { x: number; y: number } => {
+  return { x: MARGIN.left + ((GAP.x + BLOCK.x) * order) / 2, y: MARGIN.top + (GAP.y + BLOCK.y) * depth };
+};
+
+export interface Vertex {
+  from: string;
+  to: string;
+}
+
+export const getVertice = (todoList: Map<string, DiagramTodo>): Vertex[] => {
+  const todoListArr = [...todoList];
+  const verticeArr: Vertex[] = [];
+  todoListArr.forEach((el) => {
+    el[1].todo.next.forEach((nextId) => {
+      verticeArr.push({ from: el[1].todo.id, to: nextId });
+    });
+  });
+  return verticeArr;
+};
+
+export const getVertexDimension = (
+  todoList: Map<string, DiagramTodo>,
+  vertex: Vertex,
+): {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+} => {
+  const from = todoList.get(vertex.from);
+  const to = todoList.get(vertex.to);
+  if (from == null || to == null) throw new Error('ERROR: 선후관계가 잘못된 레퍼런스를 참조하고 있습니다.');
+  const fromPos = calculatePosition(from.order as number, from.depth as number);
+  const toPos = calculatePosition(to.order as number, to.depth as number);
+  return {
+    x1: fromPos.x + BLOCK.x / 2,
+    y1: fromPos.y + BLOCK.y,
+    x2: toPos.x + BLOCK.x / 2,
+    y2: toPos.y,
+  };
 };
