@@ -73,7 +73,7 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   color: ${darkGray};
-  front-family: 'SanSerif'
+  font-family: 'SanSerif';
   font-size: 15px;
   padding: 5px;
   border: 1px solid ${lightGray};
