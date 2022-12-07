@@ -6,14 +6,14 @@ import { ToastContainer } from 'react-toastify';
 import Header from '@container/Header';
 import Menubar from '@container/Menubar';
 
+import Main from '@page/Main';
 import Todos from '@page/Todos';
+import Diagram from '@page/Diagram';
 import OverLay from '@components/OverLay';
 
 const Wrapper = styled.div`
   width: 100%;
 `;
-
-const Main = lazy(async () => await import('@page/Main'));
 
 const App = (): ReactElement => {
   return (
@@ -27,6 +27,7 @@ const App = (): ReactElement => {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/todos" element={<Todos />}></Route>
+            <Route path="/diagram" element={<Diagram />}></Route>
           </Routes>
         </Wrapper>
       </BrowserRouter>
