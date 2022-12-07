@@ -52,7 +52,7 @@ const Title = styled(Text)`
 `;
 
 const importanceToString = (importance: number): string => {
-  return importance === 3 ? '긴급' : importance === 2 ? '보통' : '여유';
+  return +importance === 3 ? '긴급' : +importance === 2 ? '보통' : '여유';
 };
 
 const remainingDayToString = (until: Date): string => {
