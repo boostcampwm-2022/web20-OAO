@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
+import { PRIMARY_COLORS } from '@util/Constants';
 
 interface ButtonStylingProps {
   isActive: boolean;
@@ -11,7 +12,7 @@ const StyledButton = styled.button<ButtonStylingProps>`
   transition: all 200ms ease 0s;
   border-radius: 22px;
   cursor: pointer;
-  border: 2px solid #5c5c5c;
+  border: 2px solid ${PRIMARY_COLORS.gray};
   background: transparent;
 
   &::before {
@@ -19,7 +20,7 @@ const StyledButton = styled.button<ButtonStylingProps>`
     height: 14px;
     left: 3px;
     bottom: 2px;
-    background-color: #5c5c5c;
+    background-color: ${PRIMARY_COLORS.gray};
     position: absolute;
     content: '';
     transition: all 200ms ease 0s;
@@ -29,10 +30,9 @@ const StyledButton = styled.button<ButtonStylingProps>`
   ${({ isActive }) =>
     isActive &&
     `   
-        border: 2px solid #FEA34F;
+        background-color: ${PRIMARY_COLORS.blue};
         &::before {
           transform: translateX(16px);
-          background-color: #FEA34F;
         }
       `}
 `;
