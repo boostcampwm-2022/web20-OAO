@@ -14,7 +14,7 @@ import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
 
-const { offWhite } = PRIMARY_COLORS;
+const { offWhite, green } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: relative;
@@ -28,6 +28,16 @@ const Detector = styled.div`
   width: 100%;
   height: 100%;
   background-color: transparent;
+`;
+
+const Line = styled.div`
+  position: absolute;
+  height: 0;
+  width: 100%;
+  top: 40px;
+  transform: translateY(var(--offsetY));
+  border-top: 4px solid ${green};
+  opacity: 0.5;
 `;
 
 const Diagram = (): ReactElement => {
@@ -48,8 +58,12 @@ const Diagram = (): ReactElement => {
       });
   }, [todoListAtom]);
 
-  const style = {
+  const diagramStyle = {
     '--offsetX': `${offset.x}px`,
+    '--offsetY': `${offset.y}px`,
+  };
+
+  const lineStyle = {
     '--offsetY': `${offset.y}px`,
   };
 
@@ -76,7 +90,8 @@ const Diagram = (): ReactElement => {
   return (
     <div onMouseDown={onWheelDown} onMouseUp={onWheelUp} onMouseMove={onMouseMove} onMouseLeave={onWheelLeave}>
       <Detector />
-      <Wrapper style={style as React.CSSProperties}>
+      <Line style={lineStyle as React.CSSProperties} />
+      <Wrapper style={diagramStyle as React.CSSProperties}>
         {diagramData !== undefined &&
           diagramVertice?.map((el) => {
             const { x1, y1, x2, y2 } = getVertexDimension(diagramData, el);
