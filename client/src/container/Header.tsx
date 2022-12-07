@@ -1,11 +1,12 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 
 import LongLogo from '@images/LongLogo.svg';
 
 import { Link } from 'react-router-dom';
 import Image from '@components/Image';
-import LoginButton from '@components/LoginButton';
+// import LoginButton from '@components/LoginButton';
+import { ToggleButton } from '@components/tutorial/ToggleButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,13 +19,25 @@ const Wrapper = styled.div`
   z-index: -10;
 `;
 
+const TutorialButtonWrapper = styled.div`
+  font-family: 'Nanum Myeongjo';
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const Header = (): ReactElement => {
+  const [isActive, setIsActive] = useState(false);
   return (
     <Wrapper>
       <Link to="/">
         <Image src={LongLogo} flexGrow={3} />
       </Link>
-      <LoginButton />
+      <TutorialButtonWrapper>
+        <span>튜토리얼 모드</span>
+        <ToggleButton isActive={isActive} toggleActive={() => setIsActive(!isActive)} />
+      </TutorialButtonWrapper>
     </Wrapper>
   );
 };
