@@ -13,7 +13,7 @@ const { white, darkGray, offWhite } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   display: flex;
-  height: 10vh;
+  height: 8 vh;
   width: 100vw;
   padding: 15px;
   border-radius: 10px 10px 0 0;

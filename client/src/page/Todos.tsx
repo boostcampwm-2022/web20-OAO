@@ -14,7 +14,7 @@ import Table from '@container/todos/Table';
 import Create from '@images/Create.svg';
 
 const Wrapper = styled.div`
-  height: 90vh;
+  height: 78vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 
 const StyledButton = styled.div`
   position: fixed;
-  bottom: 5%;
+  bottom: 10vh;
   right: 5%;
   width: 80px;
   height: 80px;
