@@ -13,13 +13,13 @@ export const readWriteAtom = atom(
 
 const todoData = await createTodoList('IndexedDB');
 export const todoList = atom(todoData);
-export const activeTodo = atom([]);
+
 export const asyncActiveTodo = atom(
   async (get) => await get(todoList).getActiveTodo(),
   async (get, set, newValue) => {
     get(todoList)
       .getActiveTodo()
-      .catch(async (newActiveTodo) => {
+      .then(async (newActiveTodo) => {
         return await set(asyncActiveTodo, newActiveTodo);
       })
       .catch((err) => {
@@ -115,5 +115,13 @@ export const isMainPageAtom = atom(
   (get) => get(isMainPage),
   (_get, set) => {
     set(isMainPage, location.pathname === '/');
+  },
+);
+
+export const needTodoController = atom(true);
+export const needTodoControllerAtom = atom(
+  (get) => get(needTodoController),
+  (get, set) => {
+    set(needTodoController, !get(isMainPage) && get(asyncActiveTodo) !== undefined);
   },
 );

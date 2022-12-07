@@ -1,8 +1,8 @@
-import { ReactElement, Suspense, useEffect } from 'react';
+import { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 
-import { isMainPageAtom, modalTypeAtom } from '@util/GlobalState';
+import { modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import TableModal from '@container/todos/TableModal';
@@ -32,11 +32,6 @@ const StyledButton = styled.div`
 
 const Todos = (): ReactElement => {
   const [modalType, setModalType] = useAtom(modalTypeAtom);
-  const setMainPage = useSetAtom(isMainPageAtom);
-
-  useEffect(() => {
-    setMainPage();
-  }, []);
 
   const hanldeOnClick = (): void => {
     setModalType(TABLE_MODALS.create);

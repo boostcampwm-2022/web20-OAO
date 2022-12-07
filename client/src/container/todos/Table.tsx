@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 const Wrapper = styled.div`
   width: 85%;
   height: 90%;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
 `;
 

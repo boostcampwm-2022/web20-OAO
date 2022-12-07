@@ -1,9 +1,9 @@
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { ReactElement, Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { getActiveTodoAtom, isFinishedAtom, modalTypeAtom, isMainPageAtom } from '@util/GlobalState';
+import { getActiveTodoAtom, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,13 +27,11 @@ const Main = (): ReactElement => {
   const [isFinished] = useAtom(isFinishedAtom);
   const [activeTodoAtom] = useAtom(getActiveTodoAtom); // -> aync로 activeTodo()
   const [modalType, setModalType] = useAtom(modalTypeAtom);
-  const setMainPage = useSetAtom(isMainPageAtom);
 
   useEffect(() => {
     if (modalType !== none) {
       setModalType(none);
     }
-    setMainPage();
   }, []);
 
   useEffect(() => {
