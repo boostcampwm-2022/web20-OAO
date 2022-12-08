@@ -32,13 +32,23 @@ const Detector = styled.div`
   background-color: transparent;
 `;
 
-const Line = styled.div`
+const HorizontalBaseLine = styled.div`
   position: absolute;
   height: 0;
   width: 100%;
   top: 40px;
   transform: translateY(var(--offsetY));
-  border-top: 4px solid ${green};
+  border-top: 4px dashed ${green};
+  opacity: 0.5;
+`;
+
+const VerticalBaseLine = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 0;
+  left: 110px;
+  transform: translateX(var(--offsetX));
+  border-left: 4px dashed ${green};
   opacity: 0.5;
 `;
 
@@ -65,8 +75,12 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
     '--offsetY': `${offset.y}px`,
   };
 
-  const lineStyle = {
+  const horizontalLineStyle = {
     '--offsetY': `${offset.y}px`,
+  };
+
+  const verticalLineStyle = {
+    '--offsetX': `${offset.x}px`,
   };
 
   const onWheelDown = (event: React.MouseEvent): void => {
@@ -92,7 +106,8 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   return (
     <div onMouseDown={onWheelDown} onMouseUp={onWheelUp} onMouseMove={onMouseMove} onMouseLeave={onWheelLeave}>
       <Detector />
-      <Line style={lineStyle as React.CSSProperties} />
+      <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
+      <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
       <Wrapper style={diagramStyle as React.CSSProperties}>
         {diagramData !== undefined &&
           diagramVertice?.map((el) => {
