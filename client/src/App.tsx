@@ -29,6 +29,26 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const TutorialRadialOverlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0) 73.51%, #93c692 127.82%);
+
+  pointer-events: none;
+
+  p {
+    position: absolute;
+    left: 10vh;
+    bottom: 2vh;
+    font-size: 24px;
+    opacity: 0.7;
+  }
+`;
+
 const App = (): ReactElement => {
   const isTutorial = useAtomValue(isTutorialAtom);
   const [isOver, setIsOver] = useState(false);
@@ -60,6 +80,13 @@ const App = (): ReactElement => {
           </Wrapper>
           <TodoController />
           {isShow && <TutorialImage isTutorial={isTutorial} setIsOver={setIsOver} />}
+          {isTutorial && (
+            <TutorialRadialOverlay>
+              <span>
+                <p>튜토리얼 중입니다...</p>
+              </span>
+            </TutorialRadialOverlay>
+          )}
         </RowWrapper>
       </BrowserRouter>
     </Suspense>
