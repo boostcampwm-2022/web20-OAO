@@ -7,7 +7,6 @@ import ElapsedTimeText from '@components/ElapsedTimeText';
 
 import { getTodoUntilText } from '@util/Common';
 import { asyncActiveTodo } from '@util/GlobalState';
-
 import { PRIMARY_COLORS } from '@util/Constants';
 
 const TextWrapper = styled.div`

@@ -1,9 +1,9 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import styled from 'styled-components';
 import { ReactElement, Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { asyncActiveTodo, isFinishedAtom, modalTypeAtom } from '@util/GlobalState';
+import { asyncActiveTodo, isFinishedAtom, modalTypeAtom, isTutorialAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -42,6 +42,8 @@ const TextWrapper = styled.div`
 const { none, create } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
+  const isTutorial = useAtomValue(isTutorialAtom);
+  const prefix: string = isTutorial ? '/tutorials' : '';
   const [isFinished] = useAtom(isFinishedAtom);
   const [activeTodoAtom] = useAtom(asyncActiveTodo); // -> aync로 activeTodo()
   const [modalType, setModalType] = useAtom(modalTypeAtom);
@@ -78,7 +80,7 @@ const Main = (): ReactElement => {
             <div>
               <h1>Todo가 없습니다!</h1>
               <TextWrapper>
-                <Link to="/todos" onClick={handleOnClick}>
+                <Link to={`${prefix}/todos`} onClick={handleOnClick}>
                   여기
                 </Link>
                 <Text text="를 클릭해서 Todo를 추가해보세요" />
