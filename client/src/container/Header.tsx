@@ -1,14 +1,10 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { useAtom } from 'jotai';
 
 import LongLogo from '@images/LongLogo.svg';
 
 import { Link } from 'react-router-dom';
 import Image from '@components/Image';
-// import LoginButton from '@components/LoginButton';
-import { ToggleButton } from '@components/tutorial/ToggleButton';
-import { isTutorialAtom, toggleTodoListAtom } from '@util/GlobalState';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,20 +26,12 @@ const TutorialButtonWrapper = styled.div`
 `;
 
 const Header = (): ReactElement => {
-  const [isTutorial, setIsTutorial] = useAtom(isTutorialAtom);
-  const [, setTest] = useAtom(toggleTodoListAtom);
-  useEffect((): void => {
-    setTest();
-  }, [isTutorial]);
   return (
     <Wrapper>
       <Link to="/">
         <Image src={LongLogo} flexGrow={3} />
       </Link>
-      <TutorialButtonWrapper>
-        <span>튜토리얼 모드</span>
-        <ToggleButton isActive={isTutorial} toggleActive={() => setIsTutorial(!isTutorial)} />
-      </TutorialButtonWrapper>
+      <TutorialButtonWrapper></TutorialButtonWrapper>
     </Wrapper>
   );
 };

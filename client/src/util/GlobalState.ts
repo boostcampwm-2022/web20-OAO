@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { createTodoList, TodoList } from '@todo/todoList.js';
+import { createTodoList } from '@todo/todoList.js';
 import { TABLE_MODALS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants.js';
 import { isEqualDate } from '@todo/todo.util';
 
@@ -11,25 +11,8 @@ export const readWriteAtom = atom(
   (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
 );
 
-let todoData = await createTodoList('IndexedDB');
-const tutorialTodoDataInit = await createTodoList('MemoryDB');
-let tutorialTodoData: TodoList;
-
-export const isTutorialAtom = atom(false);
+const todoData = await createTodoList('IndexedDB');
 export const todoList = atom(todoData);
-export const toggleTodoListAtom = atom(null, (get, set) => {
-  if (get(isTutorialAtom)) {
-    todoData = get(todoList).clone();
-    set(todoList, tutorialTodoData);
-    return;
-  }
-  if (tutorialTodoData === undefined) {
-    tutorialTodoData = tutorialTodoDataInit;
-    return;
-  }
-  tutorialTodoData = get(todoList).clone();
-  set(todoList, todoData);
-});
 export const asyncActiveTodo = atom(
   async (get) => await get(todoList).getActiveTodo(),
   async (get, set, newValue) => {

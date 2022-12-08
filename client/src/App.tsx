@@ -11,7 +11,6 @@ import Main from '@page/Main';
 import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
-import { isTutorialAtom } from '@util/GlobalState';
 import TodoController from '@container/TodoController';
 
 const RowWrapper = styled.div`
@@ -28,7 +27,6 @@ const Wrapper = styled.div`
 `;
 
 const App = (): ReactElement => {
-  const [isTutorial, ] = useAtom(isTutorialAtom);
   return (
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
