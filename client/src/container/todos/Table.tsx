@@ -53,7 +53,6 @@ const Table = (): ReactElement => {
   const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
   const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
-  console.log("heloo");
 
   useEffect(() => {
     todoListAtom

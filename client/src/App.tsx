@@ -2,7 +2,6 @@ import { ReactElement, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
-import { useAtom } from 'jotai';
 
 import Header from '@container/Header';
 import Menubar from '@container/Menubar';
@@ -40,6 +39,9 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
+              <Route path="/tutorials/" element={<Main />}></Route>
+              <Route path="/tutorials/todos" element={<Todos />}></Route>
+              <Route path="/tutorials/diagram" element={<DiagramPage />}></Route>
             </Routes>
           </Wrapper>
           <TodoController />

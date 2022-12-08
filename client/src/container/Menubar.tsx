@@ -7,6 +7,8 @@ import Table from '@images/Table.svg';
 
 import Image from '@components/Image';
 import Diagram from '@images/Diagram.svg';
+import { isTutorialAtom } from '@util/GlobalState';
+import { useAtomValue } from 'jotai';
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,15 +23,17 @@ const Wrapper = styled.div`
 `;
 
 const Menubar = (): ReactElement => {
+  const setIsTutorial = useAtomValue(isTutorialAtom);
+  const prefix: string = setIsTutorial ? '/tutorials' : '';
   return (
     <Wrapper>
-      <Link to="/">
+      <Link to={`${prefix}/`}>
         <Image src={Home} />
       </Link>
-      <Link to="/todos">
+      <Link to={`${prefix}/todos`}>
         <Image src={Table} />
       </Link>
-      <Link to="/diagram">
+      <Link to={`${prefix}/diagram`}>
         <Image src={Diagram} />
       </Link>
     </Wrapper>
