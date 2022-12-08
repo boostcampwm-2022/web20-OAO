@@ -20,7 +20,7 @@ interface PropsType {
 const Wrapper = styled.div<PropsType>`
   display: flex;
   height: 8vh;
-  width: 100vw;
+  width: calc(100vw - 64px);
   padding: 15px;
   border-radius: 10px 10px 0 0;
   align-items: center;
@@ -31,6 +31,7 @@ const Wrapper = styled.div<PropsType>`
   bottom: ${(props) => (props.active ? '0vh' : '-8vh')};
   transition-property: bottom;
   transition-duration: 1s;
+  z-index: 10000000000;
 `;
 
 const ButtonWrapper = styled.div`

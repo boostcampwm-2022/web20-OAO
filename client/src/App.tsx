@@ -40,8 +40,8 @@ const App = (): ReactElement => {
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
             </Routes>
+            <TodoController />
           </Wrapper>
-          <TodoController />
         </RowWrapper>
       </BrowserRouter>
     </Suspense>
