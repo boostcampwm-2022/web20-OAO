@@ -1,13 +1,15 @@
 import { ReactElement, useState, memo } from 'react';
-import Text from '@components/Text';
+import { useAtom } from 'jotai';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import { getTodayDate } from '@util/Common';
-
-import styled from 'styled-components';
-import Select from '@components/Select';
-import { toast } from 'react-toastify';
-import { useAtom } from 'jotai';
 import { modalTypeAtom } from '@util/GlobalState';
+
+import Text from '@components/Text';
+import Select from '@components/Select';
+import RelatedTodoInput from './RelatedTodoInput';
 
 const { darkGray, lightGray } = PRIMARY_COLORS;
 
@@ -85,9 +87,11 @@ const LabeledInput = ({ label, maxLength, type, id, placeHolder }: InputProps): 
     <Wrapper>
       <Text text={label} fontFamily={'SanSerif'} fontSize={'18px'} color={darkGray} fontWeight={'500'} />
       {type === 'text' && (
-        <input value={input} onChange={handleOnChangeText} type={type} id={id} placeholder={placeHolder} />
+        <input value={input} onChange={handleOnChangeText} type={type} id={id} placeholder={placeHolder} autoFocus />
       )}
       {type === 'textarea' && <textarea id={id} placeholder={placeHolder} />}
+      {type === 'search-prev' && <RelatedTodoInput relatedType={'prev'} />}
+      {type === 'search-next' && <RelatedTodoInput relatedType={'next'} />}
       {type === 'select' && <Select options={['A', 'B', 'C']} id={id} />}
       {type === 'datetime-local' && (
         <input

@@ -37,6 +37,7 @@ export const PRIMARY_COLORS = {
   red: '#FE654F',
   white: '#FFFFFF',
   offWhite: '#FCFCFC',
+  lightestGray: '#F4F4F4',
   lightGray: '#E2E2E2',
   gray: '#5C5C5C',
   darkGray: '#3F3F3F',
@@ -73,13 +74,13 @@ export const MODAL_INPUT_LIST = [
   {
     label: '먼저 할 일',
     maxLength: Number.MAX_VALUE,
-    type: 'textarea',
+    type: 'search-prev',
     placeHolder: '먼저 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
   },
   {
     label: '이어서 할 일',
     maxLength: Number.MAX_VALUE,
-    type: 'textarea',
+    type: 'search-next',
     placeHolder: '이어서 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
   },
 ];

@@ -10,6 +10,9 @@ import Text from '@components/Text';
 import Image from '@components/Image';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
+import { getyyyymmddDateFormat } from '@util/Common';
+
+const { lightGray, gray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: relative;
@@ -22,6 +25,10 @@ const Ul = styled.ul`
   margin: 8px 0;
 `;
 
+const SearchTitleWrapper = styled.div`
+  flex-grow: 2;
+`;
+
 const UlWrapper = styled.div`
   position: absolute;
   z-index: 110;
@@ -30,9 +37,11 @@ const UlWrapper = styled.div`
   background-color: white;
   border: 1px solid #e2e2e2;
   border-radius: 5px;
+  overflow: scroll;
+  height: 20vh;
   li:hover {
     cursor: pointer;
-    background-color: ${PRIMARY_COLORS.lightGray};
+    background-color: ${lightGray};
   }
 `;
 
@@ -54,12 +63,12 @@ const InputWrapper = styled(ListWrapper)`
   display: flex;
   justify-content: center;
   background: white;
-  border: 1px solid ${PRIMARY_COLORS.lightGray};
+  border: 1px solid ${lightGray};
   border-radius: 5px;
   padding: 3px 0;
 `;
 
-const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
+const SearchBar = ({ onClick, onChange }: { onClick: Function; onChange?: Function }): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
   const [searchTodoList, setSearchTodoList] = useState<PlainTodo[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -76,7 +85,7 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
     if (event.target.value.length === 0) return setSearchTodoList([]);
 
     return await todoListAtom
-      .getTodoBySearchKeyword(event.target.value, 10)
+      .getTodoBySearchKeyword(event.target.value)
       .then((data: PlainTodo[]) => {
         setSearchTodoList(() => [...data]);
       })
@@ -97,7 +106,9 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
         <Image src={Search} />
         <input
           type="search"
+          data-label="search-input"
           value={inputValue}
+          onClick={() => onChange}
           onInput={inputEventPromiseWrapper}
           style={{
             border: 'none',
@@ -112,7 +123,15 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
                 <li key={todo.id}>
                   <ListWrapper onClick={() => listOnClick(todo)}>
                     <Image src={Search} />
-                    <Text text={todo.title} fontSize={'15px'} fontFamily={'SanSerif'} />
+                    <SearchTitleWrapper>
+                      <Text text={todo.title} fontSize={'15px'} fontFamily={'SanSerif'} />
+                    </SearchTitleWrapper>
+                    <Text
+                      text={'마감날짜 ' + getyyyymmddDateFormat(todo.until, '.')}
+                      color={gray}
+                      fontSize={'15px'}
+                      fontFamily={'SanSerif'}
+                    />
                   </ListWrapper>
                 </li>
               );
