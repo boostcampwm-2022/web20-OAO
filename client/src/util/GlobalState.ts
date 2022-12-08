@@ -17,7 +17,6 @@ export const todoList = atom(todoData);
 export const isTutorialAtom = atom(false);
 
 export const changeIndexedDBtoMemoryAtom = atom(null, (get, set) => {
-  console.log('i to m');
   if (!get(isTutorialAtom)) {
     return;
   }

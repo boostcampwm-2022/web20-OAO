@@ -1,5 +1,5 @@
 import { ReactElement, Suspense, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { useAtomValue } from 'jotai';
@@ -61,8 +61,9 @@ const App = (): ReactElement => {
     if (!isTutorial) {
       setIsOver(false);
     }
-  });
+  }, [isTutorial]);
 
+  const isCorrectURL = isTutorial && location.pathname.includes('tutorials');
   return (
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
@@ -76,9 +77,9 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials" element={<Main />}></Route>
-              <Route path="/tutorials/todos" element={<Todos />}></Route>
-              <Route path="/tutorials/diagram" element={<DiagramPage />}></Route>
+              <Route path="/tutorials" element={isCorrectURL ? <Main /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials/todos" element={isCorrectURL ? <Todos /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials/diagram" element={isCorrectURL ? <DiagramPage /> : <Navigate to="/" />}></Route>
             </Routes>
           </Wrapper>
           <TodoController />
