@@ -112,20 +112,20 @@ const TableRowHeader = ({
       <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
       <div>
         <Button
-          context={<img src={Update} />}
+          context={<img src={Update} width="40px" height="40px" />}
           onClick={(e) => {
             setEditingTodoId(todo.id);
             setModalType(TABLE_MODALS.update);
           }}
         />
         <Button
-          context={<img src={Delete} />}
+          context={<img src={Delete} width="40px" height="40px" />}
           onClick={(e) => {
             handleOnDelete(todo.id);
           }}
         />
         <Button
-          context={<img src={Copy} />}
+          context={<img src={Copy} width="40px" height="40px" />}
           onClick={(e) => {
             copyToClipboard(todo.id);
           }}

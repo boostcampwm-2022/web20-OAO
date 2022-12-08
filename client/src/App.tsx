@@ -1,4 +1,4 @@
-import { ReactElement, lazy, Suspense } from 'react';
+import { ReactElement, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
@@ -10,6 +10,7 @@ import Main from '@page/Main';
 import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
+import TodoController from '@container/TodoController';
 
 const RowWrapper = styled.div`
   position: relative;
@@ -19,7 +20,7 @@ const RowWrapper = styled.div`
 
 const Wrapper = styled.div`
   position: relative;
-  width: calc(100% - 80px);
+  width: calc(100% - 64px);
   display: flex;
   flex-direction: column;
 `;
@@ -40,6 +41,7 @@ const App = (): ReactElement => {
               <Route path="/diagram" element={<DiagramPage />}></Route>
             </Routes>
           </Wrapper>
+          <TodoController />
         </RowWrapper>
       </BrowserRouter>
     </Suspense>
