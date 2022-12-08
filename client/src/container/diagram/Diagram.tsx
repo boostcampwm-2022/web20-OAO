@@ -1,7 +1,9 @@
 import { ReactElement, useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
+import { PlainTodo } from '@todo/todo.type';
 import styled from 'styled-components';
+
 import {
   getDiagramData,
   DiagramTodo,
@@ -40,7 +42,7 @@ const Line = styled.div`
   opacity: 0.5;
 `;
 
-const Diagram = (): ReactElement => {
+const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [diagramData, setDiagramData] = useState<Map<string, DiagramTodo> | undefined>();
   const [diagramVertice, setDiagramVertice] = useState<Vertex[] | undefined>();
@@ -48,7 +50,7 @@ const Diagram = (): ReactElement => {
   const isWheelDown = useRef<boolean>(false);
 
   useEffect(() => {
-    getDiagramData(todoListAtom)
+    getDiagramData(todoListAtom, showDone)
       .then((value) => {
         setDiagramData(value);
         setDiagramVertice(getVertice(value));
@@ -56,7 +58,7 @@ const Diagram = (): ReactElement => {
       .catch((err) => {
         throw err;
       });
-  }, [todoListAtom]);
+  }, [todoListAtom, showDone]);
 
   const diagramStyle = {
     '--offsetX': `${offset.x}px`,
