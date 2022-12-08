@@ -9,6 +9,7 @@ import Button from '@components/Button';
 import Tutorial1 from '@images/tutorial/tutorial-page-1.svg';
 import Tutorial2 from '@images/tutorial/tutorial-page-2.svg';
 import Tutorial3 from '@images/tutorial/tutorial-page-3.svg';
+import Tutorial5 from '@images/tutorial/tutorial-page-5.svg';
 
 const StyledOverlay = styled.div`
   position: relative;
@@ -31,7 +32,7 @@ const StyledOverlay = styled.div`
   }
 `;
 
-const imgSrcArray: string[] = [Tutorial1, Tutorial2, Tutorial3];
+const imgSrcArray: string[] = [Tutorial1, Tutorial2, Tutorial3, Tutorial5];
 
 const StyledButton = styled(Button)`
   background-color: transparent;
