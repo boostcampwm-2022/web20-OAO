@@ -5,8 +5,7 @@ import { generateCompare, defaultCompare, getDefaultCompareForSpecificDate } fro
 import { ITodoListDataBase } from '@repository/repository.interface';
 import { MemoryDB } from '@repository/repository.memoryDB';
 import { IndexedDBFactory } from '@repository/repository.indexedDB';
-import { SortCommand, DiagramTodo } from '@todo/todoList.type';
-import Queue from '@util/queue';
+import { SortCommand } from '@todo/todoList.type';
 
 export const createTodoList = async (dbType: 'MemoryDB' | 'IndexedDB', todos?: InputTodo[]): Promise<TodoList> => {
   if (dbType === 'MemoryDB') {

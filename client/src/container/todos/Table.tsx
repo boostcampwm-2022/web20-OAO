@@ -6,7 +6,6 @@ import { useAtom } from 'jotai';
 import { PlainTodo } from '@todo/todo.type';
 import { todoList, displayDetailAtom } from '@util/GlobalState.js';
 import { toast } from 'react-toastify';
-import { topologySort, calcOrder } from '@util/diagram.util';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -74,6 +73,7 @@ const Table = (): ReactElement => {
             <GridRowWrapper
               onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
               key={todo.id}
+              style={{ transitionDuration: '1s' }}
             >
               <TableRow todo={todo} />
             </GridRowWrapper>
