@@ -18,7 +18,17 @@ const Wrapper = styled.div`
   transform: translate(var(--x), var(--y));
 `;
 
-const PopUp = ({ type, x, y }: { type: 'Todo' | 'Vertex' | 'None'; x: number; y: number }): ReactElement => {
+const PopUp = ({
+  type,
+  x,
+  y,
+  id,
+}: {
+  type: 'Todo' | 'Vertex' | 'None';
+  x: number;
+  y: number;
+  id: string;
+}): ReactElement => {
   const style = { '--x': `${x}px`, '--y': `${y}px` };
   return (
     <>
