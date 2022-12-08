@@ -68,13 +68,23 @@ const remainingDayToString = (until: Date): string => {
   return remaining <= 0 ? `D-${-remaining}` : `D+${remaining}`;
 };
 
-const TodoBlock = ({ todo, x, y }: { todo: Todo; x: number; y: number }): ReactElement => {
+const TodoBlock = ({
+  todo,
+  x,
+  y,
+  onPopUp,
+}: {
+  todo: Todo;
+  x: number;
+  y: number;
+  onPopUp: (event: React.MouseEvent) => void;
+}): ReactElement => {
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
   return (
-    <Wrapper style={style as React.CSSProperties}>
+    <Wrapper style={style as React.CSSProperties} onClick={onPopUp}>
       <UpperRow>
         <Marker state={todo.state} />
         <Title

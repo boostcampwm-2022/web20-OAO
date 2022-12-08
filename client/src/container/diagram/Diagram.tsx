@@ -1,9 +1,7 @@
 import { ReactElement, useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
-import { PlainTodo } from '@todo/todo.type';
 import styled from 'styled-components';
-
 import {
   getDiagramData,
   DiagramTodo,
@@ -15,6 +13,7 @@ import {
 import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
+import PopUp from '@components/diagram/PopUp';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -52,12 +51,21 @@ const VerticalBaseLine = styled.div`
   opacity: 0.5;
 `;
 
+interface PopUpData {
+  type: 'Todo' | 'Vertex' | 'None';
+  x: number;
+  y: number;
+  id: string;
+}
+
 const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [diagramData, setDiagramData] = useState<Map<string, DiagramTodo> | undefined>();
   const [diagramVertice, setDiagramVertice] = useState<Vertex[] | undefined>();
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
+  const [popUpData, setPopUpData] = useState<PopUpData>({ type: 'None', x: 0, y: 0, id: '' });
   const isWheelDown = useRef<boolean>(false);
+  const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getDiagramData(todoListAtom, showDone)
@@ -103,8 +111,27 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
     }
   };
 
+  const getOnClick = (type: 'Todo' | 'Vertex' | 'None', id: string) => {
+    return (event: React.MouseEvent): void => {
+      setPopUpData({
+        type,
+        id,
+        x: event.clientX - offset.x - (domRef.current?.getBoundingClientRect().left as number),
+        y: event.clientY - offset.y - (domRef.current?.getBoundingClientRect().top as number),
+      });
+      event.stopPropagation();
+    };
+  };
+
   return (
-    <div onMouseDown={onWheelDown} onMouseUp={onWheelUp} onMouseMove={onMouseMove} onMouseLeave={onWheelLeave}>
+    <div
+      onMouseDown={onWheelDown}
+      onMouseUp={onWheelUp}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onWheelLeave}
+      onClick={getOnClick('None', '')}
+      ref={domRef}
+    >
       <Detector />
       <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
       <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
@@ -112,13 +139,31 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
         {diagramData !== undefined &&
           diagramVertice?.map((el) => {
             const { x1, y1, x2, y2 } = getVertexDimension(diagramData, el);
-            return <TodoVertex key={`${el.from}+${el.to}`} x1={x1} y1={y1} x2={x2} y2={y2} />;
+            return (
+              <TodoVertex
+                key={`${el.from}+${el.to}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                onPopUp={getOnClick('Vertex', `${el.from}+${el.to}`)}
+              />
+            );
           })}
         {diagramData !== undefined &&
           [...diagramData].map((el) => {
             const pos = calculatePosition(el[1].order as number, el[1].depth as number);
-            return <TodoBlock key={el[1].todo.id} todo={el[1].todo} x={pos.x} y={pos.y} />;
+            return (
+              <TodoBlock
+                key={el[1].todo.id}
+                todo={el[1].todo}
+                x={pos.x}
+                y={pos.y}
+                onPopUp={getOnClick('Todo', el[1].todo.id)}
+              />
+            );
           })}
+        {popUpData.type !== 'None' && <PopUp {...popUpData} />}
       </Wrapper>
     </div>
   );

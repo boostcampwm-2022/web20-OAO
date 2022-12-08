@@ -20,7 +20,19 @@ const toPathString = (width: number, height: number): string => {
   return `M${-width - 2} 0C${-width - 2} ${0.4 * height} 2 ${0.6 * height} 2 ${height}`;
 };
 
-const TodoVertex = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }): ReactElement => {
+const TodoVertex = ({
+  x1,
+  y1,
+  x2,
+  y2,
+  onPopUp,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  onPopUp: (event: React.MouseEvent) => void;
+}): ReactElement => {
   const x = Math.min(x1, x2);
   const y = Math.min(y1, y2);
   const width = x2 - x1;
@@ -52,6 +64,7 @@ const TodoVertex = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2
           strokeWidth={25}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
+          onClick={onPopUp}
         />
       </svg>
     </Wrapper>
