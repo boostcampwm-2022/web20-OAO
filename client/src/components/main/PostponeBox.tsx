@@ -10,12 +10,16 @@ import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
 
 import usePostpone from '@hooks/usePostpone.js';
 
-const { red, white } = PRIMARY_COLORS;
+const { red, white, darkGray } = PRIMARY_COLORS;
 
-const StyledPostponeBox = styled.div`
+interface Props {
+  isBottom: boolean;
+}
+
+const StyledPostponeBox = styled.div<Props>`
   display: flex;
   flex-direction: column;
-  background-color: ${red};
+  background-color: ${(props) => (props.isBottom ? darkGray : red)};
   line-height: 25px;
   letter-spacing: 0em;
   align-items: flex-start;
@@ -27,10 +31,12 @@ const StyledPostponeBox = styled.div`
   gap: 20px;
   position: absolute;
   left: 40px;
-  top: 60px;
+  top: ${(props) => (props.isBottom ? '' : '60px')};
+  bottom: ${(props) => (props.isBottom ? '100%' : '')};
+  transform: ${(props) => (props.isBottom ? 'translateY(-3px)' : '')};
 `;
 
-const PostponeBox = (): ReactElement => {
+const PostponeBox = ({ isBottom }: { isBottom: boolean }): ReactElement => {
   const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
   const [activeTodo] = useAtom(asyncActiveTodo);
   const [setPostpone] = usePostpone();
@@ -44,7 +50,7 @@ const PostponeBox = (): ReactElement => {
   };
 
   return (
-    <StyledPostponeBox>
+    <StyledPostponeBox isBottom={isBottom}>
       {postponeOptions.map((text: string): ReactElement => {
         return (
           <Button
