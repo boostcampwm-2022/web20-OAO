@@ -13,6 +13,11 @@ import TodoStatus from '@container/main/TodoStatus';
 import TodoTitle from '@container/main/TodoTitle';
 import TodoContents from '@container/main/TodoContents';
 
+import Celebrate from '@images/Celebrate.svg';
+import Image from '@components/Image';
+import { Link } from 'react-router-dom';
+import Text from '@components/Text';
+
 const Wrapper = styled.div`
   height: 90vh;
   display: flex;
@@ -21,7 +26,20 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const { none } = TABLE_MODALS;
+const EmptyWrapper = styled.div`
+  padding-top: 10vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const { none, create } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
   const [isFinished] = useAtom(isFinishedAtom);
@@ -40,6 +58,10 @@ const Main = (): ReactElement => {
     }
   }, [isFinished]);
 
+  const handleOnClick = (): void => {
+    setModalType(create);
+  };
+
   return (
     <Suspense fallback={<div>loading</div>}>
       <Wrapper>
@@ -51,7 +73,18 @@ const Main = (): ReactElement => {
             <TodoContents />
           </>
         ) : (
-          <div>Todo가 없습니다.</div>
+          <EmptyWrapper>
+            <Image src={Celebrate} />
+            <div>
+              <h1>Todo가 없습니다!</h1>
+              <TextWrapper>
+                <Link to="/todos" onClick={handleOnClick}>
+                  여기
+                </Link>
+                <Text text="를 클릭해서 Todo를 추가해보세요" />
+              </TextWrapper>
+            </div>
+          </EmptyWrapper>
         )}
       </Wrapper>
     </Suspense>
