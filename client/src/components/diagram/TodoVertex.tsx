@@ -1,6 +1,8 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
+import WarningBubble from './WarningBubble';
+import ErrorBubble from './ErrorBubble';
 
 const { yellow, red, gray } = PRIMARY_COLORS;
 
@@ -50,15 +52,29 @@ const TodoVertex = ({
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
-  const [strokeWidth, setStrokeWidth] = useState(2);
-  const onMouseLeave = (): void => {
-    setStrokeWidth(2);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: NaN, y: NaN });
+  const domRef = useRef<HTMLDivElement>(null);
+  const onMouseLeave = (event: React.MouseEvent): void => {
+    setIsHovered(false);
   };
-  const onMouseEnter = (): void => {
-    setStrokeWidth(4);
+  const onMouseEnter = (event: React.MouseEvent): void => {
+    setMousePos(() => ({
+      x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+      y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+    }));
+    setIsHovered(true);
+  };
+  const onMouseMove = (event: React.MouseEvent): void => {
+    if (isHovered) {
+      setMousePos(() => ({
+        x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+        y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+      }));
+    }
   };
   return (
-    <Wrapper style={style as React.CSSProperties}>
+    <Wrapper style={style as React.CSSProperties} ref={domRef}>
       <svg
         width={Math.abs(width)}
         height={height}
@@ -66,16 +82,22 @@ const TodoVertex = ({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d={toPathString(width, height)} stroke={getColor(type)} strokeWidth={strokeWidth} />
+        <path d={toPathString(width, height)} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
         <path
           d={toPathString(width, height)}
           stroke="#00000000"
           strokeWidth={25}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
+          onMouseMove={onMouseMove}
           onClick={onPopUp}
         />
       </svg>
+      {isHovered && (
+        <div style={{ position: 'absolute', left: `${mousePos.x}px`, top: `${mousePos.y}px` }}>
+          {type === 'WARNING' ? <WarningBubble /> : type === 'ERROR' ? <ErrorBubble /> : ''}
+        </div>
+      )}
     </Wrapper>
   );
 };
