@@ -23,8 +23,8 @@ const Wrapper = styled.div`
 `;
 
 const Menubar = (): ReactElement => {
-  const setIsTutorial = useAtomValue(isTutorialAtom);
-  const prefix: string = setIsTutorial ? '/tutorials' : '';
+  const isTutorial = useAtomValue(isTutorialAtom);
+  const prefix: string = isTutorial ? '/tutorials' : '';
   return (
     <Wrapper>
       <Link to={`${prefix}/`}>
