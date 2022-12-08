@@ -43,7 +43,7 @@ const TutorialRadialOverlay = styled.div`
   p {
     position: absolute;
     left: 10vh;
-    bottom: 2vh;
+    bottom: 10vh;
     font-size: 24px;
     opacity: 0.7;
   }
