@@ -132,7 +132,7 @@ export const isMainPage = atom(true);
 export const isMainPageAtom = atom(
   (get) => get(isMainPage),
   (_get, set) => {
-    set(isMainPage, location.pathname === '/' || location.pathname === '/tutorials');
+    set(isMainPage, location.pathname === '/' || location.pathname === '/tutorials/');
   },
 );
 
