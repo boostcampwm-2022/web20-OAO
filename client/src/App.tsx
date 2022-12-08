@@ -1,7 +1,8 @@
-import { ReactElement, Suspense } from 'react';
+import { ReactElement, Suspense, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
+import { useAtomValue } from 'jotai';
 
 import Header from '@container/Header';
 import Menubar from '@container/Menubar';
@@ -11,6 +12,9 @@ import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
 import TodoController from '@container/TodoController';
+
+import { TutorialImage } from '@components/tutorial/TutorialImage';
+import { isTutorialAtom } from '@util/GlobalState';
 
 const RowWrapper = styled.div`
   position: relative;
@@ -26,6 +30,16 @@ const Wrapper = styled.div`
 `;
 
 const App = (): ReactElement => {
+  const isTutorial = useAtomValue(isTutorialAtom);
+  const [isOver, setIsOver] = useState(false);
+  const isShow = isTutorial && !isOver;
+
+  useEffect(() => {
+    if (!isTutorial) {
+      setIsOver(false);
+    }
+  });
+
   return (
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
@@ -39,12 +53,13 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials/" element={<Main />}></Route>
+              <Route path="/tutorials" element={<Main />}></Route>
               <Route path="/tutorials/todos" element={<Todos />}></Route>
               <Route path="/tutorials/diagram" element={<DiagramPage />}></Route>
             </Routes>
           </Wrapper>
           <TodoController />
+          {isShow && <TutorialImage isTutorial={isTutorial} setIsOver={setIsOver} />}
         </RowWrapper>
       </BrowserRouter>
     </Suspense>

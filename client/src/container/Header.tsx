@@ -10,7 +10,7 @@ import Text from '@components/Text';
 import { PRIMARY_COLORS } from '@util/Constants';
 
 import { isTutorialAtom, changeIndexedDBtoMemoryAtom, changeMemorytoIndexedDBAtom } from '@util/GlobalState';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,13 +42,29 @@ const Header = (): ReactElement => {
       {isTutorial ? (
         <Link to="/" onClick={endTutorial}>
           <Button
-            context={<Text text="튜토리얼 끝내기" color={PRIMARY_COLORS.blue} fontWeight={'700'} fontSize={'18px'} />}
+            context={
+              <Text
+                text="튜토리얼 끝내기"
+                color={PRIMARY_COLORS.red}
+                fontWeight={'700'}
+                fontSize={'24px'}
+                fontFamily={'Nanum Myeongjo'}
+              />
+            }
           />
         </Link>
       ) : (
         <Link to="/tutorials" onClick={startTutorial}>
           <Button
-            context={<Text text="튜토리얼 해보기" color={PRIMARY_COLORS.blue} fontWeight={'700'} fontSize={'18px'} />}
+            context={
+              <Text
+                text="튜토리얼 해보기"
+                color={PRIMARY_COLORS.blue}
+                fontWeight={'700'}
+                fontSize={'20px'}
+                fontFamily={'Nanum Myeongjo'}
+              />
+            }
           />
         </Link>
       )}
