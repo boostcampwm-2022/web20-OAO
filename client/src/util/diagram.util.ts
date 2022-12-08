@@ -67,6 +67,10 @@ const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<
     });
   }
 
+  const activeTodo = sortedTodoList.find((el) => el.state === 'READY')?.id;
+  const baseDepth = resultTodoList.get(activeTodo as string)?.depth;
+  resultTodoList.forEach((el) => ((el.depth as number) -= baseDepth as number));
+
   return resultTodoList;
 };
 
