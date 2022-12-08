@@ -15,7 +15,6 @@ import TodoController from '@container/TodoController';
 
 import { TutorialImage } from '@components/tutorial/TutorialImage';
 import { isTutorialAtom } from '@util/GlobalState';
-import { PRIMARY_COLORS } from '@util/Constants';
 
 const RowWrapper = styled.div`
   position: relative;
@@ -37,7 +36,7 @@ const TutorialRadialOverlay = styled.div`
   left: 0px;
   top: 0px;
 
-  background: linear-gradient(180deg, ${PRIMARY_COLORS.green}00 73.51%, #93c692 127.82%);
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0) 73.51%, #93c692 127.82%);
 
   pointer-events: none;
 
@@ -45,10 +44,8 @@ const TutorialRadialOverlay = styled.div`
     position: absolute;
     left: 10vh;
     bottom: 10vh;
-    font-size: 80px;
+    font-size: 24px;
     opacity: 0.7;
-    font-family: 'Roboto';
-    color: ${PRIMARY_COLORS.green};
   }
 `;
 
