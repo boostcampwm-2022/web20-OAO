@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      
+
     paths:
       - "client/**"
 
@@ -69,7 +69,6 @@ jobs:
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-dev-client
-            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 

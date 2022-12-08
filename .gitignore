@@ -1,3 +1,7 @@
+#dockerfile
+docker-compose.product.yml
+default.product.conf
+
 # dependencies
 node_modules
 
