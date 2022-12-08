@@ -10,17 +10,29 @@ export interface DiagramTodo {
   todo: Todo;
 }
 
-const topologySort = async (
-  todoList: TodoList,
-  filter?: (todo: PlainTodo) => boolean,
-): Promise<Map<string, DiagramTodo>> => {
-  const sortedTodoList = await todoList.getSortedListWithFilter(() => true, []);
+const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
+  const filter = showDone ? () => true : (el) => el.state !== 'DONE';
+  const sortedTodoList = await todoList.getSortedListWithFilter(filter, []);
   const cloneTodoList = new Map<string, Todo>(sortedTodoList.map((el) => [el.id, new Todo(el)]));
+  cloneTodoList.forEach((el) => {
+    el.prev.forEach((prevId) => {
+      if (!cloneTodoList.has(prevId)) el.prev.delete(prevId);
+    });
+    el.next.forEach((nextId) => {
+      if (!cloneTodoList.has(nextId)) el.next.delete(nextId);
+    });
+  });
   const resultTodoList = new Map<string, DiagramTodo>(
-    sortedTodoList
-      .filter(filter ?? ((el) => el.state !== 'DONE'))
-      .map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
+    sortedTodoList.map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
   );
+  resultTodoList.forEach((el) => {
+    el.todo.prev.forEach((prevId) => {
+      if (!cloneTodoList.has(prevId)) el.todo.prev.delete(prevId);
+    });
+    el.todo.next.forEach((nextId) => {
+      if (!cloneTodoList.has(nextId)) el.todo.next.delete(nextId);
+    });
+  });
 
   const updateDepth = (id: string, depth: number): void => {
     const target = resultTodoList.get(id);
@@ -36,7 +48,7 @@ const topologySort = async (
   };
 
   const zeroDepthTodoList = sortedTodoList
-    .filter((el) => el.state !== 'DONE' && checkPrev(el.id))
+    .filter((el) => (showDone ? true : el.state !== 'DONE') && checkPrev(el.id))
     .map((el) => ({ depth: 0, id: el.id }));
 
   const forwardQueue = new Queue(zeroDepthTodoList);
@@ -51,22 +63,6 @@ const topologySort = async (
       nextTodo.prev.delete(target.id);
       if (nextTodo.prev.size === 0) {
         forwardQueue.push({ depth: target.depth + 1, id: nextId });
-      }
-    });
-  }
-
-  const backwardQueue = new Queue(zeroDepthTodoList);
-  while (!backwardQueue.isEmpty()) {
-    const target = backwardQueue.pop();
-    updateDepth(target.id, target.depth);
-    const todo = cloneTodoList.get(target.id);
-    if (todo === undefined) continue;
-    [...todo.prev].forEach((prevId) => {
-      const prevTodo = cloneTodoList.get(prevId);
-      if (prevTodo === undefined) return;
-      prevTodo.next.delete(target.id);
-      if (prevTodo.next.size === 0) {
-        backwardQueue.push({ depth: target.depth - 1, id: prevId });
       }
     });
   }
@@ -86,11 +82,8 @@ const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo>
   return new Map(todoListArr.map((el) => [el[0], { ...el[1], order: (el[1].order as number) - (offset as number) }]));
 };
 
-export const getDiagramData = async (
-  todoList: TodoList,
-  filter?: (todo: PlainTodo) => boolean,
-): Promise<Map<string, DiagramTodo>> => {
-  return calcOrder(await topologySort(todoList, filter));
+export const getDiagramData = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
+  return calcOrder(await topologySort(todoList, showDone));
 };
 
 const MARGIN = {
