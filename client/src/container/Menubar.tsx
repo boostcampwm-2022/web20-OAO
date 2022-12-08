@@ -5,9 +5,14 @@ import styled from 'styled-components';
 import Home from '@images/Home.svg';
 import Table from '@images/Table.svg';
 import Image from '@components/Image';
-import Button from '@components/Button';
+import Diagram from '@images/Diagram.svg';
 
 const Wrapper = styled.div`
+  position: relative;
+  width: max-content;
+  padding-inline: 8px;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   background: #fcfcfc;
   box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
@@ -21,7 +26,10 @@ const Menubar = (): ReactElement => {
         <Image src={Home} margin={'30px 0 0 0'} />
       </Link>
       <Link to="/todos">
-        <Button context={<Image src={Table} margin={'30px 0 0 0'} />} />
+        <Image src={Table} margin={'30px 0 0 0'} />
+      </Link>
+      <Link to="/diagram">
+        <Image src={Diagram} margin={'30px 0 0 0'} />
       </Link>
     </Wrapper>
   );

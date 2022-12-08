@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Nanum Myeongjo','Noto Sans KR','Roboto', sans-serif;
   }
   #root {
+    position: relative;
     height: 100%;
     margin: 0;
   }

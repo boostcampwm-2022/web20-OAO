@@ -74,6 +74,7 @@ const Table = (): ReactElement => {
             <GridRowWrapper
               onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
               key={todo.id}
+              style={{ transitionDuration: '1s' }}
             >
               <TableRow todo={todo} />
             </GridRowWrapper>
