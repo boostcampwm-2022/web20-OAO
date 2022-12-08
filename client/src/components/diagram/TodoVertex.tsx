@@ -1,9 +1,18 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: absolute;
   transform: translate(var(--x), var(--y));
+  pointer-events: none;
+  svg {
+    pointer-events: none;
+    path {
+      pointer-events: stroke;
+      transition: stroke-width 0.3s;
+      cursor: pointer;
+    }
+  }
 `;
 
 const toPathString = (width: number, height: number): string => {
@@ -20,6 +29,13 @@ const TodoVertex = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
+  const [strokeWidth, setStrokeWidth] = useState(2);
+  const onMouseLeave = (): void => {
+    setStrokeWidth(2);
+  };
+  const onMouseEnter = (): void => {
+    setStrokeWidth(4);
+  };
   return (
     <Wrapper style={style as React.CSSProperties}>
       <svg
@@ -29,8 +45,14 @@ const TodoVertex = ({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d={toPathString(width, height)} stroke="#5C5C5C" strokeWidth="3" />
-        <path d={toPathString(width, height)} stroke="#00000000" strokeWidth="20" style={{ cursor: 'pointer' }} />
+        <path d={toPathString(width, height)} stroke="#5C5C5C" strokeWidth={strokeWidth} />
+        <path
+          d={toPathString(width, height)}
+          stroke="#00000000"
+          strokeWidth={25}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        />
       </svg>
     </Wrapper>
   );

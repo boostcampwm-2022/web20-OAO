@@ -18,6 +18,12 @@ const Wrapper = styled.div`
   background-color: ${lightestGray};
   transform: translate(var(--x), var(--y));
   cursor: pointer;
+  transition: outline 0.3s;
+  outline: 6px solid transparent;
+  box-sizing: border-box;
+  &:hover {
+    outline: 3px solid ${gray};
+  }
 `;
 
 const UpperRow = styled.div`
