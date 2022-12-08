@@ -96,3 +96,10 @@ export const MODAL_LABEL_ID = {
   '먼저 할 일': 'prev',
   '이어서 할 일': 'next',
 };
+
+export interface BottomImageStyle {
+  fill?: string;
+  stroke?: string;
+  width?: string;
+  height?: string;
+}

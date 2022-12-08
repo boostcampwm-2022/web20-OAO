@@ -2,12 +2,13 @@ import { useAtom, useSetAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { POSTPONE_METHODS } from '@util/Constants.js';
-import { todoList, elapsedTimeAtom, stopTimerAtom } from '@util/GlobalState.js';
+import { todoList, elapsedTimeAtom, stopTimerAtom, postponeClicked } from '@util/GlobalState.js';
 
 const usePostpone = (): any[] => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
   const stopTimer = useSetAtom(stopTimerAtom);
+  const setPostponeClicked = useSetAtom(postponeClicked);
 
   const setPostpone = (type: string): void => {
     stopTimer();
@@ -21,6 +22,7 @@ const usePostpone = (): any[] => {
         return await newTodoList.getActiveTodo();
       })
       .then((newActiveTodo) => {
+        setPostponeClicked(false);
         setElapsedTime(newActiveTodo !== undefined ? newActiveTodo.elapsedTime : 0);
         toast.error('오늘도 할 일을 미룬 당신! 혹시 말로만 하는 사람은 아니겠죠? 🤔');
       })

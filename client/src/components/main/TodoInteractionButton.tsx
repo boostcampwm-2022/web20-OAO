@@ -2,47 +2,41 @@ import { useAtom, useSetAtom } from 'jotai';
 import { ReactElement, useMemo, memo } from 'react';
 import styled from 'styled-components';
 
-import Done from '@images/Done.svg';
-
 import Button from '@components/Button';
-import Image from '@components/Image';
 
-import Start from '@images/Start.svg';
-import Pause from '@images/Pause.svg';
-import Postpone from '@images/Postpone.svg';
+import Start from '@images/Start';
+import Pause from '@images/Pause';
+import Postpone from '@images/Postpone';
+import Done from '@images/Done';
 
 import { postponeClicked, isOnProgress, setTimerAtom } from '@util/GlobalState.js';
-import { ACTIVE_TODO_STATE } from '@util/Constants';
+
 import useDone from '@hooks/useDone.js';
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
+interface ImageButtonStyle {
+  fill?: string;
+  stroke?: string;
+  width?: string;
+  height?: string;
+}
 
-const TodoInteractionButton = (): ReactElement => {
+const TodoInteractionButton = (imageButtonStyle: ImageButtonStyle): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
   const [progressState] = useAtom(isOnProgress);
   const [setDone] = useDone();
   const setTimer = useSetAtom(setTimerAtom);
 
   const startPauseButton = useMemo(() => {
-    return <Button context={<Image src={progressState === 'working' ? Pause : Start} />} onClick={setTimer} />;
+    const button = progressState === 'working' ? <Pause {...imageButtonStyle} /> : <Start {...imageButtonStyle} />;
+    return <Button context={button} onClick={setTimer} />;
   }, [progressState]);
 
-  const handleDoneClicked = (): void => {
-    setDone();
-    if (progressState === ACTIVE_TODO_STATE.working) {
-      // handleOnToggle();
-    }
-  };
-
   return (
-    <ButtonWrapper>
+    <>
       {startPauseButton}
-      <Button context={<Image src={Postpone} />} onClick={() => setIsPostpone(!isPostpone)} />
-      <Button context={<Image src={Done} />} onClick={handleDoneClicked} />
-    </ButtonWrapper>
+      <Button context={<Postpone {...imageButtonStyle} />} onClick={() => setIsPostpone(!isPostpone)} />
+      <Button context={<Done {...imageButtonStyle} />} onClick={setDone} />
+    </>
   );
 };
 

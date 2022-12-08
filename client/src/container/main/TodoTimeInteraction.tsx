@@ -16,13 +16,19 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+`;
+
 const TodoTimeInteraction = (): ReactElement => {
   const [isPostpone] = useAtom(postponeClicked);
 
   return (
     <Wrapper>
-      <TodoInteractionButton />
-      {isPostpone && <PostponeBox />}
+      <ButtonWrapper>
+        <TodoInteractionButton />
+      </ButtonWrapper>
+      {isPostpone && <PostponeBox isBottom={false} />}
       <TodoTimeText />
     </Wrapper>
   );
