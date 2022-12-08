@@ -21,7 +21,7 @@ const useDone = (): any[] => {
         return await newTodoList.getActiveTodo();
       })
       .then((newActiveTodo) => {
-        if (newActiveTodo === undefined) setPostponeClicked(false);
+        setPostponeClicked(false);
         setElapsedTime(newActiveTodo !== undefined ? newActiveTodo.elapsedTime : 0);
         toast.success('완료되었습니다! 👏🏻👏🏻👏🏻');
       })

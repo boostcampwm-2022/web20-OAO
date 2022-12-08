@@ -22,7 +22,7 @@ const usePostpone = (): any[] => {
         return await newTodoList.getActiveTodo();
       })
       .then((newActiveTodo) => {
-        if (newActiveTodo === undefined) setPostponeClicked(false);
+        setPostponeClicked(false);
         setElapsedTime(newActiveTodo !== undefined ? newActiveTodo.elapsedTime : 0);
         toast.error('오늘도 할 일을 미룬 당신! 혹시 말로만 하는 사람은 아니겠죠? 🤔');
       })
