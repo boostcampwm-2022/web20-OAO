@@ -68,7 +68,7 @@ const InputWrapper = styled(ListWrapper)`
   padding: 3px 0;
 `;
 
-const SearchBar = ({ onClick, onChange }: { onClick: Function; onChange?: Function }): ReactElement => {
+const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
   const [searchTodoList, setSearchTodoList] = useState<PlainTodo[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -108,7 +108,6 @@ const SearchBar = ({ onClick, onChange }: { onClick: Function; onChange?: Functi
           type="search"
           data-label="search-input"
           value={inputValue}
-          onClick={() => onChange}
           onInput={inputEventPromiseWrapper}
           style={{
             border: 'none',

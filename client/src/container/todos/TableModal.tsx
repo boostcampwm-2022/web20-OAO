@@ -22,6 +22,12 @@ interface WrapperProps {
   ref: any;
 }
 
+interface ModalValues {
+  id: string;
+  value: string;
+  dataset: { label: string; id: string };
+}
+
 const Wrapper = styled.div<WrapperProps>`
   width: 50vw;
   left: 21vw;
@@ -132,7 +138,7 @@ const TableModal = (): ReactElement => {
       const prevTodoIdList: string[] = [];
       const nextTodoIdList: string[] = [];
       getModalValues(modalWrapper.current).forEach((item) => {
-        const { id, value, dataset }: { id: string; value: string; dataset: { label: string } } = item;
+        const { id, value, dataset }: ModalValues = item;
 
         if (id === 'title' && value === '') {
           throw new Error('제목은 필수 값입니다!');
@@ -141,21 +147,22 @@ const TableModal = (): ReactElement => {
           return (newData = { ...newData, [id]: new Date(value) });
         }
         if (dataset.label === 'prev' || dataset.label === 'next') {
-          if (modalType === update) validateUuid(id);
+          if (dataset.id === editingTodoId)
+            throw new Error('수정하고 있는 할 일은 먼저 할 일과 나중에 할 일에 들어갈 수 없습니다');
+          if (modalType === update) validateUuid(dataset.id);
           const isprevIdCircularReference =
             dataset.label === 'prev'
-              ? validateCircularReference(nextTodoIdList, id)
-              : validateCircularReference(prevTodoIdList, id);
+              ? validateCircularReference(nextTodoIdList, dataset.id)
+              : validateCircularReference(prevTodoIdList, dataset.id);
           if (isprevIdCircularReference)
             throw new Error(
               `먼저 할 일과 나중에 할 일에는 같은 할 일이 올 수 없습니다. 둘 중 하나에서 "${value}" 지워주세요`,
             );
-          return dataset.label === 'prev' ? prevTodoIdList.push(id) : nextTodoIdList.push(id);
+          return dataset.label === 'prev' ? prevTodoIdList.push(dataset.id) : nextTodoIdList.push(dataset.id);
         }
         newData = { ...newData, [id]: value };
       });
-      newData = { ...newData, prev: prevTodoIdList };
-      newData = { ...newData, next: nextTodoIdList };
+      newData = { ...newData, prev: prevTodoIdList, next: nextTodoIdList };
 
       const data = await MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](
         todoListAtom,

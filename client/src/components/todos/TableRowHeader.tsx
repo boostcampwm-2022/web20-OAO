@@ -127,7 +127,7 @@ const TableRowHeader = ({
         <Button
           context={<img src={Copy} width="40px" height="40px" />}
           onClick={(e) => {
-            copyToClipboard(todo.id);
+            copyToClipboard(todo.title);
           }}
         />
       </div>

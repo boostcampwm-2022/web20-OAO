@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import SearchBar from '@components/SearchBar';
 import { PlainTodo } from '@todo/todo.type';
 import styled from 'styled-components';
-import { PRIMARY_COLORS } from '@util/Constants';
+import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import Button from '@components/Button';
 import Cancel from '@images/Cancel.svg';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
@@ -37,7 +37,7 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
   const modalType = useAtomValue(modalTypeAtom);
 
   useEffect(() => {
-    if (modalType === 'create') return setRelatedTodoList(() => []);
+    if (modalType === TABLE_MODALS.create) return setRelatedTodoList(() => []);
     todoListAtom
       .getTodoById(editingTodoId)
       .then((todo) => {
@@ -68,9 +68,6 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
     const newRelatedTodoList = relatedTodoList.filter((el: PlainTodo) => el.id !== todoId);
     setRelatedTodoList(() => [...newRelatedTodoList]);
   };
-  const getTodoInputWidth = (title: string): string => {
-    return `${title.length > 10 ? 150 : title.length * 15 + 10}` + 'px';
-  };
 
   return (
     <div>
@@ -81,11 +78,10 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
             <InputWrapper key={relatedTodo.id}>
               <input
                 type="text"
-                id={relatedTodo.id}
+                data-id={relatedTodo.id}
                 value={relatedTodo.title}
                 data-label={relatedType}
                 style={{
-                  width: getTodoInputWidth(relatedTodo.title),
                   textOverflow: 'ellipsis',
                   color: blue,
                   background: 'none',
