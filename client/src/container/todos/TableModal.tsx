@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { copyToClipboard, getModalValues, getDateTimeInputFormatString } from '@util/Common';
+import { getModalValues, getDateTimeInputFormatString } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
 import Button from '@components/Button';
@@ -13,8 +13,6 @@ import { toast } from 'react-toastify';
 import { TodoList } from '@core/todo/todoList';
 import { InputTodo } from '@todo/todo.type';
 
-import Copy from '@images/Copy.svg';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 const { create, update, none } = TABLE_MODALS;
@@ -22,6 +20,12 @@ const { offWhite, red, blue, darkGray, lightGray } = PRIMARY_COLORS;
 
 interface WrapperProps {
   ref: any;
+}
+
+interface ModalValues {
+  id: string;
+  value: string;
+  dataset: { label: string; id: string };
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -59,37 +63,6 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-const StyledIdWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  gap: 5px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  color: ${darkGray};
-  front-family: 'SanSerif'
-  font-size: 15px;
-  padding: 5px;
-  border: 1px solid ${lightGray};
-  border-radius: 5px;
-  outline: none;
-`;
-
-const StyledCopyButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  img {
-    width: 32px;
-    height: 32px;
-  }
-`;
-
 const MODAL_COMPLETE_ACTIONS = {
   create: async (todoList: TodoList, newData: InputTodo) => {
     return await todoList.add(newData);
@@ -103,6 +76,16 @@ const complete = (setComplete: Function): void => {
   setComplete()
     .then(() => {})
     .catch(() => {});
+};
+
+const validateUuid = (uuid: string): boolean => {
+  const regex = /(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/;
+  if (!regex.test(uuid)) throw new Error('먼저 할 일 또는 나중에 할 일의 id값이 올바르지 않습니다');
+  return true;
+};
+
+const validateCircularReference = (idList: string[], checkId: string): boolean => {
+  return idList.some((id) => id === checkId);
 };
 
 const TableModal = (): ReactElement => {
@@ -125,6 +108,8 @@ const TableModal = (): ReactElement => {
           if (elem.id === 'until') {
             return (elem.value = getDateTimeInputFormatString(new Date(target.until)));
           }
+          if (elem.dataset.label === 'search-input') return;
+
           elem.value = target[elem.id as keyof typeof target];
         });
       })
@@ -150,23 +135,34 @@ const TableModal = (): ReactElement => {
     }
     try {
       let newData = {};
+      const prevTodoIdList: string[] = [];
+      const nextTodoIdList: string[] = [];
       getModalValues(modalWrapper.current).forEach((item) => {
-        const { id, value } = item;
+        const { id, value, dataset }: ModalValues = item;
+
         if (id === 'title' && value === '') {
-          throw new Error('제목은 필수값입니다!');
-        }
-        if (id === 'prev' || id === 'next') {
-          const uuidArray = uuidSeriesTextToUuidArray(value);
-          const validateUuidArray = validatePrevAndNextId(uuidArray);
-          if (validateUuidArray) {
-            return (newData = { ...newData, [id]: uuidArray });
-          }
+          throw new Error('제목은 필수 값입니다!');
         }
         if (id === 'until') {
           return (newData = { ...newData, [id]: new Date(value) });
         }
+        if (dataset.label === 'prev' || dataset.label === 'next') {
+          if (dataset.id === editingTodoId)
+            throw new Error('수정하고 있는 할 일은 먼저 할 일과 나중에 할 일에 들어갈 수 없습니다');
+          if (modalType === update) validateUuid(dataset.id);
+          const isprevIdCircularReference =
+            dataset.label === 'prev'
+              ? validateCircularReference(nextTodoIdList, dataset.id)
+              : validateCircularReference(prevTodoIdList, dataset.id);
+          if (isprevIdCircularReference)
+            throw new Error(
+              `먼저 할 일과 나중에 할 일에는 같은 할 일이 올 수 없습니다. 둘 중 하나에서 "${value}" 지워주세요`,
+            );
+          return dataset.label === 'prev' ? prevTodoIdList.push(dataset.id) : nextTodoIdList.push(dataset.id);
+        }
         newData = { ...newData, [id]: value };
       });
+      newData = { ...newData, prev: prevTodoIdList, next: nextTodoIdList };
 
       const data = await MODAL_COMPLETE_ACTIONS[modalType as keyof typeof MODAL_COMPLETE_ACTIONS](
         todoListAtom,
@@ -185,43 +181,9 @@ const TableModal = (): ReactElement => {
     setModalType(none);
   };
 
-  const validatePrevAndNextId = (uuidArray: string[]): boolean => {
-    const regex = /(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/;
-    if (uuidArray.length > 0) {
-      uuidArray.forEach((uuid: string) => {
-        if (!regex.test(uuid)) throw new Error('id가 올바르지 않게 입력되었습니다');
-      });
-    } else {
-      return true;
-    }
-    return true;
-  };
-
-  const uuidSeriesTextToUuidArray = (uuidSeriesText: string): string[] => {
-    return uuidSeriesText
-      .replaceAll('\n', '')
-      .replaceAll(' ', '')
-      .split(',')
-      .filter((id: string) => id !== '');
-  };
-
   return (
     <Wrapper ref={modalWrapper}>
       <Text text={modalHeader} fontFamily={'SanSerif'} fontSize={'24px'} fontWeight={'600'} />
-      {modalType === update && (
-        <StyledIdWrapper>
-          <Text text="id" fontFamily={'SanSerif'} fontSize={'18px'} fontWeight={'500'} color={darkGray} />
-          <Container>
-            <Text text={editingTodoId} />
-            <StyledCopyButton
-              context={<img src={Copy} />}
-              onClick={() => {
-                copyToClipboard(editingTodoId);
-              }}
-            />
-          </Container>
-        </StyledIdWrapper>
-      )}
       {MODAL_INPUT_LIST.map((item) => {
         const { type, label, maxLength, placeHolder } = item;
         return (

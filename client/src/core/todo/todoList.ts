@@ -238,6 +238,22 @@ export class TodoList {
     return this.todoList.find((el) => el.id === id)?.toPlain();
   }
 
+  async getTodoBySearchKeyword(keyword: string): Promise<PlainTodo[]> {
+    const regExp = new RegExp(`${keyword}`, 'g');
+
+    const searchTodoList = this.todoList.filter((el) => el.title.match(regExp));
+    return searchTodoList.map((el) => el.toPlain());
+  }
+
+  async getTodoByIdList(idList: string[]): Promise<PlainTodo[]> {
+    const newTodoList = idList.reduce<PlainTodo[]>((acc, id) => {
+      const todo = this.todoList.find((el) => el.id === id)?.toPlain();
+      if (todo !== undefined) acc.push(todo);
+      return acc;
+    }, []);
+    return newTodoList;
+  }
+
   clone(): TodoList {
     return new TodoList(
       this.db,
