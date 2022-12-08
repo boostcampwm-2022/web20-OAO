@@ -1,8 +1,8 @@
-<svg width="35" height="31" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="4.34783" cy="4.34783" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
-<circle cx="4.34783" cy="15.2175" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
-<circle cx="4.34783" cy="26.0868" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
-<rect x="11.5" y="1.5" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
-<rect x="11.5" y="12.3696" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
-<rect x="11.5" y="23.239" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="19.3478" cy="21.3478" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<circle cx="19.3478" cy="32.2175" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<circle cx="19.3478" cy="43.0868" r="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<rect x="26.5" y="18.5" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<rect x="26.5" y="29.3696" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
+<rect x="26.5" y="40.239" width="22" height="5.69565" rx="2.84783" stroke="#3F3F3F" stroke-width="3"/>
 </svg>

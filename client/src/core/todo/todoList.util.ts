@@ -1,11 +1,14 @@
 import { Todo } from '@todo/todo';
-import { isEqualDate } from '@todo/todo.util';
+import { onlyDate } from '@todo/todo.util';
 import { CompareFunc, CompareFuncObj, SortCommand } from '@todo/todoList.type';
 
 const compareFunctions: CompareFuncObj = {
-  imminence: (a: Todo, b: Todo): number => {
-    const newToday = new Date();
-    return -Number(isEqualDate(newToday, a.until)) + Number(isEqualDate(newToday, b.until));
+  imminence: (a: Todo, b: Todo, today?: Date): number => {
+    const newToday = today ?? onlyDate(new Date());
+    return (
+      -Math.sign(newToday.getTime() - onlyDate(a.until).getTime()) +
+      Math.sign(newToday.getTime() - onlyDate(b.until).getTime())
+    );
   },
   until: (a: Todo, b: Todo): number => a.until.getTime() - b.until.getTime(),
   importance: (a: Todo, b: Todo): number => a.importance - b.importance,
@@ -17,10 +20,10 @@ const compareFunctions: CompareFuncObj = {
   },
 };
 
-const getCompareFunction = ({ type, direction }: SortCommand): CompareFunc => {
+const getCompareFunction = ({ type, direction }: SortCommand, today?: Date): CompareFunc => {
   const multiplier = direction === 'ASCEND' ? 1 : direction === 'DESCEND' ? -1 : 0;
   return (a: Todo, b: Todo) => {
-    return multiplier * compareFunctions[type](a, b);
+    return multiplier * compareFunctions[type](a, b, today);
   };
 };
 
@@ -31,9 +34,9 @@ const defaultCompareFunctions: SortCommand[] = [
   { type: 'lastPostponed', direction: 'ASCEND' },
 ];
 
-export const generateCompare = (compareArr: SortCommand[]) => {
+export const generateCompare = (compareArr: SortCommand[], today?: Date) => {
   return (a: Todo, b: Todo): number => {
-    const compareFunctionArr = compareArr.map((el) => getCompareFunction(el));
+    const compareFunctionArr = compareArr.map((el) => getCompareFunction(el, today));
     for (const comp of compareFunctionArr) {
       const result = comp(a, b);
       if (result !== 0) return result;
@@ -43,3 +46,6 @@ export const generateCompare = (compareArr: SortCommand[]) => {
 };
 
 export const defaultCompare = generateCompare(defaultCompareFunctions);
+export const getDefaultCompareForSpecificDate = (today: Date): ((a: Todo, b: Todo) => number) => {
+  return generateCompare(defaultCompareFunctions, today);
+};

@@ -9,6 +9,9 @@ import { toast } from 'react-toastify';
 
 const Wrapper = styled.div`
   width: 85%;
+  height: 90%;
+  overflow-y: auto;
+  position: relative;
 `;
 
 const BlankTableWrapper = styled.div`
@@ -22,6 +25,11 @@ const GridWrapper = styled.div`
   grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
   border-bottom: 2px solid #e2e2e2;
   text-align: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 5;
+
   p {
     margin: 10px 0;
   }
@@ -31,6 +39,7 @@ const GridRowWrapper = styled(GridWrapper)`
   div:nth-child(10) {
     grid-column: 2/9;
   }
+  z-index: 0;
 `;
 const RowWrapper = styled.div`
   ${GridWrapper}:hover {
@@ -73,6 +82,7 @@ const Table = (): ReactElement => {
             <GridRowWrapper
               onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
               key={todo.id}
+              style={{ transitionDuration: '1s' }}
             >
               <TableRow todo={todo} />
             </GridRowWrapper>

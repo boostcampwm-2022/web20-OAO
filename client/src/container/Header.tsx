@@ -5,7 +5,12 @@ import LongLogo from '@images/LongLogo.svg';
 
 import { Link } from 'react-router-dom';
 import Image from '@components/Image';
-import LoginButton from '@components/LoginButton';
+import Button from '@components/Button';
+import Text from '@components/Text';
+import { PRIMARY_COLORS } from '@util/Constants';
+
+import { isTutorialAtom, changeIndexedDBtoMemoryAtom, changeMemorytoIndexedDBAtom } from '@util/GlobalState';
+import { useAtom } from 'jotai';
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,16 +20,54 @@ const Wrapper = styled.div`
   height: 10vh;
   padding: 25px;
   font-family: 'Roboto';
-  z-index: -10;
 `;
 
 const Header = (): ReactElement => {
+  const [isTutorial, setIsTutorial] = useAtom(isTutorialAtom);
+  const [, changeIndexedDBtoMemory] = useAtom(changeIndexedDBtoMemoryAtom);
+  const [, changeMemorytoIndexedDB] = useAtom(changeMemorytoIndexedDBAtom);
+  const startTutorial = (): void => {
+    setIsTutorial(true);
+    changeIndexedDBtoMemory();
+  };
+  const endTutorial = (): void => {
+    setIsTutorial(false);
+    changeMemorytoIndexedDB();
+  };
   return (
     <Wrapper>
       <Link to="/">
         <Image src={LongLogo} flexGrow={3} />
       </Link>
-      <LoginButton />
+      {isTutorial ? (
+        <Link to="/" onClick={endTutorial}>
+          <Button
+            context={
+              <Text
+                text="튜토리얼 끝내기"
+                color={PRIMARY_COLORS.red}
+                fontWeight={'700'}
+                fontSize={'24px'}
+                fontFamily={'Nanum Myeongjo'}
+              />
+            }
+          />
+        </Link>
+      ) : (
+        <Link to="/tutorials" onClick={startTutorial}>
+          <Button
+            context={
+              <Text
+                text="튜토리얼 해보기"
+                color={PRIMARY_COLORS.blue}
+                fontWeight={'700'}
+                fontSize={'20px'}
+                fontFamily={'Nanum Myeongjo'}
+              />
+            }
+          />
+        </Link>
+      )}
     </Wrapper>
   );
 };
