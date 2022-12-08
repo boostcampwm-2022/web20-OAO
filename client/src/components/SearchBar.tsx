@@ -29,7 +29,7 @@ const SearchTitleWrapper = styled.div`
   flex-grow: 2;
 `;
 
-const UlWrapper = styled.div`
+const UlWrapper = styled.div<{ listLength: number }>`
   position: absolute;
   z-index: 110;
   width: 100%;
@@ -37,8 +37,8 @@ const UlWrapper = styled.div`
   background-color: white;
   border: 1px solid #e2e2e2;
   border-radius: 5px;
-  overflow: scroll;
-  height: 20vh;
+  overflow: auto;
+  height: ${({ listLength }) => (listLength > 5 ? '20vh' : 'auto')};
   li:hover {
     cursor: pointer;
     background-color: ${lightGray};
@@ -116,7 +116,7 @@ const SearchBar = ({ onClick, onChange }: { onClick: Function; onChange?: Functi
         />
       </InputWrapper>
       {searchTodoList.length > 0 && (
-        <UlWrapper>
+        <UlWrapper listLength={searchTodoList.length}>
           <Ul>
             {searchTodoList.map((todo: PlainTodo) => {
               return (
