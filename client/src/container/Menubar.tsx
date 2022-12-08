@@ -6,8 +6,13 @@ import Home from '@images/Home.svg';
 import Table from '@images/Table.svg';
 
 import Image from '@components/Image';
+import Diagram from '@images/Diagram.svg';
 
 const Wrapper = styled.div`
+  position: relative;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 8vh;
   background: #fcfcfc;
@@ -23,6 +28,9 @@ const Menubar = (): ReactElement => {
       </Link>
       <Link to="/todos">
         <Image src={Table} />
+      </Link>
+      <Link to="/diagram">
+        <Image src={Diagram} />
       </Link>
     </Wrapper>
   );
