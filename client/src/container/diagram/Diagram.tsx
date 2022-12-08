@@ -9,6 +9,7 @@ import {
   Vertex,
   getVertice,
   getVertexDimension,
+  validateVertex,
 } from '@util/diagram.util';
 import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
@@ -138,14 +139,13 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       <Wrapper style={diagramStyle as React.CSSProperties}>
         {diagramData !== undefined &&
           diagramVertice?.map((el) => {
-            const { x1, y1, x2, y2 } = getVertexDimension(diagramData, el);
+            const pos = getVertexDimension(diagramData, el);
+            const type = validateVertex(diagramData, el);
             return (
               <TodoVertex
                 key={`${el.from}+${el.to}`}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
+                {...pos}
+                type={type}
                 onPopUp={getOnClick('Vertex', `${el.from}+${el.to}`)}
               />
             );

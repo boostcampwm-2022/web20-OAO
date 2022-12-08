@@ -148,3 +148,12 @@ export const getVertexDimension = (
     y2: toPos.y,
   };
 };
+
+export const validateVertex = (todoList: Map<string, DiagramTodo>, vertex: Vertex): 'NORMAL' | 'WARNING' | 'ERROR' => {
+  const from = todoList.get(vertex.from);
+  const to = todoList.get(vertex.to);
+  if (from == null || to == null) throw new Error('ERROR: 선후관계가 잘못된 레퍼런스를 참조하고 있습니다.');
+  if (from.todo.until.getTime() > to.todo.until.getTime()) return 'ERROR';
+  if ((from.order as number) > (to.order as number)) return 'WARNING';
+  return 'NORMAL';
+};

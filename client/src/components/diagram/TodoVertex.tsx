@@ -1,5 +1,8 @@
 import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
+import { PRIMARY_COLORS } from '@util/Constants';
+
+const { yellow, red, gray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: absolute;
@@ -20,17 +23,23 @@ const toPathString = (width: number, height: number): string => {
   return `M${-width - 2} 0C${-width - 2} ${0.4 * height} 2 ${0.6 * height} 2 ${height}`;
 };
 
+const getColor = (type: 'NORMAL' | 'WARNING' | 'ERROR'): string => {
+  return type === 'NORMAL' ? gray : type === 'WARNING' ? yellow : red;
+};
+
 const TodoVertex = ({
   x1,
   y1,
   x2,
   y2,
+  type,
   onPopUp,
 }: {
   x1: number;
   y1: number;
   x2: number;
   y2: number;
+  type: 'NORMAL' | 'WARNING' | 'ERROR';
   onPopUp: (event: React.MouseEvent) => void;
 }): ReactElement => {
   const x = Math.min(x1, x2);
@@ -57,7 +66,7 @@ const TodoVertex = ({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d={toPathString(width, height)} stroke="#5C5C5C" strokeWidth={strokeWidth} />
+        <path d={toPathString(width, height)} stroke={getColor(type)} strokeWidth={strokeWidth} />
         <path
           d={toPathString(width, height)}
           stroke="#00000000"
