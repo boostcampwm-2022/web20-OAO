@@ -28,7 +28,7 @@ const TodoTimeInteraction = (): ReactElement => {
       <ButtonWrapper>
         <TodoInteractionButton />
       </ButtonWrapper>
-      {isPostpone && <PostponeBox />}
+      {isPostpone && <PostponeBox isBottom={false} />}
       <TodoTimeText />
     </Wrapper>
   );

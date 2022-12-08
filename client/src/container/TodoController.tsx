@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useLocation } from 'react-router-dom';
 
 import Text from '@components/Text';
@@ -55,17 +55,13 @@ const TodoController = (): ReactElement => {
 
   const activeTodo = useAtomValue(asyncActiveTodo);
   const [needTodoController, setNeedTodoController] = useAtom(needTodoControllerAtom);
-  const [isMainPage, setIsMainPage] = useAtom(isMainPageAtom);
+  const setIsMainPage = useSetAtom(isMainPageAtom);
   const isPostpone = useAtomValue(postponeClicked);
 
   useEffect(() => {
     setIsMainPage();
     setNeedTodoController();
   }, [location]);
-
-  useEffect(() => {
-    setIsMainPage();
-  }, [isMainPage]);
 
   useEffect(() => {
     setNeedTodoController();
@@ -75,7 +71,7 @@ const TodoController = (): ReactElement => {
     <Wrapper active={needTodoController}>
       <ButtonWrapper>
         <TodoInteractionButton {...imageButtonStyle} />
-        {isPostpone && <PostponeBox />}
+        {isPostpone && needTodoController && <PostponeBox isBottom={true} />}
       </ButtonWrapper>
       <Text text={activeTodo?.title} fontFamily="NanumMyeongjo" fontSize="24px" color={offWhite} />
       <TextWrapper>

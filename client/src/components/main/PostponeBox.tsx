@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { memo, ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +6,7 @@ import Text from '@components/Text.js';
 import Button from '@components/Button.js';
 
 import { PRIMARY_COLORS } from '@util/Constants';
-import { postponeOptionsAtom, asyncActiveTodo, needTodoControllerAtom } from '@util/GlobalState';
+import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
 
 import usePostpone from '@hooks/usePostpone.js';
 
@@ -36,10 +36,9 @@ const StyledPostponeBox = styled.div<Props>`
   transform: ${(props) => (props.isBottom ? 'translateY(-3px)' : '')};
 `;
 
-const PostponeBox = (): ReactElement => {
+const PostponeBox = ({ isBottom }: { isBottom: boolean }): ReactElement => {
   const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
   const [activeTodo] = useAtom(asyncActiveTodo);
-  const needTodoController = useAtomValue(needTodoControllerAtom);
   const [setPostpone] = usePostpone();
 
   useEffect(() => {
@@ -51,7 +50,7 @@ const PostponeBox = (): ReactElement => {
   };
 
   return (
-    <StyledPostponeBox isBottom={needTodoController}>
+    <StyledPostponeBox isBottom={isBottom}>
       {postponeOptions.map((text: string): ReactElement => {
         return (
           <Button
