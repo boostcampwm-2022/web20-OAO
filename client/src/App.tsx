@@ -6,14 +6,23 @@ import { ToastContainer } from 'react-toastify';
 import Header from '@container/Header';
 import Menubar from '@container/Menubar';
 
+import Main from '@page/Main';
 import Todos from '@page/Todos';
+import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
 
-const Wrapper = styled.div`
-  width: 100%;
+const RowWrapper = styled.div`
+  position: relative;
+  width: calc(100%);
+  display: flex;
 `;
 
-const Main = lazy(async () => await import('@page/Main'));
+const Wrapper = styled.div`
+  position: relative;
+  width: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+`;
 
 const App = (): ReactElement => {
   return (
@@ -21,14 +30,17 @@ const App = (): ReactElement => {
       <BrowserRouter>
         <ToastContainer />
         <OverLay />
-        <Menubar />
-        <Wrapper>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Main />}></Route>
-            <Route path="/todos" element={<Todos />}></Route>
-          </Routes>
-        </Wrapper>
+        <RowWrapper>
+          <Menubar />
+          <Wrapper>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Main />}></Route>
+              <Route path="/todos" element={<Todos />}></Route>
+              <Route path="/diagram" element={<DiagramPage />}></Route>
+            </Routes>
+          </Wrapper>
+        </RowWrapper>
       </BrowserRouter>
     </Suspense>
   );
