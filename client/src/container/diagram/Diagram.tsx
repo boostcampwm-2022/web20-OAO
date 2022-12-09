@@ -131,6 +131,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       onMouseMove={onMouseMove}
       onMouseLeave={onWheelLeave}
       onClick={getOnClick('None', '')}
+      style={{ cursor: isWheelDown.current ? 'grab' : 'auto' }}
       ref={domRef}
     >
       <Detector />
