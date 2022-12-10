@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState, memo } from 'react';
+import { ReactElement, useRef, useState, memo, useCallback } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import WarningBubble from './WarningBubble';
@@ -8,6 +8,8 @@ const { yellow, red, gray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: absolute;
+  width: 0;
+  height: 0;
   transform: translate(var(--x), var(--y));
   pointer-events: none;
   svg {
@@ -19,11 +21,6 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-// const toPathString = (width: number, height: number): string => {
-//   if (width > 0) return `M2 0C2 ${0.4 * height} ${width - 2} ${0.6 * height} ${width - 2} ${height}`;
-//   return `M${-width - 2} 0C${-width - 2} ${0.4 * height} 2 ${0.6 * height} 2 ${height}`;
-// };
 
 const getPathValue = (
   x1: number,
@@ -50,6 +47,59 @@ const getColor = (type: 'NORMAL' | 'WARNING' | 'ERROR'): string => {
   return type === 'NORMAL' ? gray : type === 'WARNING' ? yellow : red;
 };
 
+interface VertexProps {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  id: string;
+  type: 'NORMAL' | 'WARNING' | 'ERROR';
+  isHovered: boolean;
+  onMouseEnter: (event: React.MouseEvent) => void;
+  onMouseLeave: (event: React.MouseEvent) => void;
+  getOnMouseMove: (isHovered: boolean) => (event: React.MouseEvent) => void;
+  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
+}
+
+const Vertex = ({
+  x1,
+  y1,
+  x2,
+  y2,
+  id,
+  type,
+  isHovered,
+  onMouseEnter,
+  onMouseLeave,
+  getOnMouseMove,
+  getOnClick,
+}: VertexProps): ReactElement => {
+  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x1, y1, x2, y2);
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={viewBox}
+      fill="none"
+      transform={`translate(${translateX}, ${translateY})`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d={path} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
+      <path
+        d={path}
+        stroke="#00000000"
+        strokeWidth={25}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseMove={getOnMouseMove(isHovered)}
+        onClick={getOnClick('Vertex', id)}
+      />
+    </svg>
+  );
+};
+
+const MemoVertex = memo(Vertex);
+
 const TodoVertex = ({
   x1,
   y1,
@@ -71,50 +121,36 @@ const TodoVertex = ({
     '--x': `${x1}px`,
     '--y': `${y1}px`,
   };
-  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x1, y1, x2, y2);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: NaN, y: NaN });
   const domRef = useRef<HTMLDivElement>(null);
-  const onMouseLeave = (event: React.MouseEvent): void => {
-    setIsHovered(false);
-  };
-  const onMouseEnter = (event: React.MouseEvent): void => {
+  const onMouseLeave = useCallback((event: React.MouseEvent): void => {
+    setIsHovered(() => false);
+  }, []);
+  const onMouseEnter = useCallback((event: React.MouseEvent): void => {
     setMousePos(() => ({
       x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
       y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
     }));
-    setIsHovered(true);
-  };
-  const onMouseMove = (event: React.MouseEvent): void => {
-    if (isHovered && type !== 'NORMAL') {
-      setMousePos(() => ({
-        x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
-        y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
-      }));
-    }
-  };
+    setIsHovered(() => true);
+  }, []);
+  const getOnMouseMove = useCallback((isHovered: boolean) => {
+    return (event: React.MouseEvent): void => {
+      if (isHovered && type !== 'NORMAL') {
+        setMousePos(() => ({
+          x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+          y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+        }));
+      }
+    };
+  }, []);
 
   return (
     <Wrapper style={style as React.CSSProperties} ref={domRef}>
-      <svg
-        width={width}
-        height={height}
-        viewBox={viewBox}
-        fill="none"
-        transform={`translate(${translateX}, ${translateY})`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d={path} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
-        <path
-          d={path}
-          stroke="#00000000"
-          strokeWidth={25}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onMouseMove={onMouseMove}
-          onClick={getOnClick('Vertex', id)}
-        />
-      </svg>
+      <MemoVertex
+        {...{ x1, y1, x2, y2, id, type, isHovered, onMouseEnter, onMouseLeave, getOnMouseMove }}
+        getOnClick={getOnClick}
+      />
       {isHovered && (
         <div style={{ position: 'absolute', left: `${mousePos.x}px`, top: `${mousePos.y}px` }}>
           {type === 'WARNING' ? <WarningBubble /> : type === 'ERROR' ? <ErrorBubble /> : ''}
