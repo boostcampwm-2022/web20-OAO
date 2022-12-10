@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import Button from '@components/Button';
 import Update from '@images/Update.svg';
 import Delete from '@images/Delete.svg';
@@ -54,4 +54,4 @@ const PopUp = ({
   );
 };
 
-export default PopUp;
+export default memo(PopUp);
