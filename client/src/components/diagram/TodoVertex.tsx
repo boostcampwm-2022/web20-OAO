@@ -20,9 +20,30 @@ const Wrapper = styled.div`
   }
 `;
 
-const toPathString = (width: number, height: number): string => {
-  if (width > 0) return `M2 0C2 ${0.4 * height} ${width - 2} ${0.6 * height} ${width - 2} ${height}`;
-  return `M${-width - 2} 0C${-width - 2} ${0.4 * height} 2 ${0.6 * height} 2 ${height}`;
+// const toPathString = (width: number, height: number): string => {
+//   if (width > 0) return `M2 0C2 ${0.4 * height} ${width - 2} ${0.6 * height} ${width - 2} ${height}`;
+//   return `M${-width - 2} 0C${-width - 2} ${0.4 * height} 2 ${0.6 * height} 2 ${height}`;
+// };
+
+const getPathValue = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
+  const p1 = { x: 0, y: 0 };
+  const c1 = { x: 0, y: 0.4 * Math.abs(y2 - y1) };
+  const c2 = { x: x2 - x1, y: y2 - y1 - 0.4 * Math.abs(y2 - y1) };
+  const p2 = { x: x2 - x1, y: y2 - y1 };
+  const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
+  const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
+  const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
+  const width = end.x - start.x;
+  const height = end.y - start.y;
+  const viewBox = `${start.x} ${start.y} ${width} ${height}`;
+  const translateX = -p1.x + start.x;
+  const translateY = p1.y - start.y;
+  return { path, width, height, viewBox, translateX, translateY };
 };
 
 const getColor = (type: 'NORMAL' | 'WARNING' | 'ERROR'): string => {
@@ -44,14 +65,11 @@ const TodoVertex = ({
   type: 'NORMAL' | 'WARNING' | 'ERROR';
   onPopUp: (event: React.MouseEvent) => void;
 }): ReactElement => {
-  const x = Math.min(x1, x2);
-  const y = Math.min(y1, y2);
-  const width = x2 - x1;
-  const height = y2 - y1;
   const style = {
-    '--x': `${x}px`,
-    '--y': `${y}px`,
+    '--x': `${x1}px`,
+    '--y': `${y1}px`,
   };
+  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x1, y1, x2, y2);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: NaN, y: NaN });
   const domRef = useRef<HTMLDivElement>(null);
@@ -73,18 +91,20 @@ const TodoVertex = ({
       }));
     }
   };
+
   return (
     <Wrapper style={style as React.CSSProperties} ref={domRef}>
       <svg
-        width={Math.abs(width)}
+        width={width}
         height={height}
-        viewBox={`0 0 ${Math.abs(width)} ${height}`}
+        viewBox={viewBox}
         fill="none"
+        transform={`translate(${translateX}, ${translateY})`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d={toPathString(width, height)} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
+        <path d={path} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
         <path
-          d={toPathString(width, height)}
+          d={path}
           stroke="#00000000"
           strokeWidth={25}
           onMouseEnter={onMouseEnter}
