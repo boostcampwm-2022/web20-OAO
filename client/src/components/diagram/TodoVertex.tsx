@@ -84,11 +84,12 @@ const Vertex = ({
       transform={`translate(${translateX}, ${translateY})`}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d={path} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} />
+      <path d={path} stroke={getColor(type)} strokeWidth={isHovered ? 4 : 2} vectorEffect={'non-scaling-stroke'} />
       <path
         d={path}
         stroke="#00000000"
         strokeWidth={25}
+        vectorEffect={'non-scaling-stroke'}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={getOnMouseMove(isHovered)}
