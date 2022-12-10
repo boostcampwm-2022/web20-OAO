@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef, useCallback } from 'react';
+import { ReactElement, useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
 import styled from 'styled-components';
@@ -24,15 +24,15 @@ const Wrapper = styled.div`
   transform: translate(var(--offsetX), var(--offsetY));
 `;
 
-const Detector = styled.div`
+const Detector = memo(styled.div`
   position: absolute;
   background-color: ${offWhite};
   width: 100%;
   height: 100%;
   background-color: transparent;
-`;
+`);
 
-const HorizontalBaseLine = styled.div`
+const HorizontalBaseLine = memo(styled.div`
   position: absolute;
   height: 0;
   width: 100%;
@@ -40,9 +40,9 @@ const HorizontalBaseLine = styled.div`
   transform: translateY(var(--offsetY));
   border-top: 4px dashed ${green};
   opacity: 0.5;
-`;
+`);
 
-const VerticalBaseLine = styled.div`
+const VerticalBaseLine = memo(styled.div`
   position: absolute;
   height: 100%;
   width: 0;
@@ -50,7 +50,7 @@ const VerticalBaseLine = styled.div`
   transform: translateX(var(--offsetX));
   border-left: 4px dashed ${green};
   opacity: 0.5;
-`;
+`);
 
 interface PopUpData {
   type: 'Todo' | 'Vertex' | 'None';
@@ -79,18 +79,27 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       });
   }, [todoListAtom, showDone]);
 
-  const diagramStyle = {
-    '--offsetX': `${offset.x}px`,
-    '--offsetY': `${offset.y}px`,
-  };
+  const diagramStyle = useMemo(
+    () => ({
+      '--offsetX': `${offset.x}px`,
+      '--offsetY': `${offset.y}px`,
+    }),
+    [offset],
+  );
 
-  const horizontalLineStyle = {
-    '--offsetY': `${offset.y}px`,
-  };
+  const horizontalLineStyle = useMemo(
+    () => ({
+      '--offsetY': `${offset.y}px`,
+    }),
+    [offset],
+  );
 
-  const verticalLineStyle = {
-    '--offsetX': `${offset.x}px`,
-  };
+  const verticalLineStyle = useMemo(
+    () => ({
+      '--offsetX': `${offset.x}px`,
+    }),
+    [offset],
+  );
 
   const onWheelDown = (event: React.MouseEvent): void => {
     if (event.button === 1) {

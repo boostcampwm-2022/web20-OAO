@@ -86,7 +86,7 @@ const TodoVertex = ({
     setIsHovered(true);
   };
   const onMouseMove = (event: React.MouseEvent): void => {
-    if (isHovered) {
+    if (isHovered && type !== 'NORMAL') {
       setMousePos(() => ({
         x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
         y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
