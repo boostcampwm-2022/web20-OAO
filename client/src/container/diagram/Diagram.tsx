@@ -20,6 +20,8 @@ const { offWhite, green } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: relative;
+  width: 0;
+  height: 0;
   background-color: ${offWhite};
   transform: translate(var(--offsetX), var(--offsetY));
 `;
