@@ -65,7 +65,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [diagramVertice, setDiagramVertice] = useState<Vertex[] | undefined>();
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
   const [popUpData, setPopUpData] = useState<PopUpData>({ type: 'None', x: 0, y: 0, id: '' });
-  const isWheelDown = useRef<boolean>(false);
+  const [isWheelDown, setIsWheelDown] = useState<boolean>(false);
   const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -94,20 +94,20 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
 
   const onWheelDown = (event: React.MouseEvent): void => {
     if (event.button === 1) {
-      isWheelDown.current = true;
+      setIsWheelDown(true);
     }
   };
 
   const onWheelUp = (event: React.MouseEvent): void => {
-    isWheelDown.current = false;
+    setIsWheelDown(false);
   };
 
   const onWheelLeave = (event: React.MouseEvent): void => {
-    isWheelDown.current = false;
+    setIsWheelDown(false);
   };
 
   const onMouseMove = (event: React.MouseEvent): void => {
-    if (isWheelDown.current) {
+    if (isWheelDown) {
       setOffset((prev) => ({ x: prev.x + event.movementX, y: prev.y + event.movementY }));
     }
   };
@@ -131,7 +131,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       onMouseMove={onMouseMove}
       onMouseLeave={onWheelLeave}
       onClick={getOnClick('None', '')}
-      style={{ cursor: isWheelDown.current ? 'grab' : 'auto' }}
+      style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
       ref={domRef}
     >
       <Detector />
