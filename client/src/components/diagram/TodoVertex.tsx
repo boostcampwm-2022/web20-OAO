@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from 'react';
+import { ReactElement, useRef, useState, memo } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import WarningBubble from './WarningBubble';
@@ -56,14 +56,16 @@ const TodoVertex = ({
   x2,
   y2,
   type,
-  onPopUp,
+  id,
+  getOnClick,
 }: {
   x1: number;
   y1: number;
   x2: number;
   y2: number;
+  id: string;
   type: 'NORMAL' | 'WARNING' | 'ERROR';
-  onPopUp: (event: React.MouseEvent) => void;
+  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x1}px`,
@@ -110,7 +112,7 @@ const TodoVertex = ({
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseMove={onMouseMove}
-          onClick={onPopUp}
+          onClick={getOnClick('Vertex', id)}
         />
       </svg>
       {isHovered && (
@@ -122,4 +124,4 @@ const TodoVertex = ({
   );
 };
 
-export default TodoVertex;
+export default memo(TodoVertex);

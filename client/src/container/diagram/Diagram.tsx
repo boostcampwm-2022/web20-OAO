@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef } from 'react';
+import { ReactElement, useEffect, useState, useRef, useCallback } from 'react';
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
 import styled from 'styled-components';
@@ -112,17 +112,17 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
     }
   };
 
-  const getOnClick = (type: 'Todo' | 'Vertex' | 'None', id: string) => {
+  const getOnClick = useCallback((type: 'Todo' | 'Vertex' | 'None', id: string) => {
     return (event: React.MouseEvent): void => {
       setPopUpData({
         type,
         id,
-        x: event.clientX - offset.x - (domRef.current?.getBoundingClientRect().left as number),
-        y: event.clientY - offset.y - (domRef.current?.getBoundingClientRect().top as number),
+        x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+        y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
       });
       event.stopPropagation();
     };
-  };
+  }, []);
 
   return (
     <div
@@ -132,12 +132,11 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       onMouseLeave={onWheelLeave}
       onClick={getOnClick('None', '')}
       style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
-      ref={domRef}
     >
       <Detector />
       <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
       <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
-      <Wrapper style={diagramStyle as React.CSSProperties}>
+      <Wrapper style={diagramStyle as React.CSSProperties} ref={domRef}>
         {diagramData !== undefined &&
           diagramVertice?.map((el) => {
             const pos = getVertexDimension(diagramData, el);
@@ -147,7 +146,8 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
                 key={`${el.from}+${el.to}`}
                 {...pos}
                 type={type}
-                onPopUp={getOnClick('Vertex', `${el.from}+${el.to}`)}
+                id={`${el.from}+${el.to}`}
+                getOnClick={getOnClick}
               />
             );
           })}
@@ -160,7 +160,8 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
                 todo={el[1].todo}
                 x={pos.x}
                 y={pos.y}
-                onPopUp={getOnClick('Todo', el[1].todo.id)}
+                id={el[1].todo.id}
+                getOnClick={getOnClick}
               />
             );
           })}

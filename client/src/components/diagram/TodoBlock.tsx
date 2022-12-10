@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import { Todo } from '@todo/todo';
@@ -72,19 +72,25 @@ const TodoBlock = ({
   todo,
   x,
   y,
-  onPopUp,
+  id,
+  getOnClick,
 }: {
   todo: Todo;
   x: number;
   y: number;
-  onPopUp: (event: React.MouseEvent) => void;
+  id: string;
+  getOnClick: (
+    type: 'Todo' | 'Vertex' | 'None',
+    id: string,
+    ref: React.RefObject<HTMLDivElement>,
+  ) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
   return (
-    <Wrapper style={style as React.CSSProperties} onClick={onPopUp}>
+    <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id)}>
       <UpperRow>
         <Marker state={todo.state} />
         <Title
@@ -108,4 +114,4 @@ const TodoBlock = ({
   );
 };
 
-export default TodoBlock;
+export default memo(TodoBlock);
