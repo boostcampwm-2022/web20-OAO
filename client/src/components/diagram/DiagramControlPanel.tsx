@@ -13,7 +13,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: end;
   border-bottom: 2px solid ${darkestGray};
-  background-color: ${offWhite};
   align-items: center;
   gap: 5px;
 `;
