@@ -2,6 +2,7 @@ import { ReactElement, memo } from 'react';
 import PopUp from '@components/diagram/PopUp';
 import Button from '@components/Button';
 import Update from '@images/Update.svg';
+import Path from '@images/Path.svg';
 import Delete from '@images/Delete.svg';
 
 const TodoBlockPopUp = ({ x, y }: { x: number; y: number }): ReactElement => {
@@ -11,6 +12,12 @@ const TodoBlockPopUp = ({ x, y }: { x: number; y: number }): ReactElement => {
         context={<img src={Update} width="40px" height="40px" />}
         onClick={(e) => {
           console.log('update');
+        }}
+      />
+      <Button
+        context={<img src={Path} width="40px" height="40px" />}
+        onClick={(e) => {
+          console.log('new path');
         }}
       />
       <Button
