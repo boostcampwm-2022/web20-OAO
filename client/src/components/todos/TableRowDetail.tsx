@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 
 const DetailWrapper = styled.div`
   text-align: left;
-  margin: 10px;
 `;
 
 const BlankDiv = styled.div`
