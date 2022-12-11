@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
   html, body{
     height: 100%;
     margin: 0;
-    font-family: 'Nanum Myeongjo','Noto Sans KR','Roboto', sans-serif;
+    font-family: 'NanumMyeongjo','Noto Sans KR','Roboto', sans-serif;
   }
   #root {
     position: relative;

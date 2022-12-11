@@ -1,8 +1,6 @@
 import { TodoList } from '@todo/todoList';
 import { Todo } from '@todo/todo';
-import { PlainTodo } from '@todo/todo.type';
 import Queue from '@util/queue';
-import { Id } from 'react-toastify';
 
 export interface DiagramTodo {
   order?: number;
@@ -11,7 +9,7 @@ export interface DiagramTodo {
 }
 
 const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
-  const filter = showDone ? () => true : (el) => el.state !== 'DONE';
+  const filter = showDone ? () => true : (el: Todo) => el.state !== 'DONE';
   const sortedTodoList = await todoList.getSortedListWithFilter(filter, []);
   const cloneTodoList = new Map<string, Todo>(sortedTodoList.map((el) => [el.id, new Todo(el)]));
   cloneTodoList.forEach((el) => {
@@ -156,4 +154,41 @@ export const validateVertex = (todoList: Map<string, DiagramTodo>, vertex: Verte
   if (from.todo.until.getTime() > to.todo.until.getTime()) return 'ERROR';
   if ((from.order as number) > (to.order as number)) return 'WARNING';
   return 'NORMAL';
+};
+
+export interface VertexProps {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  type: 'NORMAL' | 'WARNING' | 'ERROR';
+  id: string;
+}
+
+export const getVerticeProps = (todoList: Map<string, DiagramTodo>): Map<string, VertexProps> => {
+  const verticeArr = getVertice(todoList);
+  return new Map(
+    verticeArr.map((el) => {
+      const pos = getVertexDimension(todoList, el);
+      const type = validateVertex(todoList, el);
+      const id = `${el.from}+${el.to}`;
+      return [id, { id, ...pos, type }];
+    }),
+  );
+};
+
+export interface TodoBlockProps {
+  todo: Todo;
+  x: number;
+  y: number;
+  id: string;
+}
+
+export const getTodoBlockProps = (todoList: Map<string, DiagramTodo>): Map<string, TodoBlockProps> => {
+  return new Map(
+    [...todoList].map((el) => {
+      const pos = calculatePosition(el[1].order as number, el[1].depth as number);
+      return [el[0], { id: el[0], todo: el[1].todo, ...pos }];
+    }),
+  );
 };

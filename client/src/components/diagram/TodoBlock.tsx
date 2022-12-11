@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   background-color: ${lightestGray};
   transform: translate(var(--x), var(--y));
   cursor: pointer;
-  transition: outline 0.3s;
+  transition: outline 0.3s, transform 1s;
   outline: 6px solid transparent;
   box-sizing: border-box;
   &:hover {
@@ -79,11 +79,7 @@ const TodoBlock = ({
   x: number;
   y: number;
   id: string;
-  getOnClick: (
-    type: 'Todo' | 'Vertex' | 'None',
-    id: string,
-    ref: React.RefObject<HTMLDivElement>,
-  ) => (event: React.MouseEvent) => void;
+  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x}px`,
@@ -97,7 +93,7 @@ const TodoBlock = ({
           text={todo.title}
           textAlign={'right'}
           fontWeight={'700'}
-          fontFamily={'Nanum Myeongjo'}
+          fontFamily={'NanumMyeongjo'}
           color={black}
           fontSize={'16px'}
         />
@@ -106,7 +102,7 @@ const TodoBlock = ({
         text={`${importanceToString(todo.importance)}, ${remainingDayToString(todo.until)}`}
         textAlign={'right'}
         fontWeight={'700'}
-        fontFamily={'Nanum Myeongjo'}
+        fontFamily={'NanumMyeongjo'}
         color={gray}
         fontSize={'14px'}
       />
