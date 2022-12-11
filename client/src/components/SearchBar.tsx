@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, KeyboardEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { toast } from 'react-toastify';
 
@@ -72,6 +72,7 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
   const [searchTodoList, setSearchTodoList] = useState<PlainTodo[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [focusedTodo, setFocusedTodo] = useState('');
 
   const inputEventPromiseWrapper = (event: React.ChangeEvent<HTMLInputElement>): void => {
     onInput(event)
@@ -94,10 +95,44 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
       });
   };
 
+  const onKeyDown = (event: KeyboardEvent): void => {
+    if (searchTodoList.length === 0) return;
+    const nowIndex = searchTodoList.findIndex((el) => el.id === focusedTodo);
+    if (event.keyCode === 40) {
+      event.preventDefault();
+      if (nowIndex === -1) return setFocusedTodo(searchTodoList[0].id);
+      if (nowIndex === searchTodoList.length - 1) return setFocusedTodo(searchTodoList[0].id);
+      else setFocusedTodo(searchTodoList[nowIndex + 1].id);
+    }
+    if (event.keyCode === 38) {
+      event.preventDefault();
+      if (nowIndex === -1) return setFocusedTodo(searchTodoList[searchTodoList.length - 1].id);
+      if (nowIndex === 0) return setFocusedTodo(searchTodoList[searchTodoList.length - 1].id);
+      setFocusedTodo(searchTodoList[nowIndex - 1].id);
+    }
+    if (event.keyCode === 13) {
+      if (focusedTodo === '') return;
+      const selectTodo = searchTodoList.find((el) => el.id === focusedTodo);
+      setInputValue('');
+      setSearchTodoList([]);
+      onClick(selectTodo);
+      setFocusedTodo('');
+    }
+  };
+
   const listOnClick = (selectTodo: PlainTodo): void => {
     setInputValue('');
     setSearchTodoList([]);
     onClick(selectTodo);
+  };
+
+  const onMouseEnter = (todoId: string): void => {
+    setFocusedTodo(todoId);
+  };
+  const onMouseLeave = (): void => {
+    console.log('hi');
+
+    setFocusedTodo('');
   };
 
   return (
@@ -112,6 +147,7 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
           style={{
             border: 'none',
           }}
+          onKeyDown={onKeyDown}
         />
       </InputWrapper>
       {searchTodoList.length > 0 && (
@@ -119,7 +155,12 @@ const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
           <Ul>
             {searchTodoList.map((todo: PlainTodo) => {
               return (
-                <li key={todo.id}>
+                <li
+                  key={todo.id}
+                  style={{ backgroundColor: focusedTodo === todo.id ? lightGray : 'white' }}
+                  onMouseEnter={() => onMouseEnter(todo.id)}
+                  onMouseLeave={() => onMouseLeave}
+                >
                   <ListWrapper onClick={() => listOnClick(todo)}>
                     <Image src={Search} />
                     <SearchTitleWrapper>
