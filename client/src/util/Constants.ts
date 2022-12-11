@@ -1,9 +1,5 @@
 import { TodoList } from '@core/todo/todoList';
 
-interface ImportanceType {
-  [key: string]: string;
-}
-
 export const ACTIVE_TODO_STATE = {
   working: 'working',
   relaxing: 'relaxing',
@@ -47,17 +43,6 @@ export const PRIMARY_COLORS = {
   blue: '#6C9A8B',
   green: '#93C692',
   yellow: '#FEA34F',
-};
-
-export const IMPORTANCE_ALPHABET: ImportanceType = {
-  1: 'C',
-  2: 'B',
-  3: 'A',
-};
-export const TODO_STATE_TEXT: ImportanceType = {
-  READY: '작업 가능',
-  DONE: '완료',
-  WAIT: '대기중',
 };
 
 export const INITIAL_TODO = { id: undefined, importance: 1, until: new Date() };

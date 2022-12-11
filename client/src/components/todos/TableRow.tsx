@@ -5,13 +5,16 @@ import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
 import { todoList } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
 
 import TableRowHeader from '@components/todos/TableRowHeader';
 import TableRowDetail from '@components/todos/TableRowDetail';
 
+const { lightGray } = PRIMARY_COLORS;
+
 const RowWrapper = styled.div`
   div:nth-child(1):hover {
-    background-color: #e2e2e2;
+    background-color: ${lightGray};
   }
 `;
 
@@ -46,8 +49,8 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
     <RowWrapper>
       <TableRowHeader
         todo={todo}
-        prevTodoTitle={prevTodoList[0]?.title}
-        nextTodoTitle={nextTodoList[0]?.title}
+        prevTodoList={prevTodoList}
+        nextTodoList={nextTodoList}
         onClick={() => setDisplayDetail(!displayDetail)}
       />
       {displayDetail && <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />}

@@ -20,7 +20,7 @@ const GridWrapper = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
-  border-bottom: 2px solid lightGray;
+  border-bottom: 2px solid ${lightGray};
   text-align: center;
   position: sticky;
   top: 0;

@@ -1,9 +1,12 @@
 import { ReactElement, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
 
-import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
-import { getyyyymmddDateFormat, gethhmmFormat, copyToClipboard } from '@util/Common';
+import { PlainTodo } from '@todo/todo.type';
+import { TABLE_MODALS, PRIMARY_COLORS } from '@util/Constants';
+import { copyToClipboard } from '@util/Common';
+import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
@@ -12,17 +15,15 @@ import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
+import { createHeaderElementData } from '@util/todos.util';
 
-import { PlainTodo } from '@todo/todo.type';
-
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { toast } from 'react-toastify';
+const { lightGray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
-  border-bottom: 2px solid #e2e2e2;
+  border-bottom: 2px solid ${lightGray};
   text-align: center;
   position: sticky;
   top: 0;
@@ -32,52 +33,15 @@ const Wrapper = styled.div`
   }
 `;
 
-const CheckWrapper = styled.div`
-  input {
-    display: none;
-  }
-  img {
-    cursor: pointer;
-  }
-`;
-
-const TextWrapper = styled.div`
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-const TitleWrapper = styled(TextWrapper)`
-  margin-right: 10px;
-  text-overflow: ellipsis;
-  text-align: left;
-  font-weight: 700;
-`;
-
-const ContentWrapper = styled(TextWrapper)`
-  margin: 0 10px;
-`;
-
-const getListInfoText = (list: string[], firstTodoTitle: string | undefined): string => {
-  if (firstTodoTitle === undefined) return '-';
-  if (list.length > 1) {
-    return firstTodoTitle.length > 10
-      ? [firstTodoTitle.slice(0, 10), '... 외 ', list.length - 1].join('')
-      : [firstTodoTitle, '외', list.length - 1].join(' ');
-  } else if (list.length === 1) {
-    return firstTodoTitle.length > 12 ? [firstTodoTitle.slice(0, 12), '...'].join('') : firstTodoTitle;
-  }
-  return '-';
-};
-
 const TableRowHeader = ({
   todo,
-  prevTodoTitle,
-  nextTodoTitle,
+  prevTodoList,
+  nextTodoList,
   onClick,
 }: {
   todo: PlainTodo;
-  prevTodoTitle: string;
-  nextTodoTitle: string;
+  prevTodoList: PlainTodo[];
+  nextTodoList: PlainTodo[];
   onClick: MouseEventHandler;
 }): ReactElement => {
   const [, setModalType] = useAtom(modalTypeAtom);
@@ -86,7 +50,6 @@ const TableRowHeader = ({
 
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
-
     let newTodo = {};
     newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
     todoListAtom
@@ -109,40 +72,35 @@ const TableRowHeader = ({
       });
   };
 
+  const tableRowHeaderElemList = createHeaderElementData({ todo, prevTodoList, nextTodoList });
+
   return (
     <Wrapper onClick={onClick}>
-      <CheckWrapper>
-        {todo.state === 'DONE' ? (
-          <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
-        ) : (
-          <Button context={<Image src={Unchecked} />} onClick={checkTodoStateHandler} />
-        )}
-      </CheckWrapper>
-      <TitleWrapper>{todo.title}</TitleWrapper>
-      <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>
-      <TextWrapper>
-        {getyyyymmddDateFormat(todo.until, '.')} {gethhmmFormat(todo.until)}
-      </TextWrapper>
-      <div>{IMPORTANCE_ALPHABET[todo.importance]}</div>
-      <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
-      <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
+      <Button context={<Image src={todo.state === 'DONE' ? Checked : Unchecked} />} onClick={checkTodoStateHandler} />
+      {tableRowHeaderElemList.map((headerElem) => {
+        return (
+          <div key={headerElem.type} style={headerElem.style}>
+            {headerElem.value}
+          </div>
+        );
+      })}
       <div>
         <Button
-          context={<img src={Update} width="40px" height="40px" />}
-          onClick={(e) => {
+          context={<img src={Update} width="40px" height="40px" alt="update" />}
+          onClick={() => {
             setEditingTodoId(todo.id);
             setModalType(TABLE_MODALS.update);
           }}
         />
         <Button
-          context={<img src={Delete} width="40px" height="40px" />}
-          onClick={(e) => {
+          context={<img src={Delete} width="40px" height="40px" alt="delete" />}
+          onClick={() => {
             handleOnDelete(todo.id);
           }}
         />
         <Button
-          context={<img src={Copy} width="40px" height="40px" />}
-          onClick={(e) => {
+          context={<img src={Copy} width="40px" height="40px" alt="copy" />}
+          onClick={() => {
             copyToClipboard(todo.title);
           }}
         />

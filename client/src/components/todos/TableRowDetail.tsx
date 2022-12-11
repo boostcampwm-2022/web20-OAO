@@ -26,6 +26,10 @@ const SubTitle = styled.h3`
   font-family: 'Noto Sans';
 `;
 
+const BlankDetailText = styled.p`
+  margin: 20px;
+`;
+
 const TalbleDetailElement = (type: string, info: PlainTodo | PlainTodo[]): ReactElement => {
   return (
     <>
@@ -49,7 +53,7 @@ const TableRowDetail = ({
       <BlankDiv />
       <DetailWrapper>
         {todo.content === '' && todo.prev.length === 0 && todo.next.length === 0 && (
-          <h3>할 일의 상세내용이 존재하지 않습니다</h3>
+          <BlankDetailText>할 일의 상세내용이 존재하지 않습니다</BlankDetailText>
         )}
         {todo.content !== '' && TalbleDetailElement('nowTodo', todo)}
         {prevTodoList.length > 0 && TalbleDetailElement('prevTodoList', prevTodoList)}
