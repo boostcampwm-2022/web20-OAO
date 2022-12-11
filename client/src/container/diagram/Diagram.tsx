@@ -6,7 +6,6 @@ import { getDiagramData, getTodoBlockProps, getVerticeProps, TodoBlockProps, Ver
 import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
-import PopUp from '@components/diagram/PopUp';
 import TodoBlockPopUp from '@components/diagram/TodoBlockPopUp';
 import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
 
