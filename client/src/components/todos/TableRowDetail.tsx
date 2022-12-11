@@ -14,6 +14,10 @@ const Wrapper = styled.div`
   margin: 10px;
 `;
 
+const BlankDiv = styled.div`
+  width: 55px;
+`;
+
 const SubTitle = styled.h3`
   font-family: 'Noto Sans';
 `;
@@ -29,7 +33,7 @@ const TableRowDetail = ({
 }): ReactElement => {
   return (
     <DetailWrapper>
-      <div style={{ width: '55px' }}></div>
+      <BlankDiv />
       <Wrapper>
         {todo.content !== '' && (
           <>

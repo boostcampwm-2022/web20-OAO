@@ -1,9 +1,13 @@
 import { ReactElement, useState } from 'react';
+import styled from 'styled-components';
+
+import { PRIMARY_COLORS } from '@util/Constants';
+
 import Text from '@components/Text';
 import Button from '@components/Button';
 import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
-import { PRIMARY_COLORS } from '@util/Constants';
+
 const { black, gray, lightGray } = PRIMARY_COLORS;
 interface Props {
   filter: 'DONE' | 'READY' | 'WAIT';
@@ -11,6 +15,21 @@ interface Props {
   sort: Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>;
   setSort: React.Dispatch<React.SetStateAction<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>>;
 }
+
+const GridWrapper = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
+  border-bottom: 2px solid lightGray;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 5;
+  p {
+    margin: 10px 0;
+  }
+`;
 
 const TableHeaderUnit = ({
   type,
@@ -50,7 +69,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   const [sortDropdown, setSortDropdown] = useState<string>('');
 
   return (
-    <>
+    <GridWrapper>
       <div></div>
       <div style={{ position: 'relative' }}>
         <Button
@@ -115,7 +134,7 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
         <Text text={'이어서 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
       </div>
       <div></div>
-    </>
+    </GridWrapper>
   );
 };
 
