@@ -7,6 +7,8 @@ import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
 import PopUp from '@components/diagram/PopUp';
+import TodoBlockPopUp from '@components/diagram/TodoBlockPopUp';
+import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -212,7 +214,13 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
             </MemoTodoBlockWrapper>
           );
         })}
-        {popUpData.type !== 'None' && <PopUp {...popUpData} />}
+        {popUpData.type === 'Todo' ? (
+          <TodoBlockPopUp {...popUpData} />
+        ) : popUpData.type === 'Vertex' ? (
+          <TodoVertexPopUp {...popUpData} />
+        ) : (
+          ''
+        )}
       </Wrapper>
     </div>
   );

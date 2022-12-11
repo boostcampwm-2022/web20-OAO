@@ -1,7 +1,4 @@
-import { ReactElement, memo } from 'react';
-import Button from '@components/Button';
-import Update from '@images/Update.svg';
-import Delete from '@images/Delete.svg';
+import { ReactElement, memo, ReactNode } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 
@@ -18,40 +15,9 @@ const Wrapper = styled.div`
   transform: translate(var(--x), var(--y));
 `;
 
-const PopUp = ({
-  type,
-  x,
-  y,
-  id,
-}: {
-  type: 'Todo' | 'Vertex' | 'None';
-  x: number;
-  y: number;
-  id: string;
-}): ReactElement => {
+const PopUp = ({ x, y, children }: { x: number; y: number; children: ReactNode }): ReactElement => {
   const style = { '--x': `${x}px`, '--y': `${y}px` };
-  return (
-    <>
-      {type !== 'None' && (
-        <Wrapper style={style as React.CSSProperties}>
-          {type === 'Todo' && (
-            <Button
-              context={<img src={Update} width="40px" height="40px" />}
-              onClick={(e) => {
-                console.log('update');
-              }}
-            />
-          )}
-          <Button
-            context={<img src={Delete} width="40px" height="40px" />}
-            onClick={(e) => {
-              console.log('delete');
-            }}
-          />
-        </Wrapper>
-      )}
-    </>
-  );
+  return <Wrapper style={style as React.CSSProperties}>{children}</Wrapper>;
 };
 
 export default memo(PopUp);
