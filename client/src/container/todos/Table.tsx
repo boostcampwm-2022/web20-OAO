@@ -4,7 +4,7 @@ import TableHeader from '@components/todos/TableHeader';
 import TableRow from '@components/todos/TableRow';
 import { useAtom } from 'jotai';
 import { PlainTodo } from '@todo/todo.type';
-import { todoList, displayDetailAtom } from '@util/GlobalState.js';
+import { todoList } from '@util/GlobalState.js';
 import { toast } from 'react-toastify';
 
 const Wrapper = styled.div`
@@ -35,12 +35,6 @@ const GridWrapper = styled.div`
   }
 `;
 
-const GridRowWrapper = styled(GridWrapper)`
-  div:nth-child(10) {
-    grid-column: 2/9;
-  }
-  z-index: 0;
-`;
 const RowWrapper = styled.div`
   ${GridWrapper}:hover {
     background-color: #e2e2e2;
@@ -50,7 +44,6 @@ const RowWrapper = styled.div`
 const Table = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
-  const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
   const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
 
@@ -79,13 +72,7 @@ const Table = (): ReactElement => {
       {todos.length > 0 ? (
         <RowWrapper>
           {todos.map((todo: PlainTodo) => (
-            <GridRowWrapper
-              onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
-              key={todo.id}
-              style={{ transitionDuration: '1s' }}
-            >
-              <TableRow todo={todo} />
-            </GridRowWrapper>
+            <TableRow key={todo.id} todo={todo} />
           ))}
         </RowWrapper>
       ) : (

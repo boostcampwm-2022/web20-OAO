@@ -3,6 +3,12 @@ import { ReactElement } from 'react';
 import TodoTitleList from '@components/todos/TodoTitleList';
 import styled from 'styled-components';
 
+const DetailWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid #e2e2e2;
+`;
+
 const Wrapper = styled.div`
   text-align: left;
   margin: 10px;
@@ -22,8 +28,8 @@ const TableRowDetail = ({
   nextTodoList: PlainTodo[];
 }): ReactElement => {
   return (
-    <>
-      <div></div>
+    <DetailWrapper>
+      <div style={{ width: '55px' }}></div>
       <Wrapper>
         {todo.content !== '' && (
           <>
@@ -44,7 +50,7 @@ const TableRowDetail = ({
           </>
         )}
       </Wrapper>
-    </>
+    </DetailWrapper>
   );
 };
 export default TableRowDetail;

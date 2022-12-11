@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
@@ -17,6 +17,20 @@ import { PlainTodo } from '@todo/todo.type';
 
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { toast } from 'react-toastify';
+
+const Wrapper = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
+  border-bottom: 2px solid #e2e2e2;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  p {
+    margin: 10px 0;
+  }
+`;
 
 const CheckWrapper = styled.div`
   input {
@@ -59,10 +73,12 @@ const TableRowHeader = ({
   todo,
   prevTodoTitle,
   nextTodoTitle,
+  onClick,
 }: {
   todo: PlainTodo;
   prevTodoTitle: string;
   nextTodoTitle: string;
+  onClick: MouseEventHandler;
 }): ReactElement => {
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
@@ -94,7 +110,7 @@ const TableRowHeader = ({
   };
 
   return (
-    <>
+    <Wrapper onClick={onClick}>
       <CheckWrapper>
         {todo.state === 'DONE' ? (
           <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
@@ -131,7 +147,7 @@ const TableRowHeader = ({
           }}
         />
       </div>
-    </>
+    </Wrapper>
   );
 };
 
