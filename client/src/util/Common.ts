@@ -1,3 +1,4 @@
+import { PlainTodo } from '@todo/todo.type';
 import { toast } from 'react-toastify';
 
 export const todoStatusText = (todoUntil: string): string => {
@@ -66,4 +67,8 @@ export const copyToClipboard = (text: string): void => {
       toast.error('복사 실패');
     },
   );
+};
+
+export const isPlainTodo = (arg: any): arg is PlainTodo => {
+  return arg.content !== undefined;
 };

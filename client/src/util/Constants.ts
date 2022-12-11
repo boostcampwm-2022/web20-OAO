@@ -103,3 +103,9 @@ export interface BottomImageStyle {
   width?: string;
   height?: string;
 }
+
+export const TABLE_ROW_DETAIL_TYPE = {
+  nowTodo: '상세 내용',
+  prevTodoList: '먼저 할일 목록',
+  nextTodoList: '이어서 할일 목록',
+};

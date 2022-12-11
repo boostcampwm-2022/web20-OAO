@@ -1,15 +1,19 @@
-import { PlainTodo } from '@todo/todo.type';
 import { ReactElement } from 'react';
-import TodoTitleList from '@components/todos/TodoTitleList';
 import styled from 'styled-components';
 
-const DetailWrapper = styled.div`
+import { TABLE_ROW_DETAIL_TYPE } from '@util/Constants';
+import { isPlainTodo } from '@util/Common';
+import { PlainTodo } from '@todo/todo.type';
+
+import TodoTitleList from '@components/todos/TodoTitleList';
+
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 2px solid #e2e2e2;
 `;
 
-const Wrapper = styled.div`
+const DetailWrapper = styled.div`
   text-align: left;
   margin: 10px;
 `;
@@ -22,6 +26,15 @@ const SubTitle = styled.h3`
   font-family: 'Noto Sans';
 `;
 
+const TalbleDetailElement = (type: string, info: PlainTodo | PlainTodo[]): ReactElement => {
+  return (
+    <>
+      <SubTitle>{TABLE_ROW_DETAIL_TYPE[type as keyof typeof TABLE_ROW_DETAIL_TYPE]}</SubTitle>
+      {isPlainTodo(info) ? <p>{info.content}</p> : <TodoTitleList list={info} />}
+    </>
+  );
+};
+
 const TableRowDetail = ({
   todo,
   prevTodoList,
@@ -32,29 +45,17 @@ const TableRowDetail = ({
   nextTodoList: PlainTodo[];
 }): ReactElement => {
   return (
-    <DetailWrapper>
+    <Wrapper>
       <BlankDiv />
-      <Wrapper>
-        {todo.content !== '' && (
-          <>
-            <SubTitle>상세 내용</SubTitle>
-            <p>{todo.content}</p>
-          </>
+      <DetailWrapper>
+        {todo.content === '' && todo.prev.length === 0 && todo.next.length === 0 && (
+          <h3>할 일의 상세내용이 존재하지 않습니다</h3>
         )}
-        {prevTodoList.length > 0 && (
-          <>
-            <SubTitle>먼저 할일 목록</SubTitle>
-            <TodoTitleList list={prevTodoList} prevId={todo.id} />
-          </>
-        )}
-        {nextTodoList.length > 0 && (
-          <>
-            <SubTitle>이어서 할일 목록</SubTitle>
-            <TodoTitleList list={nextTodoList} prevId={todo.id} />
-          </>
-        )}
-      </Wrapper>
-    </DetailWrapper>
+        {todo.content !== '' && TalbleDetailElement('nowTodo', todo)}
+        {prevTodoList.length > 0 && TalbleDetailElement('prevTodoList', prevTodoList)}
+        {nextTodoList.length > 0 && TalbleDetailElement('nextTodoList', nextTodoList)}
+      </DetailWrapper>
+    </Wrapper>
   );
 };
 export default TableRowDetail;
