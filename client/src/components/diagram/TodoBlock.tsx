@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   background-color: ${lightestGray};
   transform: translate(var(--x), var(--y));
   cursor: pointer;
-  transition: outline 0.3s;
+  transition: outline 0.3s, transform 1s;
   outline: 6px solid transparent;
   box-sizing: border-box;
   &:hover {
@@ -79,11 +79,7 @@ const TodoBlock = ({
   x: number;
   y: number;
   id: string;
-  getOnClick: (
-    type: 'Todo' | 'Vertex' | 'None',
-    id: string,
-    ref: React.RefObject<HTMLDivElement>,
-  ) => (event: React.MouseEvent) => void;
+  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x}px`,
