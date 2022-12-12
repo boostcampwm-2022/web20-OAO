@@ -7,7 +7,7 @@ import Planning from '@images/Planning.svg';
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 85px;
+  height: 65px;
   z-index: 1;
 `;
 
