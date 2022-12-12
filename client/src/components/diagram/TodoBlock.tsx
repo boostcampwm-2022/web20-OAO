@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import { Todo } from '@todo/todo';
@@ -18,6 +18,12 @@ const Wrapper = styled.div`
   background-color: ${lightestGray};
   transform: translate(var(--x), var(--y));
   cursor: pointer;
+  transition: outline 0.3s, transform 1s;
+  outline: 6px solid transparent;
+  box-sizing: border-box;
+  &:hover {
+    outline: 3px solid ${gray};
+  }
 `;
 
 const UpperRow = styled.div`
@@ -62,13 +68,25 @@ const remainingDayToString = (until: Date): string => {
   return remaining <= 0 ? `D-${-remaining}` : `D+${remaining}`;
 };
 
-const TodoBlock = ({ todo, x, y }: { todo: Todo; x: number; y: number }): ReactElement => {
+const TodoBlock = ({
+  todo,
+  x,
+  y,
+  id,
+  getOnClick,
+}: {
+  todo: Todo;
+  x: number;
+  y: number;
+  id: string;
+  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
+}): ReactElement => {
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
   return (
-    <Wrapper style={style as React.CSSProperties}>
+    <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id)}>
       <UpperRow>
         <Marker state={todo.state} />
         <Title
@@ -92,4 +110,4 @@ const TodoBlock = ({ todo, x, y }: { todo: Todo; x: number; y: number }): ReactE
   );
 };
 
-export default TodoBlock;
+export default memo(TodoBlock);

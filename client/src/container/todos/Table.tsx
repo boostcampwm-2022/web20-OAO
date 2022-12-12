@@ -1,11 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
+
+import { PlainTodo } from '@todo/todo.type';
+import { todoList } from '@util/GlobalState.js';
+
 import TableHeader from '@components/todos/TableHeader';
 import TableRow from '@components/todos/TableRow';
-import { useAtom } from 'jotai';
-import { PlainTodo } from '@todo/todo.type';
-import { todoList, displayDetailAtom } from '@util/GlobalState.js';
-import { toast } from 'react-toastify';
+import BlankTableInform from '@components/todos/BlankTableInform';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -14,43 +17,9 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const BlankTableWrapper = styled.div`
-  text-align: center;
-  margin: 10%;
-`;
-
-const GridWrapper = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
-  border-bottom: 2px solid #e2e2e2;
-  text-align: center;
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 5;
-
-  p {
-    margin: 10px 0;
-  }
-`;
-
-const GridRowWrapper = styled(GridWrapper)`
-  div:nth-child(10) {
-    grid-column: 2/9;
-  }
-  z-index: 0;
-`;
-const RowWrapper = styled.div`
-  ${GridWrapper}:hover {
-    background-color: #e2e2e2;
-  }
-`;
-
 const Table = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
-  const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');
   const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
 
@@ -73,27 +42,8 @@ const Table = (): ReactElement => {
 
   return (
     <Wrapper>
-      <GridWrapper>
-        <TableHeader filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
-      </GridWrapper>
-      {todos.length > 0 ? (
-        <RowWrapper>
-          {todos.map((todo: PlainTodo) => (
-            <GridRowWrapper
-              onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
-              key={todo.id}
-              style={{ transitionDuration: '1s' }}
-            >
-              <TableRow todo={todo} />
-            </GridRowWrapper>
-          ))}
-        </RowWrapper>
-      ) : (
-        <BlankTableWrapper>
-          <h1>Todo가 없습니다!</h1>
-          <h2>Todo를 추가해보는 건 어떨까요?</h2>
-        </BlankTableWrapper>
-      )}
+      <TableHeader filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
+      {todos.length > 0 ? todos.map((todo: PlainTodo) => <TableRow key={todo.id} todo={todo} />) : <BlankTableInform />}
     </Wrapper>
   );
 };

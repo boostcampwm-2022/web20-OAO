@@ -20,7 +20,7 @@ interface PropsType {
 const Wrapper = styled.div<PropsType>`
   display: flex;
   height: 8vh;
-  width: 100vw;
+  width: calc(100vw);
   padding: 15px;
   border-radius: 10px 10px 0 0;
   align-items: center;
@@ -31,6 +31,7 @@ const Wrapper = styled.div<PropsType>`
   bottom: ${(props) => (props.active ? '0vh' : '-8vh')};
   transition-property: bottom;
   transition-duration: 1s;
+  z-index: 10000000000;
 `;
 
 const ButtonWrapper = styled.div`
@@ -73,9 +74,9 @@ const TodoController = (): ReactElement => {
         <TodoInteractionButton {...imageButtonStyle} />
         {isPostpone && needTodoController && <PostponeBox isBottom={true} />}
       </ButtonWrapper>
-      <Text text={activeTodo?.title} fontFamily="NanumMyeongjo" fontSize="24px" color={offWhite} />
+      <Text text={activeTodo?.title} fontFamily="Nanum Myeongjo" fontSize="24px" color={offWhite} />
       <TextWrapper>
-        <Text text={getTodoUntilText(activeTodo?.until)} fontFamily="NanumMyeongjo" fontSize="1rem" color={offWhite} />
+        <Text text={getTodoUntilText(activeTodo?.until)} fontFamily="Nanum Myeongjo" fontSize="1rem" color={offWhite} />
         <ElapsedTimeText color={offWhite} />
       </TextWrapper>
     </Wrapper>
