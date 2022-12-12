@@ -3,13 +3,7 @@ import { createTodoList } from '@todo/todoList.js';
 import { TABLE_MODALS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants.js';
 import { isEqualDate } from '@todo/todo.util';
 
-export const loginStateAtom = atom(true);
 export const isOnProgress = atom('relaxing');
-
-export const readWriteAtom = atom(
-  (get) => get(loginStateAtom),
-  (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
-);
 
 const todoData = await createTodoList('IndexedDB');
 export const todoList = atom(todoData);
