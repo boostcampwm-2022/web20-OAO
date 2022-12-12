@@ -147,6 +147,26 @@ export const getVertexDimension = (
   };
 };
 
+export const getVertexFromPosition = (todoList: Map<string, DiagramTodo>, id: string): { x1: number; y1: number } => {
+  const from = todoList.get(id);
+  if (from === undefined) throw new Error('ERROR: 선후관계가 잘못된 레퍼런스를 참조하고 있습니다.');
+  const fromPos = calculatePosition(from.order as number, from.depth as number);
+  return {
+    x1: fromPos.x + BLOCK.x / 2,
+    y1: fromPos.y + BLOCK.y,
+  };
+};
+
+export const getVertexToPosition = (todoList: Map<string, DiagramTodo>, id: string): { x2: number; y2: number } => {
+  const to = todoList.get(id);
+  if (to === undefined) throw new Error('ERROR: 선후관계가 잘못된 레퍼런스를 참조하고 있습니다.');
+  const toPos = calculatePosition(to.order as number, to.depth as number);
+  return {
+    x2: toPos.x + BLOCK.x / 2,
+    y2: toPos.y,
+  };
+};
+
 export const validateVertex = (todoList: Map<string, DiagramTodo>, vertex: Vertex): 'NORMAL' | 'WARNING' | 'ERROR' => {
   const from = todoList.get(vertex.from);
   const to = todoList.get(vertex.to);
@@ -193,7 +213,7 @@ export const getTodoBlockProps = (todoList: Map<string, DiagramTodo>): Map<strin
   );
 };
 
-const BOX_OFFSET = 15;
+const BOX_OFFSET = 50;
 
 export const getPathValue = (
   x1: number,

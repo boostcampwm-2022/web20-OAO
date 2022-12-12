@@ -2,7 +2,6 @@ import { ReactElement, useEffect, useState, useRef, useCallback, memo, useMemo }
 import { useAtom } from 'jotai';
 import { todoList } from '@util/GlobalState';
 import styled from 'styled-components';
-import { getDiagramData, getTodoBlockProps, getVerticeProps, TodoBlockProps, VertexProps } from '@util/diagram.util';
 import { PRIMARY_COLORS } from '@util/Constants';
 import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
@@ -10,6 +9,7 @@ import TodoBlockPopUp from '@components/diagram/TodoBlockPopUp';
 import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
 import NewTodoVertex from '@components/diagram/NewTodoVertex';
 import { toast } from 'react-toastify';
+import { useDiagramAnimation } from '@hooks/useDiagramAnimation';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -81,57 +81,6 @@ const defaultNewVertexData: NewVertexData = {
   y2: NaN,
 };
 
-interface AnimationData<T> {
-  aniState: string;
-  props: T;
-  timeout?: ReturnType<typeof setTimeout>;
-}
-
-function getMapWithAniState<T>(
-  prev: Map<string, AnimationData<T>>,
-  next: Map<string, T>,
-  setter: React.Dispatch<React.SetStateAction<Map<string, AnimationData<T>>>>,
-): Map<string, AnimationData<T>> {
-  const result = new Map([...prev]);
-  const prevMounted = new Map([...prev].filter((el) => el[1].aniState !== 'unmount'));
-
-  const mountArr = [...next].filter((el) => !prevMounted.has(el[0]));
-  mountArr.forEach((el) => {
-    clearTimeout(prev.get(el[0])?.timeout);
-    const timeout = setTimeout(() => {
-      setter((prev) => {
-        const newState = new Map([...prev]);
-        const target = newState.get(el[0]);
-        if (target !== undefined && target.aniState === 'mount')
-          newState.set(el[0], { props: target.props, aniState: 'idle' });
-        return newState;
-      });
-    }, 0);
-    result.set(el[0], { aniState: 'mount', timeout, props: el[1] });
-  });
-
-  const updateArr = [...next].filter((el) => prevMounted.has(el[0]));
-  updateArr.forEach((el) => {
-    const target = prevMounted.get(el[0]);
-    if (target !== undefined) result.set(el[0], { aniState: target.aniState, props: el[1] });
-  });
-
-  const unmountArr = [...prevMounted].filter((el) => !next.has(el[0]));
-  unmountArr.forEach((el) => {
-    clearTimeout(prev.get(el[0])?.timeout);
-    const timeout = setTimeout(() => {
-      setter((prev) => {
-        const newState = new Map([...prev]);
-        if (newState.get(el[0])?.aniState === 'unmount') newState.delete(el[0]);
-        return newState;
-      });
-    }, 500);
-    result.set(el[0], { aniState: 'unmount', timeout, props: el[1].props });
-  });
-
-  return result;
-}
-
 const TodoBlockWrapper = styled.div<{ aniState: string }>`
   opacity: ${(props) => (props.aniState === 'idle' ? 1 : 0)};
   transition: opacity 0.5s;
@@ -141,24 +90,12 @@ const MemoTodoBlockWrapper = memo(TodoBlockWrapper);
 
 const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
-  const [diagramData, setDiagramData] = useState<Map<string, AnimationData<TodoBlockProps>>>(new Map());
-  const [diagramVertice, setDiagramVertice] = useState<Map<string, AnimationData<VertexProps>>>(new Map());
+  const { todoBlockData, vertexData } = useDiagramAnimation(todoListAtom, showDone);
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
   const [clickData, setClickData] = useState<ClickData>(defaultClickData);
   const [newVertexData, setNewVertexData] = useState<NewVertexData>(defaultNewVertexData);
   const [isWheelDown, setIsWheelDown] = useState<boolean>(false);
   const domRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    getDiagramData(todoListAtom, showDone)
-      .then((value) => {
-        setDiagramData((prev) => getMapWithAniState(prev, getTodoBlockProps(value), setDiagramData));
-        setDiagramVertice((prev) => getMapWithAniState(prev, getVerticeProps(value), setDiagramVertice));
-      })
-      .catch((err) => {
-        throw err;
-      });
-  }, [todoListAtom, showDone]);
 
   useEffect(() => {
     if (clickData.type === 'Todo' && newVertexData.from !== '') {
@@ -298,14 +235,15 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
       <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
       <Wrapper style={diagramStyle as React.CSSProperties} ref={domRef}>
-        {[...diagramVertice].map((el) => {
+        {[...vertexData].map((el) => {
+          console.log(el);
           return (
             <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
               <TodoVertex {...el[1].props} getOnClick={getOnClick} />
             </MemoTodoBlockWrapper>
           );
         })}
-        {[...diagramData].map((el) => {
+        {[...todoBlockData].map((el) => {
           return (
             <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
               <TodoBlock {...el[1].props} getOnClick={getOnClick} />
