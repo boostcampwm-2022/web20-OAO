@@ -1,10 +1,11 @@
-import { TABLE_MODALS } from '@util/Constants';
-import { modalTypeAtom } from '@util/GlobalState';
-import { useAtom } from 'jotai';
-import { ReactElement } from 'react';
+import { Dispatch, MouseEvent, ReactElement, ReactNode, SetStateAction, useRef } from 'react';
 import styled from 'styled-components';
 
-const StyledOverlay = styled.div`
+interface WrapperProps {
+  ref: any;
+}
+
+const StyledOverlay = styled.div<WrapperProps>`
   background-color: rgba(0, 0, 0, 0.7);
   width: 100vw;
   height: 100vh;
@@ -13,19 +14,31 @@ const StyledOverlay = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  z-index: 10000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const { none } = TABLE_MODALS;
+interface ModalProps {
+  setHasModal: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
+}
 
-const OverLay = (): ReactElement => {
-  const [modalType, setModalType] = useAtom(modalTypeAtom);
+const OverLay = ({ setHasModal, children }: ModalProps): ReactElement => {
+  const overLayRef = useRef();
 
-  const hanldeOnClick = (): void => {
-    setModalType(none);
+  const handle = (e: MouseEvent<HTMLDivElement>): void => {
+    if (e.target === overLayRef.current) {
+      setHasModal(false);
+    }
   };
 
-  return <>{modalType !== none && <StyledOverlay onClick={hanldeOnClick} />}</>;
+  return (
+    <StyledOverlay ref={overLayRef} onClick={handle}>
+      {children}
+    </StyledOverlay>
+  );
 };
 
 export default OverLay;

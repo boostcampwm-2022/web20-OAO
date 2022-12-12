@@ -68,7 +68,6 @@ const App = (): ReactElement => {
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
         <ToastContainer />
-        <OverLay />
         <RowWrapper>
           <Menubar />
           <Wrapper>
