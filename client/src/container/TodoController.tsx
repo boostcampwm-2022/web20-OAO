@@ -74,9 +74,9 @@ const TodoController = (): ReactElement => {
         <TodoInteractionButton {...imageButtonStyle} />
         {isPostpone && needTodoController && <PostponeBox isBottom={true} />}
       </ButtonWrapper>
-      <Text text={activeTodo?.title} fontFamily="NanumMyeongjo" fontSize="24px" color={offWhite} />
+      <Text text={activeTodo?.title} fontFamily="Nanum Myeongjo" fontSize="24px" color={offWhite} />
       <TextWrapper>
-        <Text text={getTodoUntilText(activeTodo?.until)} fontFamily="NanumMyeongjo" fontSize="1rem" color={offWhite} />
+        <Text text={getTodoUntilText(activeTodo?.until)} fontFamily="Nanum Myeongjo" fontSize="1rem" color={offWhite} />
         <ElapsedTimeText color={offWhite} />
       </TextWrapper>
     </Wrapper>

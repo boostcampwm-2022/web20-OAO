@@ -4,7 +4,7 @@ import ToggleButton from '@components/ToggleButton';
 import { PRIMARY_COLORS } from '@util/Constants';
 import Text from '@components/Text';
 
-const { darkestGray, offWhite, gray } = PRIMARY_COLORS;
+const { darkestGray, gray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   position: relative;

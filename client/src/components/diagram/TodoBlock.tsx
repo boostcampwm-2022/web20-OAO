@@ -93,7 +93,7 @@ const TodoBlock = ({
           text={todo.title}
           textAlign={'right'}
           fontWeight={'700'}
-          fontFamily={'NanumMyeongjo'}
+          fontFamily={'Nanum Myeongjo'}
           color={black}
           fontSize={'16px'}
         />
@@ -102,7 +102,7 @@ const TodoBlock = ({
         text={`${importanceToString(todo.importance)}, ${remainingDayToString(todo.until)}`}
         textAlign={'right'}
         fontWeight={'700'}
-        fontFamily={'NanumMyeongjo'}
+        fontFamily={'Nanum Myeongjo'}
         color={gray}
         fontSize={'14px'}
       />
