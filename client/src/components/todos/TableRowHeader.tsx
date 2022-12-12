@@ -1,11 +1,11 @@
-import { ReactElement, MouseEventHandler } from 'react';
+import { ReactElement, MouseEventHandler, CSSProperties } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
-import { TABLE_MODALS, PRIMARY_COLORS } from '@util/Constants';
-import { copyToClipboard } from '@util/Common';
+import { TABLE_MODALS, PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
+import { copyToClipboard, gethhmmFormat, getyyyymmddDateFormat } from '@util/Common';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 
 import Button from '@components/Button';
@@ -15,9 +15,28 @@ import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
-import { createHeaderElementData } from '@util/todos.util';
+import { getListInfoText } from '@util/todos.util';
 
 const { lightGray } = PRIMARY_COLORS;
+
+interface HeaderElementData {
+  todo: PlainTodo;
+  prevTodoList: PlainTodo[];
+  nextTodoList: PlainTodo[];
+}
+
+interface HeaderElem {
+  type: string;
+  style: CSSProperties;
+  value: string;
+}
+
+interface DetailCssStyle {
+  text: CSSProperties;
+  title: CSSProperties;
+  content: CSSProperties;
+  null: CSSProperties;
+}
 
 const Wrapper = styled.div`
   display: grid;
@@ -32,6 +51,59 @@ const Wrapper = styled.div`
     margin: 10px 0;
   }
 `;
+
+const TABLE_ROW_DETAIL_STYLES: DetailCssStyle = {
+  text: { overflow: 'hidden', whiteSpace: 'nowrap' },
+  title: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    marginRight: '10px',
+    textOverflow: 'ellipsis',
+    textAlign: 'left',
+    fontWeight: 700,
+  },
+  content: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    margin: '0 10px',
+  },
+  null: {},
+};
+
+const createHeaderElementData = ({ todo, prevTodoList, nextTodoList }: HeaderElementData): HeaderElem[] => {
+  return [
+    {
+      type: 'title',
+      style: TABLE_ROW_DETAIL_STYLES.title,
+      value: todo.title,
+    },
+    {
+      type: 'state',
+      style: TABLE_ROW_DETAIL_STYLES.text,
+      value: TODO_STATE_TEXT[todo.state],
+    },
+    {
+      type: 'until',
+      style: TABLE_ROW_DETAIL_STYLES.text,
+      value: `${getyyyymmddDateFormat(todo.until, '.')} ${gethhmmFormat(todo.until)}`,
+    },
+    {
+      type: 'importance',
+      style: TABLE_ROW_DETAIL_STYLES.null,
+      value: IMPORTANCE_ALPHABET[todo.importance],
+    },
+    {
+      type: 'prev',
+      style: TABLE_ROW_DETAIL_STYLES.content,
+      value: getListInfoText(prevTodoList),
+    },
+    {
+      type: 'next',
+      style: TABLE_ROW_DETAIL_STYLES.content,
+      value: getListInfoText(nextTodoList),
+    },
+  ];
+};
 
 const TableRowHeader = ({
   todo,

@@ -1,11 +1,13 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
 
-import { TABLE_ROW_DETAIL_TYPE } from '@util/Constants';
+import { PRIMARY_COLORS, TABLE_ROW_DETAIL_TYPE } from '@util/Constants';
 import { isPlainTodo } from '@util/Common';
 import { PlainTodo } from '@todo/todo.type';
 
 import TodoTitleList from '@components/todos/TodoTitleList';
+
+const { gray } = PRIMARY_COLORS;
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,6 +17,7 @@ const Wrapper = styled.div`
 
 const DetailWrapper = styled.div`
   text-align: left;
+  flex-basis: fit-content;
 `;
 
 const BlankDiv = styled.div`
@@ -27,6 +30,7 @@ const SubTitle = styled.h3`
 
 const BlankDetailText = styled.p`
   margin: 20px;
+  color: ${gray};
 `;
 
 const TalbleDetailElement = (type: string, info: PlainTodo | PlainTodo[]): ReactElement => {

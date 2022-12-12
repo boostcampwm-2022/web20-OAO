@@ -94,3 +94,19 @@ export const TABLE_ROW_DETAIL_TYPE = {
   prevTodoList: '먼저 할일 목록',
   nextTodoList: '이어서 할일 목록',
 };
+
+interface ImportanceType {
+  [key: string]: string;
+}
+
+export const TODO_STATE_TEXT: ImportanceType = {
+  READY: '작업 가능',
+  DONE: '완료',
+  WAIT: '대기중',
+};
+
+export const IMPORTANCE_ALPHABET: ImportanceType = {
+  1: 'C',
+  2: 'B',
+  3: 'A',
+};
