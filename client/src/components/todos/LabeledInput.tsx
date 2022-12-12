@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
 import { MAX_DATE, PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
-import { getTodayDate } from '@util/Common';
+import { getDateTimeInputFormatString, getTodayDate } from '@util/Common';
 import { modalTypeAtom } from '@util/GlobalState';
 
 import Text from '@components/Text';
@@ -52,9 +52,11 @@ const Wrapper = styled.div`
   }
 `;
 
+const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
+
 const LabeledInput = ({ label, maxLength, type, id, placeHolder }: InputProps): ReactElement => {
   const [input, setInput] = useState('');
-  const [dateInput, setDateInput] = useState(getTodayDate());
+  const [dateInput, setDateInput] = useState(getDateTimeInputFormatString(tomorrow));
   const [modalType] = useAtom(modalTypeAtom);
 
   const handleOnChangeText = (e: React.ChangeEvent<HTMLInputElement>): void => {
