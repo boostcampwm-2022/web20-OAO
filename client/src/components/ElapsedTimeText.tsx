@@ -12,6 +12,6 @@ const ElapsedTimeText = ({ color }: { color: string }): ReactElement => {
     setDisplayTime();
   }, [elapsedTime]);
 
-  return <Text text={displayTime} fontFamily="NanumMyeongjo" fontSize="1rem" color={color} />;
+  return <Text text={displayTime} fontFamily="Nanum Myeongjo" fontSize="1rem" color={color} />;
 };
 export default memo(ElapsedTimeText);

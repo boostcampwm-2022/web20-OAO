@@ -1,27 +1,31 @@
-import { ReactElement, Suspense } from 'react';
+import { ReactElement, Suspense, useState } from 'react';
 import styled from 'styled-components';
-import { PRIMARY_COLORS } from '@util/Constants';
 import Diagram from '@container/diagram/Diagram';
-
-const { darkestGray, offWhite } = PRIMARY_COLORS;
+import DiagramControlPanel from '@components/diagram/DiagramControlPanel';
 
 const Wrapper = styled.div`
   position: relative;
   z-index: 0;
   width: 100%;
   height: 100%;
-  border-top: 2px solid ${darkestGray};
-  background-color: ${offWhite};
   overflow-x: hidden;
   overflow-y: hidden;
 `;
+
 const DiagramFrame = (): ReactElement => {
+  const [showDone, setShowDone] = useState(false);
+  const onClick = (): void => {
+    setShowDone((prev) => !prev);
+  };
   return (
-    <Wrapper>
-      <Suspense fallback={'Loading diagram...'}>
-        <Diagram />
-      </Suspense>
-    </Wrapper>
+    <>
+      <DiagramControlPanel isActive={showDone} onClick={onClick} />
+      <Wrapper>
+        <Suspense fallback={'Loading diagram...'}>
+          <Diagram showDone={showDone} />
+        </Suspense>
+      </Wrapper>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { ReactElement, Suspense } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import DiagramHeader from '@container/diagram/DiagramHeader';
 import DiagramFrame from '@container/diagram/DiagramFrame';
