@@ -9,6 +9,9 @@ import useModalComplete from '@hooks/useModalComplete';
 
 const InputWrapper = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const MODAL_CREATE = 'create';

@@ -17,6 +17,9 @@ interface WrapperProps {
 
 const InputWrapper = styled.div<WrapperProps>`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const MODAL_EDIT = 'update';
