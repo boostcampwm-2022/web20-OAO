@@ -1,5 +1,5 @@
 import { ReactElement, Suspense, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { useAtomValue } from 'jotai';
@@ -77,9 +77,12 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials" element={<TutorialMain />}></Route>
-              <Route path="/tutorials/todos" element={<TutorialTodos />}></Route>
-              <Route path="/tutorials/diagram" element={<TutorialDiagramPage />}></Route>
+              <Route path="/tutorials" element={isTutorial ? <TutorialMain /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials/todos" element={isTutorial ? <TutorialTodos /> : <Navigate to="/" />}></Route>
+              <Route
+                path="/tutorials/diagram"
+                element={isTutorial ? <TutorialDiagramPage /> : <Navigate to="/" />}
+              ></Route>
             </Routes>
           </Wrapper>
           <TodoController />
