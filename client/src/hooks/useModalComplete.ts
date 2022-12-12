@@ -1,5 +1,6 @@
 import { InputTodo } from '@todo/todo.type';
 import { TodoList } from '@todo/todoList';
+import { MAX_DATE } from '@util/Constants';
 import { editingTodoIdAtom, todoList } from '@util/GlobalState';
 import { validateUuid } from '@util/modal.util';
 import { useAtom } from 'jotai';
@@ -40,8 +41,12 @@ const useModalComplete = (type: string): any[] => {
           throw new Error('제목은 필수 값입니다!');
         }
         if (id === 'until') {
+          if (new Date(value) > new Date(MAX_DATE)) {
+            throw new Error('날짜는 2999-12-30 이후로 설정할 수 없습니다.');
+          }
           return (newData = { ...newData, [id]: new Date(value) });
         }
+
         if (dataset.label === 'prev' || dataset.label === 'next') {
           if (dataset.id === editingTodoId)
             throw new Error('수정하고 있는 할 일은 먼저 할 일과 나중에 할 일에 들어갈 수 없습니다');

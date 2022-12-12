@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
-import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
+import { MAX_DATE, PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import { getTodayDate } from '@util/Common';
 import { modalTypeAtom } from '@util/GlobalState';
 
@@ -100,6 +100,7 @@ const LabeledInput = ({ label, maxLength, type, id, placeHolder }: InputProps): 
           id={id}
           onChange={handleOnChangeDate}
           min={blockUntilDateAtCreateMode()}
+          max={MAX_DATE}
         />
       )}
     </Wrapper>
