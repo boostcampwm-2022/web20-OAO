@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useState } from 'react';
-import SearchBar from '@components/SearchBar';
 import { PlainTodo } from '@todo/todo.type';
 import styled from 'styled-components';
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
@@ -8,6 +7,7 @@ import Cancel from '@images/Cancel.svg';
 import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { useAtomValue, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
+import Search from '@components/Search';
 
 const { lightestGray, blue } = PRIMARY_COLORS;
 
@@ -71,7 +71,7 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
 
   return (
     <div>
-      <SearchBar onClick={onClick} />
+      <Search onClick={onClick} />
       <RelatedTodoInputList>
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
           return (

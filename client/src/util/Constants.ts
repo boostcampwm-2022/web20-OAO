@@ -110,3 +110,14 @@ export const IMPORTANCE_ALPHABET: ImportanceType = {
   2: 'B',
   3: 'A',
 };
+
+export const KEYBOARD_EVENT_KEY = {
+  DOWN: 'ArrowDown',
+  UP: 'ArrowUp',
+  ENTER: 'Enter',
+};
+
+export const INDEX = {
+  FIRST: 0,
+  NOT_FOUND: -1,
+};
