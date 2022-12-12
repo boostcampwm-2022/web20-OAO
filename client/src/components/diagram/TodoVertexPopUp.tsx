@@ -24,7 +24,7 @@ const TodoVertexPopUp = ({ id, x, y }: { id: string; x: number; y: number }): Re
             })
             .then((newTodoList) => {
               setTodoList(newTodoList);
-              toast.success('Todo가 성공적으로 삭제되었습니다.');
+              toast.success('Todo 선후관계가 성공적으로 삭제되었습니다.');
             })
             .catch((err) => toast.error(err));
         }}
