@@ -193,6 +193,8 @@ export const getTodoBlockProps = (todoList: Map<string, DiagramTodo>): Map<strin
   );
 };
 
+const BOX_OFFSET = 15;
+
 export const getPathValue = (
   x1: number,
   y1: number,
@@ -205,14 +207,16 @@ export const getPathValue = (
   const p2 = { x: x2 - x1, y: y2 - y1 };
   const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
   const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
-  const path = `M${p1.x - start.x} ${p1.y - start.y}C${c1.x - start.x} ${c1.y - start.y} ${c2.x - start.x} ${
-    c2.y - start.y
-  } ${p2.x - start.x} ${p2.y - start.y}`;
-  const width = end.x - start.x;
-  const height = end.y - start.y;
+  const path = `M${BOX_OFFSET + p1.x - start.x} ${BOX_OFFSET + p1.y - start.y}C${BOX_OFFSET + c1.x - start.x} ${
+    BOX_OFFSET + c1.y - start.y
+  } ${BOX_OFFSET + c2.x - start.x} ${BOX_OFFSET + c2.y - start.y} ${BOX_OFFSET + p2.x - start.x} ${
+    BOX_OFFSET + p2.y - start.y
+  }`;
+  const width = end.x - start.x + 2 * BOX_OFFSET;
+  const height = end.y - start.y + 2 * BOX_OFFSET;
   const viewBox = `${start.x} ${start.y} ${width} ${height}`;
-  const translateX = -p1.x + start.x;
-  const translateY = -Math.abs(p1.y - start.y);
+  const translateX = -p1.x + start.x - BOX_OFFSET;
+  const translateY = -Math.abs(p1.y - start.y) - BOX_OFFSET;
   return { path, width, height, viewBox, translateX, translateY };
 };
 
