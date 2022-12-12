@@ -25,6 +25,11 @@ const MODAL_COMPLETE_ACTIONS = {
   },
 };
 
+const COMPLETE_MESSAGE = {
+  create: '새로운 Todo가 추가되었습니다. 😎',
+  update: 'Todo가 수정되었습니다. ☘️',
+};
+
 const useModalComplete = (type: string): any[] => {
   const [editingTodoId] = useAtom(editingTodoIdAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
@@ -65,7 +70,7 @@ const useModalComplete = (type: string): any[] => {
       );
       setTodoListAtom(data);
       setHasModal(false);
-      toast.success('완료되었습니다! ☘️');
+      toast.success(COMPLETE_MESSAGE[type as keyof typeof COMPLETE_MESSAGE]);
     } catch (err: any) {
       toast.error(err.message);
     }
