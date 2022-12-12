@@ -8,6 +8,7 @@ import TodoBlock from '@components/diagram/TodoBlock';
 import TodoVertex from '@components/diagram/TodoVertex';
 import TodoBlockPopUp from '@components/diagram/TodoBlockPopUp';
 import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
+import NewTodoVertex from '@components/diagram/NewTodoVertex';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -52,7 +53,26 @@ interface PopUpData {
   x: number;
   y: number;
   id: string;
+  targetPos: { x: number; y: number };
 }
+
+export interface NewVertexData {
+  from: string;
+  x1: number;
+  y1: number;
+  to: string;
+  x2: number;
+  y2: number;
+}
+
+const defaultNewVertexData = {
+  from: '',
+  x1: NaN,
+  y1: NaN,
+  to: '',
+  x2: NaN,
+  y2: NaN,
+};
 
 interface AnimationData<T> {
   aniState: string;
@@ -117,7 +137,14 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [diagramData, setDiagramData] = useState<Map<string, AnimationData<TodoBlockProps>>>(new Map());
   const [diagramVertice, setDiagramVertice] = useState<Map<string, AnimationData<VertexProps>>>(new Map());
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
-  const [popUpData, setPopUpData] = useState<PopUpData>({ type: 'None', x: 0, y: 0, id: '' });
+  const [popUpData, setPopUpData] = useState<PopUpData>({
+    type: 'None',
+    x: 0,
+    y: 0,
+    id: '',
+    targetPos: { x: 0, y: 0 },
+  });
+  const [newVertexData, setNewVertexData] = useState<NewVertexData>(defaultNewVertexData);
   const [isWheelDown, setIsWheelDown] = useState<boolean>(false);
   const domRef = useRef<HTMLDivElement>(null);
 
@@ -168,23 +195,62 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
     setIsWheelDown(false);
   };
 
-  const onMouseMove = (event: React.MouseEvent): void => {
+  const onMouseGrabMove = (event: React.MouseEvent): void => {
     if (isWheelDown) {
       setOffset((prev) => ({ x: prev.x + event.movementX, y: prev.y + event.movementY }));
     }
   };
 
-  const getOnClick = useCallback((type: 'Todo' | 'Vertex' | 'None', id: string) => {
+  const onMouseNewVertexMove = (event: React.MouseEvent): void => {
+    if (newVertexData.from !== undefined) {
+      setNewVertexData((prev) => ({
+        ...prev,
+        x2: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+        y2: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+      }));
+    }
+  };
+
+  const onMouseMove = (event: React.MouseEvent): void => {
+    onMouseGrabMove(event);
+    onMouseNewVertexMove(event);
+  };
+
+  const getOnClick = useCallback(
+    (type: 'Todo' | 'Vertex' | 'None', id: string, targetPos: { x: number; y: number }) => {
+      return (event: React.MouseEvent): void => {
+        setPopUpData({
+          type,
+          id,
+          x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+          y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+          targetPos,
+        });
+        event.stopPropagation();
+      };
+    },
+    [],
+  );
+
+  const getOnNewVertexClick = useCallback(({ from, x1, y1 }: NewVertexData) => {
     return (event: React.MouseEvent): void => {
-      setPopUpData({
-        type,
-        id,
-        x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
-        y: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
+      setNewVertexData({
+        from,
+        x1,
+        y1,
+        to: '',
+        x2: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
+        y2: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
       });
+      getOnClick('None', '', { x: NaN, y: NaN })(event);
       event.stopPropagation();
     };
   }, []);
+
+  const onClick = (event: React.MouseEvent): void => {
+    getOnClick('None', '', { x: NaN, y: NaN })(event);
+    getOnNewVertexClick(defaultNewVertexData)(event);
+  };
 
   return (
     <div
@@ -192,7 +258,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       onMouseUp={onWheelUp}
       onMouseMove={onMouseMove}
       onMouseLeave={onWheelLeave}
-      onClick={getOnClick('None', '')}
+      onClick={onClick}
       style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
     >
       <Detector />
@@ -213,13 +279,15 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
             </MemoTodoBlockWrapper>
           );
         })}
-        {popUpData.type === 'Todo' ? (
-          <TodoBlockPopUp {...popUpData} />
-        ) : popUpData.type === 'Vertex' ? (
-          <TodoVertexPopUp {...popUpData} />
-        ) : (
-          ''
-        )}
+        {newVertexData.from === '' &&
+          (popUpData.type === 'Todo' ? (
+            <TodoBlockPopUp {...popUpData} getOnNewVertexClick={getOnNewVertexClick} />
+          ) : popUpData.type === 'Vertex' ? (
+            <TodoVertexPopUp {...popUpData} />
+          ) : (
+            ''
+          ))}
+        {newVertexData.from !== '' && <NewTodoVertex {...newVertexData} />}
       </Wrapper>
     </div>
   );
