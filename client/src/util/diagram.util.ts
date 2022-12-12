@@ -193,27 +193,6 @@ export const getTodoBlockProps = (todoList: Map<string, DiagramTodo>): Map<strin
   );
 };
 
-// const getPathValue = (
-//   x1: number,
-//   y1: number,
-//   x2: number,
-//   y2: number,
-// ): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
-//   const p1 = { x: 0, y: 0 };
-//   const c1 = { x: 0, y: 0.4 * Math.abs(y2 - y1) };
-//   const c2 = { x: x2 - x1, y: y2 - y1 - 0.4 * Math.abs(y2 - y1) };
-//   const p2 = { x: x2 - x1, y: y2 - y1 };
-//   const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
-//   const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
-//   const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
-//   const width = end.x - start.x;
-//   const height = end.y - start.y;
-//   const viewBox = `${start.x} ${start.y} ${width} ${height}`;
-//   const translateX = -p1.x + start.x;
-//   const translateY = p1.y - start.y;
-//   return { path, width, height, viewBox, translateX, translateY };
-// };
-
 export const getPathValue = (
   x1: number,
   y1: number,
@@ -221,23 +200,46 @@ export const getPathValue = (
   y2: number,
 ): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
   const p1 = { x: 0, y: 0 };
-  const c1 = { x: 0, y: 0.4 };
-  const c2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) - 0.4 };
-  const p2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) };
+  const c1 = { x: 0, y: 0.4 * Math.abs(y2 - y1) };
+  const c2 = { x: x2 - x1, y: y2 - y1 - 0.4 * Math.abs(y2 - y1) };
+  const p2 = { x: x2 - x1, y: y2 - y1 };
   const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
   const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
-  const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
+  const path = `M${p1.x - start.x} ${p1.y - start.y}C${c1.x - start.x} ${c1.y - start.y} ${c2.x - start.x} ${
+    c2.y - start.y
+  } ${p2.x - start.x} ${p2.y - start.y}`;
   const width = end.x - start.x;
   const height = end.y - start.y;
   const viewBox = `${start.x} ${start.y} ${width} ${height}`;
-  const translateX = (-p1.x + start.x) * Math.abs(x2 - x1);
-  const translateY = -Math.abs(p1.y - start.y) * Math.abs(y2 - y1);
-  return {
-    path,
-    width: width * Math.abs(x2 - x1),
-    height: height * Math.abs(y2 - y1),
-    viewBox,
-    translateX,
-    translateY,
-  };
+  const translateX = -p1.x + start.x;
+  const translateY = -Math.abs(p1.y - start.y);
+  return { path, width, height, viewBox, translateX, translateY };
 };
+
+// export const getPathValue = (
+//   x1: number,
+//   y1: number,
+//   x2: number,
+//   y2: number,
+// ): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
+//   const p1 = { x: 0, y: 0 };
+//   const c1 = { x: 0, y: 0.4 };
+//   const c2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) - 0.4 };
+//   const p2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) };
+//   const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
+//   const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
+//   const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
+//   const width = end.x - start.x;
+//   const height = end.y - start.y;
+//   const viewBox = `${start.x} ${start.y} ${width} ${height}`;
+//   const translateX = (-p1.x + start.x) * Math.abs(x2 - x1);
+//   const translateY = -Math.abs(p1.y - start.y) * Math.abs(y2 - y1);
+//   return {
+//     path,
+//     width: width * Math.abs(x2 - x1),
+//     height: height * Math.abs(y2 - y1),
+//     viewBox,
+//     translateX,
+//     translateY,
+//   };
+// };

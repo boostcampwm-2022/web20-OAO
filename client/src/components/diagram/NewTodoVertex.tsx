@@ -49,7 +49,7 @@ interface VertexProps {
 const NewTodoVertex = ({ x1, y1, x2, y2 }: VertexProps): ReactElement => {
   const x = x1 + BLOCK.x / 2;
   const y = y1 + BLOCK.y;
-  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x, y, x2, y2);
+  const { path, width, height, translateX, translateY } = getPathValue(x, y, x2, y2);
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
@@ -64,7 +64,6 @@ const NewTodoVertex = ({ x1, y1, x2, y2 }: VertexProps): ReactElement => {
         <svg
           width={width}
           height={height}
-          viewBox={viewBox}
           fill="none"
           transform={`translate(${translateX}, ${translateY})`}
           xmlns="http://www.w3.org/2000/svg"

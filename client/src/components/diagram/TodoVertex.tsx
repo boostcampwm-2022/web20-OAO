@@ -60,12 +60,11 @@ const Vertex = ({
   getOnMouseMove,
   getOnClick,
 }: VertexProps): ReactElement => {
-  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x1, y1, x2, y2);
+  const { path, width, height, translateX, translateY } = getPathValue(x1, y1, x2, y2);
   return (
     <svg
       width={width}
       height={height}
-      viewBox={viewBox}
       fill="none"
       transform={`translate(${translateX}, ${translateY})`}
       xmlns="http://www.w3.org/2000/svg"
