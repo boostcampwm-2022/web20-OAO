@@ -31,13 +31,10 @@ const InputWrapper = styled.div`
     background: none;
     margin-right: 5px;
   }
-`;
-
-const Input = styled.input`
-  text-overflow: ellipsis;
-  color: ${blue};
-  background: none;
-  border: none;
+  input {
+    text-overflow: ellipsis;
+    background: none;
+  }
 `;
 
 const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElement => {
@@ -86,7 +83,17 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
           return (
             <InputWrapper key={relatedTodo.id}>
-              <Input type="text" data-id={relatedTodo.id} value={relatedTodo.title} data-label={relatedType} readOnly />
+              <input
+                type="text"
+                data-id={relatedTodo.id}
+                value={relatedTodo.title}
+                data-label={relatedType}
+                style={{
+                  color: blue,
+                  border: 'none',
+                }}
+                readOnly
+              />
               <Button
                 context={<img src={Cancel} width="20px" height="20px" />}
                 onClick={() => deleteRelatedToto(relatedTodo.id)}
