@@ -77,13 +77,13 @@ export const MODAL_INPUT_LIST = [
   {
     label: '먼저 할 일',
     maxLength: Number.MAX_VALUE,
-    type: 'textarea',
+    type: 'search-prev',
     placeHolder: '먼저 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
   },
   {
     label: '이어서 할 일',
     maxLength: Number.MAX_VALUE,
-    type: 'textarea',
+    type: 'search-next',
     placeHolder: '이어서 해야하는 할 일의 id값을 넣어주세요. 여러개라면 ,(콤마)로 분리해서 넣어주세요',
   },
 ];
