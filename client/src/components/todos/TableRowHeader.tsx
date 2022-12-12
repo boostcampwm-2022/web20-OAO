@@ -156,7 +156,11 @@ const TableRowHeader = ({
           </div>
         );
       })}
-      <div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <Button
           context={<img src={Update} width="40px" height="40px" alt="update" />}
           onClick={() => {
