@@ -20,7 +20,7 @@ interface PropsType {
 const Wrapper = styled.div<PropsType>`
   display: flex;
   height: 8vh;
-  width: calc(100vw - 64px);
+  width: calc(100vw);
   padding: 15px;
   border-radius: 10px 10px 0 0;
   align-items: center;
