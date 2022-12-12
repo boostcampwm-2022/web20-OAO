@@ -236,7 +236,6 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
       <Wrapper style={diagramStyle as React.CSSProperties} ref={domRef}>
         {[...vertexData].map((el) => {
-          console.log(el);
           return (
             <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
               <TodoVertex {...el[1].props} getOnClick={getOnClick} />
