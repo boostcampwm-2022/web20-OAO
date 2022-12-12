@@ -280,9 +280,11 @@ export class TodoList {
     const result = next
       .map((el) => ({ id: el, check: dfsForward(el) }))
       .concat(prev.map((el) => ({ id: el, check: dfsBackward(el) })));
-    const errorArr = result
-      .filter((el) => !el.check)
-      .map((el) => this.todoList.find((target) => target.id === el.id)?.title);
+    const errorArr = [
+      ...new Set(
+        result.filter((el) => !el.check).map((el) => this.todoList.find((target) => target.id === el.id)?.title),
+      ),
+    ];
     if (errorArr.length !== 0)
       throw new Error(`순환 참조를 유발하는 선후 관계가 있습니다. 원인: [${errorArr.join(', ')}]`);
     return errorArr.length === 0;
