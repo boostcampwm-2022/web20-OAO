@@ -161,6 +161,8 @@ export class TodoList {
   async add(todo: InputTodo): Promise<TodoList> {
     const newTodo = new Todo(todo);
     const changedTodoSet = new Set<Todo>();
+    if (!this.checkCircularReference(newTodo.toPlain()))
+      throw new Error('ERROR: 수정된 선후관계가 순환하는 구조를 포함합니다.');
 
     [this.getPrev(newTodo), this.getNext(newTodo)].flat().forEach((el) => changedTodoSet.add(el));
 
@@ -178,6 +180,8 @@ export class TodoList {
     const oldTodo = this.todoList.find((el) => el.id === id);
     if (oldTodo === undefined) throw new Error('ERROR: 수정하려는 ID의 Todo가 존재하지 않습니다.');
     const newTodo = new Todo({ ...oldTodo.toPlain(), ...todo, id: oldTodo.id });
+    if (!this.checkCircularReference(newTodo.toPlain()))
+      throw new Error('ERROR: 수정된 선후관계가 순환하는 구조를 포함합니다.');
     const changedTodoSet = new Set<Todo>();
 
     [this.getPrev(oldTodo), this.getPrev(newTodo), this.getNext(oldTodo), this.getNext(newTodo), newTodo]
@@ -259,5 +263,22 @@ export class TodoList {
       this.db,
       this.todoList.map((el) => el.toPlain()),
     );
+  }
+
+  private checkCircularReference(todo: PlainTodo): boolean {
+    const { prev, next, id } = todo;
+    const dfsForward = (targetId: string): boolean => {
+      if (targetId === id || prev.includes(targetId)) return false;
+      const target = this.todoList.find((el) => el.id === targetId);
+      if (target === undefined) throw new Error('순환 참조 판별 중, id로 확인할 수 없는 Todo가 있습니다.');
+      return [...target.next].every(dfsForward);
+    };
+    const dfsBackward = (targetId: string): boolean => {
+      if (targetId === id || next.includes(targetId)) return false;
+      const target = this.todoList.find((el) => el.id === targetId);
+      if (target === undefined) throw new Error('순환 참조 판별 중, id로 확인할 수 없는 Todo가 있습니다.');
+      return [...target.prev].every(dfsBackward);
+    };
+    return prev.every(dfsBackward) && next.every(dfsForward);
   }
 }
