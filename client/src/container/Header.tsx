@@ -9,7 +9,7 @@ import Button from '@components/Button';
 import Text from '@components/Text';
 import { PRIMARY_COLORS } from '@util/Constants';
 
-import { isTutorialAtom, changeIndexedDBtoMemoryAtom, changeMemorytoIndexedDBAtom } from '@util/GlobalState';
+import { isTutorialAtom } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
 const Wrapper = styled.div`
@@ -24,23 +24,14 @@ const Wrapper = styled.div`
 
 const Header = (): ReactElement => {
   const [isTutorial, setIsTutorial] = useAtom(isTutorialAtom);
-  const [, changeIndexedDBtoMemory] = useAtom(changeIndexedDBtoMemoryAtom);
-  const [, changeMemorytoIndexedDB] = useAtom(changeMemorytoIndexedDBAtom);
-  const startTutorial = (): void => {
-    setIsTutorial(true);
-    changeIndexedDBtoMemory();
-  };
-  const endTutorial = (): void => {
-    setIsTutorial(false);
-    changeMemorytoIndexedDB();
-  };
+  const url: string = isTutorial ? '/tutorials' : '/';
   return (
     <Wrapper>
-      <Link to="/">
+      <Link to={`${url}`}>
         <Image src={LongLogo} flexGrow={3} />
       </Link>
       {isTutorial ? (
-        <Link to="/" onClick={endTutorial}>
+        <Link to="/" onClick={() => setIsTutorial(false)}>
           <Button
             context={
               <Text
@@ -54,7 +45,7 @@ const Header = (): ReactElement => {
           />
         </Link>
       ) : (
-        <Link to="/tutorials" onClick={startTutorial}>
+        <Link to="/tutorials" onClick={() => setIsTutorial(true)}>
           <Button
             context={
               <Text

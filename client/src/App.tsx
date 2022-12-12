@@ -1,5 +1,5 @@
 import { ReactElement, Suspense, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { useAtomValue } from 'jotai';
@@ -16,6 +16,10 @@ import TodoController from '@container/TodoController';
 import { TutorialImage } from '@components/tutorial/TutorialImage';
 import { isTutorialAtom } from '@util/GlobalState';
 import { PRIMARY_COLORS } from '@util/Constants';
+
+import TutorialMain from '@page/TutorialMain';
+import TutorialTodos from '@page/TutorialTodos';
+import TutorialDiagramPage from '@page/TutorialDiagramPage';
 
 const RowWrapper = styled.div`
   position: relative;
@@ -38,7 +42,6 @@ const TutorialRadialOverlay = styled.div`
   top: 0px;
 
   background: linear-gradient(180deg, ${PRIMARY_COLORS.green}00 73.51%, #93c692 127.82%);
-
   pointer-events: none;
 
   p {
@@ -51,7 +54,6 @@ const TutorialRadialOverlay = styled.div`
     color: ${PRIMARY_COLORS.green};
   }
 `;
-
 const App = (): ReactElement => {
   const isTutorial = useAtomValue(isTutorialAtom);
   const [isOver, setIsOver] = useState(false);
@@ -62,8 +64,6 @@ const App = (): ReactElement => {
       setIsOver(false);
     }
   }, [isTutorial]);
-
-  const isCorrectURL = isTutorial && location.pathname.includes('tutorials');
   return (
     <Suspense fallback={<div>loading App</div>}>
       <BrowserRouter>
@@ -77,13 +77,13 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials" element={isCorrectURL ? <Main /> : <Navigate to="/" />}></Route>
-              <Route path="/tutorials/todos" element={isCorrectURL ? <Todos /> : <Navigate to="/" />}></Route>
-              <Route path="/tutorials/diagram" element={isCorrectURL ? <DiagramPage /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials" element={<TutorialMain />}></Route>
+              <Route path="/tutorials/todos" element={<TutorialTodos />}></Route>
+              <Route path="/tutorials/diagram" element={<TutorialDiagramPage />}></Route>
             </Routes>
           </Wrapper>
           <TodoController />
-          {isShow && <TutorialImage isTutorial={isTutorial} setIsOver={setIsOver} />}
+          {isShow && <TutorialImage setIsOver={setIsOver} />}
           {isTutorial && (
             <TutorialRadialOverlay>
               <span>

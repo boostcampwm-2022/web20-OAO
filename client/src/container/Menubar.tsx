@@ -27,7 +27,7 @@ const Menubar = (): ReactElement => {
   const prefix: string = isTutorial ? '/tutorials' : '';
   return (
     <Wrapper>
-      <Link to={`${prefix}/`}>
+      <Link to={`${prefix}`}>
         <Image src={Home} />
       </Link>
       <Link to={`${prefix}/todos`}>

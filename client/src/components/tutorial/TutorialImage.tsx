@@ -24,7 +24,7 @@ const StyledOverlay = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  z-index: 10000000002;
 
   & > img {
     width: 80%;
@@ -46,10 +46,8 @@ const StyledCancelButton = styled(Button)`
 `;
 
 export const TutorialImage = ({
-  isTutorial,
   setIsOver,
 }: {
-  isTutorial: boolean;
   setIsOver: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactElement => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -65,7 +63,7 @@ export const TutorialImage = ({
       if (autoPlayRef.current !== undefined) autoPlayRef.current();
     };
 
-    const interval = setInterval(play, 10 * 1000);
+    const interval = setInterval(play, 20 * 1000);
 
     return () => {
       clearInterval(interval);

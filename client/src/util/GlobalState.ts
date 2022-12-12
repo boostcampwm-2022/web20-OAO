@@ -11,27 +11,9 @@ export const readWriteAtom = atom(
   (_get, set, newValue: boolean) => set(loginStateAtom, newValue),
 );
 
-let todoData = await createTodoList('IndexedDB');
-let tutorialTodoData = await createTodoList('MemoryDB');
+const todoData = await createTodoList('IndexedDB');
 export const todoList = atom(todoData);
 export const isTutorialAtom = atom(false);
-
-export const changeIndexedDBtoMemoryAtom = atom(null, (get, set) => {
-  if (!get(isTutorialAtom)) {
-    return;
-  }
-
-  todoData = get(todoList).clone();
-  set(todoList, tutorialTodoData);
-});
-
-export const changeMemorytoIndexedDBAtom = atom(null, (get, set) => {
-  if (get(isTutorialAtom)) {
-    return;
-  }
-  tutorialTodoData = get(todoList).clone();
-  set(todoList, todoData);
-});
 
 export const asyncActiveTodo = atom(
   async (get) => await get(todoList).getActiveTodo(),
@@ -130,7 +112,7 @@ export const isMainPage = atom(true);
 export const isMainPageAtom = atom(
   (get) => get(isMainPage),
   (_get, set) => {
-    set(isMainPage, location.pathname === '/' || location.pathname === '/tutorials/');
+    set(isMainPage, location.pathname === '/' || location.pathname === '/tutorials');
   },
 );
 
