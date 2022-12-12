@@ -17,10 +17,6 @@ import { TutorialImage } from '@components/tutorial/TutorialImage';
 import { isTutorialAtom } from '@util/GlobalState';
 import { PRIMARY_COLORS } from '@util/Constants';
 
-import TutorialMain from '@page/TutorialMain';
-import TutorialTodos from '@page/TutorialTodos';
-import TutorialDiagramPage from '@page/TutorialDiagramPage';
-
 const RowWrapper = styled.div`
   position: relative;
   width: calc(100%);
@@ -77,12 +73,9 @@ const App = (): ReactElement => {
               <Route path="/" element={<Main />}></Route>
               <Route path="/todos" element={<Todos />}></Route>
               <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials" element={isTutorial ? <TutorialMain /> : <Navigate to="/" />}></Route>
-              <Route path="/tutorials/todos" element={isTutorial ? <TutorialTodos /> : <Navigate to="/" />}></Route>
-              <Route
-                path="/tutorials/diagram"
-                element={isTutorial ? <TutorialDiagramPage /> : <Navigate to="/" />}
-              ></Route>
+              <Route path="/tutorials" element={isTutorial ? <Main /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials/todos" element={isTutorial ? <Todos /> : <Navigate to="/" />}></Route>
+              <Route path="/tutorials/diagram" element={isTutorial ? <DiagramPage /> : <Navigate to="/" />}></Route>
             </Routes>
           </Wrapper>
           <TodoController />
