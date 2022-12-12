@@ -1,5 +1,5 @@
 import { PlainTodo } from '@todo/todo.type';
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 
 import Text from '@components/Text';
@@ -28,20 +28,23 @@ const ListWrapper = styled.div`
 `;
 
 const SearchListContent = ({ todo, listOnClick }: { todo: PlainTodo; listOnClick: Function }): ReactElement => {
-  return (
-    <ListWrapper onClick={() => listOnClick(todo)}>
-      <Image src={Search} />
-      <SearchTitleWrapper>
-        <Text text={todo.title} fontSize={'15px'} />
-      </SearchTitleWrapper>
-      <Text
-        text={'마감날짜 ' + getyyyymmddDateFormat(todo.until, '.')}
-        color={gray}
-        fontSize={'15px'}
-        fontFamily={'SanSerif'}
-      />
-    </ListWrapper>
-  );
+  const ListContentElem = useMemo(() => {
+    return (
+      <ListWrapper onClick={() => listOnClick(todo)}>
+        <Image src={Search} />
+        <SearchTitleWrapper>
+          <Text text={todo.title} fontSize={'15px'} />
+        </SearchTitleWrapper>
+        <Text
+          text={'마감날짜 ' + getyyyymmddDateFormat(todo.until, '.')}
+          color={gray}
+          fontSize={'15px'}
+          fontFamily={'SanSerif'}
+        />
+      </ListWrapper>
+    );
+  }, [todo]);
+  return <>{ListContentElem}</>;
 };
 
 export default SearchListContent;
