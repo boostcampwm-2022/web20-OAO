@@ -1,13 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { PlainTodo } from '@todo/todo.type';
-import styled from 'styled-components';
-import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
-import Button from '@components/Button';
-import Cancel from '@images/Cancel.svg';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
 import { useAtomValue, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
+
+import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
+import { PlainTodo } from '@todo/todo.type';
+
+import Button from '@components/Button';
 import Search from '@components/Search';
+
+import Cancel from '@images/Cancel.svg';
 
 const { lightestGray, blue } = PRIMARY_COLORS;
 
@@ -30,32 +33,39 @@ const InputWrapper = styled.div`
   }
 `;
 
+const Input = styled.input`
+  text-overflow: ellipsis;
+  color: ${blue};
+  background: none;
+  border: none;
+`;
+
 const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElement => {
-  const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
+  const modalType = useAtomValue(modalTypeAtom);
   const todoListAtom = useAtomValue(todoList);
   const [editingTodoId] = useAtom(editingTodoIdAtom);
-  const modalType = useAtomValue(modalTypeAtom);
+  const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
+
+  const getTodoListByIdList = async (idList: string[]): Promise<PlainTodo[]> => {
+    return await todoListAtom.getTodoByIdList(idList).then((todoList) => todoList);
+  };
+
+  const getRelatedTodoByIdAndType = async (id: string, type: string): Promise<string[] | null> => {
+    return await todoListAtom
+      .getTodoById(id)
+      .then((todo) => (todo !== undefined ? (type === 'prev' ? todo.prev : todo.next) : null));
+  };
 
   useEffect(() => {
-    if (modalType === TABLE_MODALS.create) return setRelatedTodoList(() => []);
-    todoListAtom
-      .getTodoById(editingTodoId)
-      .then((todo) => {
-        if (todo === undefined) return;
-        if (relatedType === 'prev') {
-          todoListAtom
-            .getTodoByIdList(todo.prev)
-            .then((prevTodoList) => setRelatedTodoList(() => [...prevTodoList]))
-            .catch((err) => toast.error(err));
-        }
-        if (relatedType === 'next') {
-          todoListAtom
-            .getTodoByIdList(todo.next)
-            .then((nextTodoList) => setRelatedTodoList(() => [...nextTodoList]))
-            .catch((err) => toast.error(err));
-        }
-      })
-      .catch((err) => toast.error(err));
+    const getrelatedTodoList = async (): Promise<void> => {
+      if (modalType === TABLE_MODALS.create) return setRelatedTodoList(() => []);
+
+      const relatedTodoIdList = await getRelatedTodoByIdAndType(editingTodoId, relatedType);
+      const relatedTodoList = relatedTodoIdList !== null ? await getTodoListByIdList(relatedTodoIdList) : [];
+      if (relatedTodoList.length > 0) setRelatedTodoList(() => [...relatedTodoList]);
+    };
+
+    getrelatedTodoList().catch((err) => toast.error(err));
   }, [editingTodoId, modalTypeAtom]);
 
   const onClick = (todo: PlainTodo): void => {
@@ -76,19 +86,7 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
           return (
             <InputWrapper key={relatedTodo.id}>
-              <input
-                type="text"
-                data-id={relatedTodo.id}
-                value={relatedTodo.title}
-                data-label={relatedType}
-                style={{
-                  textOverflow: 'ellipsis',
-                  color: blue,
-                  background: 'none',
-                  border: 'none',
-                }}
-                readOnly
-              />
+              <Input type="text" data-id={relatedTodo.id} value={relatedTodo.title} data-label={relatedType} readOnly />
               <Button
                 context={<img src={Cancel} width="20px" height="20px" />}
                 onClick={() => deleteRelatedToto(relatedTodo.id)}
