@@ -1,4 +1,4 @@
-import { ReactElement, MouseEventHandler, CSSProperties } from 'react';
+import { ReactElement, MouseEventHandler, CSSProperties, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
@@ -116,7 +116,7 @@ const TableRowHeader = ({
   prevTodoList: PlainTodo[];
   nextTodoList: PlainTodo[];
   onClick: MouseEventHandler;
-  setHasEditModal: Function;
+  setHasEditModal: Dispatch<SetStateAction<boolean>>;
 }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
@@ -148,39 +148,37 @@ const TableRowHeader = ({
   const tableRowHeaderElemList = createHeaderElementData({ todo, prevTodoList, nextTodoList });
 
   return (
-    <>
-      <Wrapper onClick={onClick}>
-        <Button context={<Image src={todo.state === 'DONE' ? Checked : Unchecked} />} onClick={checkTodoStateHandler} />
-        {tableRowHeaderElemList.map((headerElem) => {
-          return (
-            <div key={headerElem.type} style={headerElem.style}>
-              {headerElem.value}
-            </div>
-          );
-        })}
-        <div>
-          <Button
-            context={<img src={Update} width="40px" height="40px" alt="update" />}
-            onClick={() => {
-              setEditingTodoId(todo.id);
-              setHasEditModal(true);
-            }}
-          />
-          <Button
-            context={<img src={Delete} width="40px" height="40px" alt="delete" />}
-            onClick={() => {
-              handleOnDelete(todo.id);
-            }}
-          />
-          <Button
-            context={<img src={Copy} width="40px" height="40px" alt="copy" />}
-            onClick={() => {
-              copyToClipboard(todo.title);
-            }}
-          />
-        </div>
-      </Wrapper>
-    </>
+    <Wrapper onClick={onClick}>
+      <Button context={<Image src={todo.state === 'DONE' ? Checked : Unchecked} />} onClick={checkTodoStateHandler} />
+      {tableRowHeaderElemList.map((headerElem) => {
+        return (
+          <div key={headerElem.type} style={headerElem.style}>
+            {headerElem.value}
+          </div>
+        );
+      })}
+      <div>
+        <Button
+          context={<img src={Update} width="40px" height="40px" alt="update" />}
+          onClick={() => {
+            setEditingTodoId(todo.id);
+            setHasEditModal(true);
+          }}
+        />
+        <Button
+          context={<img src={Delete} width="40px" height="40px" alt="delete" />}
+          onClick={() => {
+            handleOnDelete(todo.id);
+          }}
+        />
+        <Button
+          context={<img src={Copy} width="40px" height="40px" alt="copy" />}
+          onClick={() => {
+            copyToClipboard(todo.title);
+          }}
+        />
+      </div>
+    </Wrapper>
   );
 };
 
