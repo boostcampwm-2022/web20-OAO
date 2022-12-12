@@ -2,11 +2,13 @@ import { ReactElement, memo } from 'react';
 import PopUp from '@components/diagram/PopUp';
 import Button from '@components/Button';
 import Delete from '@images/Delete.svg';
-import { todoList as todoListAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 const TodoVertexPopUp = ({ id, x, y }: { id: string; x: number; y: number }): ReactElement => {
+  const { todoList: todoListAtom } = useGlobalAtom();
+
   const [todoList, setTodoList] = useAtom(todoListAtom);
   const [from, to] = id.split('+');
   return (

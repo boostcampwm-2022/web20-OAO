@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import Button from '@components/Button';
 import Cancel from '@images/Cancel.svg';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { useAtomValue, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
+
 
 const { lightestGray, blue } = PRIMARY_COLORS;
 
@@ -31,6 +32,7 @@ const InputWrapper = styled.div`
 `;
 
 const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElement => {
+  const { modalTypeAtom, todoList, editingTodoIdAtom } = useGlobalAtom();
   const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
   const todoListAtom = useAtomValue(todoList);
   const [editingTodoId] = useAtom(editingTodoIdAtom);

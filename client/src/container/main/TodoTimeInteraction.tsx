@@ -6,7 +6,7 @@ import PostponeBox from '@components/main/PostponeBox';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 import TodoTimeText from '@components/main/TodoTimeText';
 
-import { postponeClicked } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -21,6 +21,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const TodoTimeInteraction = (): ReactElement => {
+  const { postponeClicked } = useGlobalAtom();
   const [isPostpone] = useAtom(postponeClicked);
 
   return (

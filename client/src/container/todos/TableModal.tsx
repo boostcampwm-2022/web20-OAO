@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
 import { TABLE_MODALS, PRIMARY_COLORS, MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { getModalValues, getDateTimeInputFormatString } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
@@ -89,6 +89,7 @@ const validateCircularReference = (idList: string[], checkId: string): boolean =
 };
 
 const TableModal = (): ReactElement => {
+  const { modalTypeAtom, todoList, editingTodoIdAtom } = useGlobalAtom();
   const [modalType, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [modalHeader, setModalHeader] = useState('');

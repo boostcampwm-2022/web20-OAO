@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
-import { todoList } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import Search from '@images/Search.svg';
 
 import Text from '@components/Text';
@@ -69,6 +69,7 @@ const InputWrapper = styled(ListWrapper)`
 `;
 
 const SearchBar = ({ onClick }: { onClick: Function }): ReactElement => {
+  const { todoList } = useGlobalAtom();
   const todoListAtom = useAtomValue(todoList);
   const [searchTodoList, setSearchTodoList] = useState<PlainTodo[]>([]);
   const [inputValue, setInputValue] = useState('');

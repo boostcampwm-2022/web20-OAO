@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { PlainTodo } from '@todo/todo.type';
 import { TABLE_MODALS, PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
 import { copyToClipboard, gethhmmFormat, getyyyymmddDateFormat } from '@util/Common';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
@@ -116,6 +116,7 @@ const TableRowHeader = ({
   nextTodoList: PlainTodo[];
   onClick: MouseEventHandler;
 }): ReactElement => {
+  const { modalTypeAtom, todoList, editingTodoIdAtom } = useGlobalAtom();
   const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [, setEditingTodoId] = useAtom(editingTodoIdAtom);

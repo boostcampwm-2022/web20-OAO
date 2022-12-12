@@ -4,7 +4,7 @@ import Image from '@components/Image';
 
 import DropDown from '@images/DropDown.svg';
 import { useAtom } from 'jotai';
-import { asyncActiveTodo } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 const ContentWrapper = styled.div`
   width: 850px;
@@ -39,6 +39,7 @@ const ToggleWrapper = styled.div`
 `;
 
 const TodoContents = (): ReactElement => {
+  const { asyncActiveTodo } = useGlobalAtom();
   const [isTodoContentToggled, setIsTodoContentToggled] = useState(true);
   const [activeTodo] = useAtom(asyncActiveTodo);
 

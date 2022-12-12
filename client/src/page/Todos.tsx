@@ -2,7 +2,7 @@ import { ReactElement, Suspense } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 
-import { modalTypeAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { TABLE_MODALS } from '@util/Constants';
 
 import TableModal from '@container/todos/TableModal';
@@ -31,6 +31,7 @@ const StyledButton = styled.div`
 `;
 
 const Todos = (): ReactElement => {
+  const { modalTypeAtom } = useGlobalAtom();
   const [modalType, setModalType] = useAtom(modalTypeAtom);
 
   const hanldeOnClick = (): void => {

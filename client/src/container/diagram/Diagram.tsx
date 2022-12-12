@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
 import { useAtom } from 'jotai';
-import { todoList } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import styled from 'styled-components';
 import { getDiagramData, getTodoBlockProps, getVerticeProps, TodoBlockProps, VertexProps } from '@util/diagram.util';
 import { PRIMARY_COLORS } from '@util/Constants';
@@ -113,6 +113,7 @@ const TodoBlockWrapper = styled.div<{ aniState: string }>`
 const MemoTodoBlockWrapper = memo(TodoBlockWrapper);
 
 const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
+  const { todoList } = useGlobalAtom();
   const [todoListAtom] = useAtom(todoList);
   const [diagramData, setDiagramData] = useState<Map<string, AnimationData<TodoBlockProps>>>(new Map());
   const [diagramVertice, setDiagramVertice] = useState<Map<string, AnimationData<VertexProps>>>(new Map());

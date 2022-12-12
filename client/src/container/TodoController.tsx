@@ -7,7 +7,7 @@ import Text from '@components/Text';
 import ElapsedTimeText from '@components/ElapsedTimeText';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 
-import { asyncActiveTodo, isMainPageAtom, needTodoControllerAtom, postponeClicked } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { getTodoUntilText } from '@util/Common';
 import { PRIMARY_COLORS } from '@util/Constants';
 import PostponeBox from '@components/main/PostponeBox';
@@ -52,6 +52,7 @@ const imageButtonStyle = {
 };
 
 const TodoController = (): ReactElement => {
+  const { asyncActiveTodo, isMainPageAtom, needTodoControllerAtom, postponeClicked } = useGlobalAtom();
   const location = useLocation();
 
   const activeTodo = useAtomValue(asyncActiveTodo);

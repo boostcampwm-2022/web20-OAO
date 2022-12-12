@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import Text from '@components/Text';
 
-import { asyncActiveTodo } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 const Wrapper = styled.div`
   width: 850px;
@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const TodoTitle = (): ReactElement => {
+  const { asyncActiveTodo } = useGlobalAtom();
   const [activeTodo] = useAtom(asyncActiveTodo);
 
   return (

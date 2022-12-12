@@ -13,8 +13,9 @@ import DiagramPage from '@page/DiagramPage';
 import OverLay from '@components/OverLay';
 import TodoController from '@container/TodoController';
 
-import { TutorialImage } from '@components/tutorial/TutorialImage';
 import { isTutorialAtom } from '@util/GlobalState';
+import { TutorialImage } from '@components/tutorial/TutorialImage';
+import { GlobalAtomProvider } from '@util/GlobalAtomContext';
 import { PRIMARY_COLORS } from '@util/Constants';
 
 const RowWrapper = styled.div`
@@ -69,16 +70,24 @@ const App = (): ReactElement => {
           <Menubar />
           <Wrapper>
             <Header />
-            <Routes>
-              <Route path="/" element={<Main />}></Route>
-              <Route path="/todos" element={<Todos />}></Route>
-              <Route path="/diagram" element={<DiagramPage />}></Route>
-              <Route path="/tutorials" element={isTutorial ? <Main /> : <Navigate to="/" />}></Route>
-              <Route path="/tutorials/todos" element={isTutorial ? <Todos /> : <Navigate to="/" />}></Route>
-              <Route path="/tutorials/diagram" element={isTutorial ? <DiagramPage /> : <Navigate to="/" />}></Route>
-            </Routes>
+            <GlobalAtomProvider isTutorial={false}>
+              <Routes>
+                <Route path="/" element={<Main />}></Route>
+                <Route path="/todos" element={<Todos />}></Route>
+                <Route path="/diagram" element={<DiagramPage />}></Route>
+              </Routes>
+            </GlobalAtomProvider>
+            <GlobalAtomProvider isTutorial={true}>
+              <Routes>
+                <Route path="/tutorials" element={isTutorial ? <Main /> : <Navigate to="/" />}></Route>
+                <Route path="/tutorials/todos" element={isTutorial ? <Todos /> : <Navigate to="/" />}></Route>
+                <Route path="/tutorials/diagram" element={isTutorial ? <DiagramPage /> : <Navigate to="/" />}></Route>
+              </Routes>
+            </GlobalAtomProvider>
           </Wrapper>
-          <TodoController />
+          <GlobalAtomProvider isTutorial={isTutorial}>
+            <TodoController />
+          </GlobalAtomProvider>
           {isShow && <TutorialImage setIsOver={setIsOver} />}
           {isTutorial && (
             <TutorialRadialOverlay>

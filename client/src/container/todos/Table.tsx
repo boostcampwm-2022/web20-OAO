@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
-import { todoList } from '@util/GlobalState.js';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 import TableHeader from '@components/todos/TableHeader';
 import TableRow from '@components/todos/TableRow';
@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 `;
 
 const Table = (): ReactElement => {
+  const { todoList } = useGlobalAtom();
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
   const [filter, setFilter] = useState<'DONE' | 'READY' | 'WAIT'>('READY');

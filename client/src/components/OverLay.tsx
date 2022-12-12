@@ -1,5 +1,5 @@
 import { TABLE_MODALS } from '@util/Constants';
-import { modalTypeAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { useAtom } from 'jotai';
 import { ReactElement } from 'react';
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ const StyledOverlay = styled.div`
 const { none } = TABLE_MODALS;
 
 const OverLay = (): ReactElement => {
+  const { modalTypeAtom } = useGlobalAtom();
   const [modalType, setModalType] = useAtom(modalTypeAtom);
 
   const hanldeOnClick = (): void => {

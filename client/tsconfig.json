@@ -16,6 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "noErrorTruncation": true,
     "paths": {
       "@repository/*": ["src/core/repository/*"],
       "@todo/*": ["src/core/todo/*"],

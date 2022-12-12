@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
-import { todoList } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { PRIMARY_COLORS } from '@util/Constants';
 
 import TableRowHeader from '@components/todos/TableRowHeader';
@@ -19,6 +19,7 @@ const RowWrapper = styled.div`
 `;
 
 const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
+  const { todoList } = useGlobalAtom();
   const [todoListAtom] = useAtom(todoList);
   const [prevTodoList, setPrevTodo] = useState<PlainTodo[]>([]);
   const [nextTodoList, setNextTodo] = useState<PlainTodo[]>([]);

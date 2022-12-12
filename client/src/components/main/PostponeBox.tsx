@@ -6,10 +6,9 @@ import Text from '@components/Text.js';
 import Button from '@components/Button.js';
 
 import { PRIMARY_COLORS } from '@util/Constants';
-import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 import usePostpone from '@hooks/usePostpone.js';
-
 const { red, white, darkGray } = PRIMARY_COLORS;
 
 interface Props {
@@ -37,6 +36,7 @@ const StyledPostponeBox = styled.div<Props>`
 `;
 
 const PostponeBox = ({ isBottom }: { isBottom: boolean }): ReactElement => {
+  const { postponeOptionsAtom, asyncActiveTodo } = useGlobalAtom();
   const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
   const [activeTodo] = useAtom(asyncActiveTodo);
   const [setPostpone] = usePostpone();

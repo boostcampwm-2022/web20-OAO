@@ -3,13 +3,12 @@ import { createTodoList } from '@todo/todoList.js';
 import { TABLE_MODALS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants.js';
 import { isEqualDate } from '@todo/todo.util';
 
-export const isOnProgress = atom('relaxing');
+const isOnProgress = atom('relaxing');
 
-const todoData = await createTodoList('IndexedDB');
-export const todoList = atom(todoData);
-export const isTutorialAtom = atom(false);
+const todoData = await createTodoList('MemoryDB');
+const todoList = atom(todoData);
 
-export const asyncActiveTodo = atom(
+const asyncActiveTodo = atom(
   async (get) => await get(todoList).getActiveTodo(),
   async (get, set, newValue) => {
     get(todoList)
@@ -23,17 +22,17 @@ export const asyncActiveTodo = atom(
   },
 );
 
-export const elapsedTimeAtom = atom(0); // 초 단위 경과시간
+const elapsedTimeAtom = atom(0); // 초 단위 경과시간
 
-export const postponeClicked = atom(false);
-export const isFinishedAtom = atom(false);
+const postponeClicked = atom(false);
+const isFinishedAtom = atom(false);
 
-export const modalTypeAtom = atom(TABLE_MODALS.none);
-export const editingTodoIdAtom = atom('');
+const modalTypeAtom = atom(TABLE_MODALS.none);
+const editingTodoIdAtom = atom('');
 
-export const postpone = atom(['']);
+const postpone = atom(['']);
 
-export const postponeOptionsAtom = atom(
+const postponeOptionsAtom = atom(
   (get) => get(postpone),
   (get, set, newValue) => {
     const activeTodo = get(asyncActiveTodo);
@@ -58,9 +57,9 @@ export const postponeOptionsAtom = atom(
   },
 );
 
-export const globalTimerAtom = atom(-1);
+const globalTimerAtom = atom(-1);
 
-export const setTimerAtom = atom(
+const setTimerAtom = atom(
   (get) => get(globalTimerAtom),
   (get, set) => {
     const timer = get(globalTimerAtom);
@@ -80,7 +79,7 @@ export const setTimerAtom = atom(
   },
 );
 
-export const stopTimerAtom = atom(null, (get, set) => {
+const stopTimerAtom = atom(null, (get, set) => {
   const timer = get(globalTimerAtom);
   if (timer !== -1) {
     clearInterval(timer);
@@ -89,8 +88,8 @@ export const stopTimerAtom = atom(null, (get, set) => {
   }
 });
 
-export const displayTime = atom('');
-export const displayTimeAtom = atom(
+const displayTime = atom('');
+const displayTimeAtom = atom(
   (get) => get(displayTime),
   (get, set) => {
     const time = get(elapsedTimeAtom);
@@ -102,23 +101,23 @@ export const displayTimeAtom = atom(
   },
 );
 
-export const isMainPage = atom(true);
-export const isMainPageAtom = atom(
+const isMainPage = atom(true);
+const isMainPageAtom = atom(
   (get) => get(isMainPage),
   (_get, set) => {
     set(isMainPage, location.pathname === '/' || location.pathname === '/tutorials');
   },
 );
 
-export const needTodoController = atom(true);
-export const needTodoControllerAtom = atom(
+const needTodoController = atom(true);
+const needTodoControllerAtom = atom(
   (get) => get(needTodoController),
   (get, set) => {
     set(needTodoController, !get(isMainPage) && get(asyncActiveTodo) !== undefined);
   },
 );
 
-export const globalAtom = {
+export const tutorialGlobalAtom = {
   isOnProgress,
   todoList,
   asyncActiveTodo,

@@ -2,7 +2,7 @@ import { ReactElement, memo } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { isOnProgress, asyncActiveTodo } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 import { useAtom } from 'jotai';
 
 import Working from '@images/Working.svg';
@@ -35,6 +35,7 @@ const BlankBox = styled.div`
 const transform = 'translateY(54px)';
 
 const TodoStatus = (): ReactElement => {
+  const { isOnProgress, asyncActiveTodo } = useGlobalAtom();
   const [userState] = useAtom(isOnProgress);
   const [activeTodo] = useAtom(asyncActiveTodo);
 

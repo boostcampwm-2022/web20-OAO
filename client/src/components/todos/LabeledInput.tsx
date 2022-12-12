@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
 import { getTodayDate } from '@util/Common';
-import { modalTypeAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 import Text from '@components/Text';
 import Select from '@components/Select';
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
 `;
 
 const LabeledInput = ({ label, maxLength, type, id, placeHolder }: InputProps): ReactElement => {
+  const { modalTypeAtom } = useGlobalAtom();
   const [input, setInput] = useState('');
   const [dateInput, setDateInput] = useState(getTodayDate());
   const [modalType] = useAtom(modalTypeAtom);

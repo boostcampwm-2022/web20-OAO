@@ -2,9 +2,10 @@ import { useAtom, useSetAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { POSTPONE_METHODS } from '@util/Constants.js';
-import { todoList, elapsedTimeAtom, stopTimerAtom, postponeClicked } from '@util/GlobalState.js';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 const usePostpone = (): any[] => {
+  const { todoList, elapsedTimeAtom, stopTimerAtom, postponeClicked } = useGlobalAtom();
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
   const stopTimer = useSetAtom(stopTimerAtom);

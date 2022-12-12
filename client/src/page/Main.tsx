@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { ReactElement, Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { asyncActiveTodo, isFinishedAtom, modalTypeAtom, isTutorialAtom } from '@util/GlobalState';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
+import { isTutorialAtom } from '@util/GlobalState';
 import { TABLE_MODALS } from '@util/Constants';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,6 +44,7 @@ const { none, create } = TABLE_MODALS;
 
 const Main = (): ReactElement => {
   const isTutorial = useAtomValue(isTutorialAtom);
+  const { asyncActiveTodo, isFinishedAtom, modalTypeAtom } = useGlobalAtom();
   const prefix: string = isTutorial ? '/tutorials' : '';
   const [isFinished] = useAtom(isFinishedAtom);
   const [activeTodoAtom] = useAtom(asyncActiveTodo); // -> aync로 activeTodo()

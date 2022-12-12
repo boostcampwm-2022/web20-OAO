@@ -1,9 +1,9 @@
 import { useSetAtom, useAtom } from 'jotai';
 import { toast } from 'react-toastify';
-
-import { stopTimerAtom, todoList, elapsedTimeAtom, postponeClicked } from '@util/GlobalState.js';
+import { useGlobalAtom } from '@util/GlobalAtomContext';
 
 const useDone = (): any[] => {
+  const { stopTimerAtom, todoList, elapsedTimeAtom, postponeClicked } = useGlobalAtom();
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
   const setPostponeClicked = useSetAtom(postponeClicked);
