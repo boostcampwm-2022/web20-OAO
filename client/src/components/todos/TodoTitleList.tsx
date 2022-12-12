@@ -5,7 +5,11 @@ const TodoTitleList = ({ list }: { list: PlainTodo[] }): ReactElement => {
   return (
     <ul>
       {list.map((todo: PlainTodo) => {
-        return <li key={todo.id}>{todo.title}</li>;
+        return (
+          <li key={todo.id} style={{ textDecoration: todo.state === 'DONE' ? 'line-through' : '' }}>
+            {todo.title}
+          </li>
+        );
       })}
     </ul>
   );
