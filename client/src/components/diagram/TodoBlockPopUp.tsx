@@ -23,7 +23,7 @@ const TodoBlockPopUp = ({
   getOnNewVertexClick: ({ from, x1, y1 }: NewVertexData) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const [todoList, setTodoList] = useAtom(todoListAtom);
-  const onClick = getOnNewVertexClick({ from: id, x1: targetPos.x, y1: targetPos.y });
+  const onClick = getOnNewVertexClick({ from: id, x1: targetPos.x, y1: targetPos.y, x2: NaN, y2: NaN });
   return (
     <PopUp x={x} y={y}>
       <Button

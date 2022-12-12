@@ -9,6 +9,7 @@ import TodoVertex from '@components/diagram/TodoVertex';
 import TodoBlockPopUp from '@components/diagram/TodoBlockPopUp';
 import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
 import NewTodoVertex from '@components/diagram/NewTodoVertex';
+import { toast } from 'react-toastify';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -48,7 +49,7 @@ const VerticalBaseLine = memo(styled.div`
   opacity: 0.5;
 `);
 
-interface PopUpData {
+interface ClickData {
   type: 'Todo' | 'Vertex' | 'None';
   x: number;
   y: number;
@@ -56,20 +57,26 @@ interface PopUpData {
   targetPos: { x: number; y: number };
 }
 
+const defaultClickData: ClickData = {
+  type: 'None',
+  x: 0,
+  y: 0,
+  id: '',
+  targetPos: { x: 0, y: 0 },
+};
+
 export interface NewVertexData {
   from: string;
   x1: number;
   y1: number;
-  to: string;
   x2: number;
   y2: number;
 }
 
-const defaultNewVertexData = {
+const defaultNewVertexData: NewVertexData = {
   from: '',
   x1: NaN,
   y1: NaN,
-  to: '',
   x2: NaN,
   y2: NaN,
 };
@@ -133,17 +140,11 @@ const TodoBlockWrapper = styled.div<{ aniState: string }>`
 const MemoTodoBlockWrapper = memo(TodoBlockWrapper);
 
 const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
-  const [todoListAtom] = useAtom(todoList);
+  const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [diagramData, setDiagramData] = useState<Map<string, AnimationData<TodoBlockProps>>>(new Map());
   const [diagramVertice, setDiagramVertice] = useState<Map<string, AnimationData<VertexProps>>>(new Map());
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 100, y: 100 });
-  const [popUpData, setPopUpData] = useState<PopUpData>({
-    type: 'None',
-    x: 0,
-    y: 0,
-    id: '',
-    targetPos: { x: 0, y: 0 },
-  });
+  const [clickData, setClickData] = useState<ClickData>(defaultClickData);
   const [newVertexData, setNewVertexData] = useState<NewVertexData>(defaultNewVertexData);
   const [isWheelDown, setIsWheelDown] = useState<boolean>(false);
   const domRef = useRef<HTMLDivElement>(null);
@@ -158,6 +159,39 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
         throw err;
       });
   }, [todoListAtom, showDone]);
+
+  useEffect(() => {
+    if (clickData.type === 'Todo' && newVertexData.from !== '') {
+      const from = newVertexData.from;
+      const to = clickData.id;
+      let fromTitle = '';
+      let toTitle = '';
+      todoListAtom
+        .getTodoById(from)
+        .then(async (prevTodo) => {
+          if (prevTodo === undefined) throw new Error('ERROR: 선후관계 제거 중 찾는 Todo가 존재하지 않습니다.');
+          const next = new Set(prevTodo.next);
+          if (next.has(to)) throw new Error('ERROR: 이미 동일한 선후관계가 존재합니다.');
+          next.add(to);
+          fromTitle = prevTodo.title;
+          toTitle = (await todoListAtom.getTodoById(to))?.title as string;
+          return await todoListAtom.edit(from, { next: [...next] });
+        })
+        .then((newTodoList) => {
+          setTodoListAtom(newTodoList);
+          toast.success(`Todo 선후관계가 추가되었습니다. ${fromTitle} → ${toTitle}`);
+        })
+        .then(() => {
+          setNewVertexData(defaultNewVertexData);
+          setClickData(defaultClickData);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+          setNewVertexData(defaultNewVertexData);
+          setClickData(defaultClickData);
+        });
+    }
+  }, [clickData]);
 
   const diagramStyle = useMemo(
     () => ({
@@ -219,7 +253,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const getOnClick = useCallback(
     (type: 'Todo' | 'Vertex' | 'None', id: string, targetPos: { x: number; y: number }) => {
       return (event: React.MouseEvent): void => {
-        setPopUpData({
+        setClickData({
           type,
           id,
           x: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
@@ -238,7 +272,6 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
         from,
         x1,
         y1,
-        to: '',
         x2: event.clientX - (domRef.current?.getBoundingClientRect().left as number),
         y2: event.clientY - (domRef.current?.getBoundingClientRect().top as number),
       });
@@ -280,10 +313,10 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
           );
         })}
         {newVertexData.from === '' &&
-          (popUpData.type === 'Todo' ? (
-            <TodoBlockPopUp {...popUpData} getOnNewVertexClick={getOnNewVertexClick} />
-          ) : popUpData.type === 'Vertex' ? (
-            <TodoVertexPopUp {...popUpData} />
+          (clickData.type === 'Todo' ? (
+            <TodoBlockPopUp {...clickData} getOnNewVertexClick={getOnNewVertexClick} />
+          ) : clickData.type === 'Vertex' ? (
+            <TodoVertexPopUp {...clickData} />
           ) : (
             ''
           ))}
