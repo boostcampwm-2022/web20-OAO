@@ -7,11 +7,12 @@ import Text from '@components/Text';
 import Button from '@components/Button';
 import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
+import { FilterType } from '@util/todos.util';
 
 const { lightGray } = PRIMARY_COLORS;
 interface Props {
-  filter: 'DONE' | 'READY' | 'WAIT';
-  setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
+  filter: Set<FilterType>;
+  setFilter: React.Dispatch<React.SetStateAction<Set<FilterType>>>;
   sort: Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>;
   setSort: React.Dispatch<React.SetStateAction<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>>;
 }

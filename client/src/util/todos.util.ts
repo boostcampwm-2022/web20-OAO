@@ -12,3 +12,5 @@ export const getListInfoText = (todoList: PlainTodo[]): string => {
       : firstTodoTitle;
   return listLength === 1 ? shortenTodoTitle : [shortenTodoTitle, '외', listLength - 1].join(' ');
 };
+
+export type FilterType = 'READY' | 'WAIT' | 'DONE';

@@ -5,6 +5,7 @@ import Text from '../Text';
 import Button from '../Button';
 
 import { PRIMARY_COLORS } from '@util/Constants';
+import { FilterType } from '@util/todos.util';
 
 const { lightGray, gray, blue } = PRIMARY_COLORS;
 
@@ -27,8 +28,8 @@ const StyledFilterBox = styled.div`
 `;
 
 interface FilterProps {
-  filter: 'DONE' | 'READY' | 'WAIT';
-  setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
+  filter: Set<FilterType>;
+  setFilter: React.Dispatch<React.SetStateAction<Set<FilterType>>>;
   setFilterDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -48,14 +49,19 @@ const FilterBox = ({ filter, setFilter, setFilterDropDown }: FilterProps): React
             context={
               <Text
                 text={text}
-                color={filter === state ? blue : gray}
+                color={filter.has(state) ? blue : gray}
                 fontFamily={'Noto Sans'}
                 fontSize={'18px'}
                 fontWeight={'700'}
               />
             }
             onClick={() => {
-              setFilter(state);
+              setFilter((prev) => {
+                const newState = new Set([...prev]);
+                if (newState.has(state)) newState.delete(state);
+                else newState.add(state);
+                return newState;
+              });
               setFilterDropDown(false);
             }}
           />
