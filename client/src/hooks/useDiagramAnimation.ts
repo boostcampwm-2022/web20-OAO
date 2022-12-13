@@ -46,7 +46,7 @@ const getUpdatedAniStates = (
         newState.set(key, { aniState: 'idle', props: value });
         return newState;
       });
-    }, 0);
+    }, 10);
     resultTodoBlockData.set(key, { aniState: 'mount', props: value, timeout });
   });
   unmountTodo.forEach(([key, value]) => {
@@ -82,7 +82,7 @@ const getUpdatedAniStates = (
         newState.set(key, { aniState: 'idle', props: value });
         return newState;
       });
-    }, 0);
+    }, 10);
     let props = { ...value };
     const [from, to] = key.split('+');
     if (prev.has(from)) props = { ...props, ...getVertexFromPosition(prev, from) };
