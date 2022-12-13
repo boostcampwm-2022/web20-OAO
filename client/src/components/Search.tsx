@@ -2,7 +2,7 @@ import { PlainTodo } from '@todo/todo.type';
 import { INDEX, KEYBOARD_EVENT_KEY, PRIMARY_COLORS } from '@util/Constants';
 import { todoList } from '@util/GlobalState';
 import { useAtomValue } from 'jotai';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
@@ -57,15 +57,24 @@ const getNowIndexedId = (nowIndex: number, keyName: string, searchTodoList: Plai
   return focusedId;
 };
 
-const Search = ({ onClick }: { onClick: Function }): ReactElement => {
+const Search = ({
+  onClick,
+  onChange,
+}: {
+  onClick: Function;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
   const [inputValue, setInputValue] = useState('');
   const [searchTodoList, setSearchTodoList] = useState<PlainTodo[]>([]);
   const [focusedId, setFocusedId] = useState('');
   const liRef = useRef<LiRefList>({});
+  const [isKeywordNotRegExcep, setIsKeywordNotRegExcep] = useState(true);
 
   useEffect(() => {
-    if (inputValue === '') return setSearchTodoList([]);
+    setIsKeywordNotRegExcep(inputValue.match(/[.*+?^${}()|[\]\\]/) === null);
+
+    if (inputValue === '' || !isKeywordNotRegExcep) return setSearchTodoList([]);
 
     todoListAtom
       .getTodoBySearchKeyword(inputValue)
@@ -117,7 +126,12 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
 
   return (
     <Wrapper>
-      <SearchBar inputValue={inputValue} onInput={searchBarOnInput} onKeyDown={searchBarOnKeyDown} />
+      <SearchBar
+        inputValue={inputValue}
+        onInput={searchBarOnInput}
+        onKeyDown={searchBarOnKeyDown}
+        onChange={onChange}
+      />
       <Ul style={{ border: searchTodoList.length === 0 ? 'none' : '' }}>
         {searchTodoList.map((todo) => {
           return (
@@ -135,7 +149,7 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
             </li>
           );
         })}
-        {searchTodoList.length === 0 && inputValue !== '' && (
+        {searchTodoList.length === 0 && inputValue !== '' && isKeywordNotRegExcep && (
           <BlankSearchListInfo>검색한 할 일이 없습니다</BlankSearchListInfo>
         )}
       </Ul>
