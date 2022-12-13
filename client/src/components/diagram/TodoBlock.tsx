@@ -79,14 +79,18 @@ const TodoBlock = ({
   x: number;
   y: number;
   id: string;
-  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
+  getOnClick: (
+    type: 'Todo' | 'Vertex' | 'None',
+    id: string,
+    targetPos: { x: number; y: number },
+  ) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
   };
   return (
-    <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id)}>
+    <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id, { x, y })}>
       <UpperRow>
         <Marker state={todo.state} />
         <Title

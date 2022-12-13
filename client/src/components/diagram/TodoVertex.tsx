@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import WarningBubble from './WarningBubble';
 import ErrorBubble from './ErrorBubble';
+import { getPathValue } from '@util/diagram.util';
 
 const { yellow, red, gray } = PRIMARY_COLORS;
 
@@ -24,55 +25,6 @@ const Wrapper = styled.div`
   }
 `;
 
-// const getPathValue = (
-//   x1: number,
-//   y1: number,
-//   x2: number,
-//   y2: number,
-// ): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
-//   const p1 = { x: 0, y: 0 };
-//   const c1 = { x: 0, y: 0.4 * Math.abs(y2 - y1) };
-//   const c2 = { x: x2 - x1, y: y2 - y1 - 0.4 * Math.abs(y2 - y1) };
-//   const p2 = { x: x2 - x1, y: y2 - y1 };
-//   const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
-//   const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
-//   const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
-//   const width = end.x - start.x;
-//   const height = end.y - start.y;
-//   const viewBox = `${start.x} ${start.y} ${width} ${height}`;
-//   const translateX = -p1.x + start.x;
-//   const translateY = p1.y - start.y;
-//   return { path, width, height, viewBox, translateX, translateY };
-// };
-
-const getPathValue = (
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-): { path: string; width: number; height: number; viewBox: string; translateX: number; translateY: number } => {
-  const p1 = { x: 0, y: 0 };
-  const c1 = { x: 0, y: 0.4 };
-  const c2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) - 0.4 };
-  const p2 = { x: Math.sign(x2 - x1), y: Math.sign(y2 - y1) };
-  const start = { x: Math.min(p1.x, c1.x, c2.x, p2.x), y: Math.min(p1.y, c1.y, c2.y, p2.y) };
-  const end = { x: Math.max(p1.x, c1.x, c2.x, p2.x), y: Math.max(p1.y, c1.y, c2.y, p2.y) };
-  const path = `M${p1.x} ${p1.y}C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`;
-  const width = end.x - start.x;
-  const height = end.y - start.y;
-  const viewBox = `${start.x} ${start.y} ${width} ${height}`;
-  const translateX = (-p1.x + start.x) * Math.abs(x2 - x1);
-  const translateY = (p1.y - start.y) * Math.abs(y2 - y1);
-  return {
-    path,
-    width: width * Math.abs(x2 - x1),
-    height: height * Math.abs(y2 - y1),
-    viewBox,
-    translateX,
-    translateY,
-  };
-};
-
 const getColor = (type: 'NORMAL' | 'WARNING' | 'ERROR'): string => {
   return type === 'NORMAL' ? gray : type === 'WARNING' ? yellow : red;
 };
@@ -88,7 +40,11 @@ interface VertexProps {
   onMouseEnter: (event: React.MouseEvent) => void;
   onMouseLeave: (event: React.MouseEvent) => void;
   getOnMouseMove: (isHovered: boolean) => (event: React.MouseEvent) => void;
-  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
+  getOnClick: (
+    type: 'Todo' | 'Vertex' | 'None',
+    id: string,
+    targetPos: { x: number; y: number },
+  ) => (event: React.MouseEvent) => void;
 }
 
 const Vertex = ({
@@ -104,12 +60,11 @@ const Vertex = ({
   getOnMouseMove,
   getOnClick,
 }: VertexProps): ReactElement => {
-  const { path, width, height, viewBox, translateX, translateY } = getPathValue(x1, y1, x2, y2);
+  const { path, width, height, translateX, translateY } = getPathValue(x1, y1, x2, y2);
   return (
     <svg
       width={width}
       height={height}
-      viewBox={viewBox}
       fill="none"
       transform={`translate(${translateX}, ${translateY})`}
       xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +79,7 @@ const Vertex = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={getOnMouseMove(isHovered)}
-        onClick={getOnClick('Vertex', id)}
+        onClick={getOnClick('Vertex', id, { x: x1, y: y1 })}
       />
     </svg>
   );
@@ -147,7 +102,11 @@ const TodoVertex = ({
   y2: number;
   id: string;
   type: 'NORMAL' | 'WARNING' | 'ERROR';
-  getOnClick: (type: 'Todo' | 'Vertex' | 'None', id: string) => (event: React.MouseEvent) => void;
+  getOnClick: (
+    type: 'Todo' | 'Vertex' | 'None',
+    id: string,
+    targetPos: { x: number; y: number },
+  ) => (event: React.MouseEvent) => void;
 }): ReactElement => {
   const style = {
     '--x': `${x1}px`,

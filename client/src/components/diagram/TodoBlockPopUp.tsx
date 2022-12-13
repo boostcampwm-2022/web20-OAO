@@ -7,23 +7,37 @@ import Delete from '@images/Delete.svg';
 import { todoList as todoListAtom } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
+import { NewVertexData } from '@container/diagram/Diagram';
 
-const TodoBlockPopUp = ({ id, x, y }: { id: string; x: number; y: number }): ReactElement => {
+const TodoBlockPopUp = ({
+  id,
+  x,
+  y,
+  targetPos,
+  getOnNewVertexClick,
+  setHasEditModal,
+  setEditTargetId,
+}: {
+  id: string;
+  x: number;
+  y: number;
+  targetPos: { x: number; y: number };
+  getOnNewVertexClick: ({ from, x1, y1 }: NewVertexData) => (event: React.MouseEvent) => void;
+  setHasEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditTargetId: React.Dispatch<React.SetStateAction<string>>;
+}): ReactElement => {
   const [todoList, setTodoList] = useAtom(todoListAtom);
+  const onNewVertexClick = getOnNewVertexClick({ from: id, x1: targetPos.x, y1: targetPos.y, x2: NaN, y2: NaN });
   return (
     <PopUp x={x} y={y}>
       <Button
         context={<img src={Update} width="40px" height="40px" />}
-        onClick={(e) => {
-          console.log('update');
+        onClick={() => {
+          setHasEditModal(true);
+          setEditTargetId(id);
         }}
       />
-      <Button
-        context={<img src={Path} width="40px" height="40px" />}
-        onClick={(e) => {
-          console.log('new path');
-        }}
-      />
+      <Button context={<img src={Path} width="40px" height="40px" />} onClick={onNewVertexClick} />
       <Button
         context={<img src={Delete} width="40px" height="40px" />}
         onClick={() => {
