@@ -87,6 +87,7 @@ const RelatedTodoInput = ({
       <Search onClick={onClick} onChange={onChange} />
       <RelatedTodoInputList>
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
+          if (relatedTodo === undefined) throw new Error('RelatedTodo가 없습니다');
           return (
             <InputWrapper key={relatedTodo.id}>
               <input
