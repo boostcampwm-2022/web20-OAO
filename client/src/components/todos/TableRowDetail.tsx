@@ -6,6 +6,7 @@ import { isPlainTodo } from '@util/Common';
 import { PlainTodo } from '@todo/todo.type';
 
 import TodoTitleList from '@components/todos/TodoTitleList';
+import Text from '@components/Text';
 
 const { gray } = PRIMARY_COLORS;
 
@@ -37,7 +38,7 @@ const TalbleDetailElement = (type: string, info: PlainTodo | PlainTodo[]): React
   return (
     <>
       <SubTitle>{TABLE_ROW_DETAIL_TYPE[type as keyof typeof TABLE_ROW_DETAIL_TYPE]}</SubTitle>
-      {isPlainTodo(info) ? <p>{info.content}</p> : <TodoTitleList list={info} />}
+      {isPlainTodo(info) ? <Text text={info.content} margin="16px 0" /> : <TodoTitleList list={info} />}
     </>
   );
 };

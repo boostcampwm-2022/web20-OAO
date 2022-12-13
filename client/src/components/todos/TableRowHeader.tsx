@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { PlainTodo } from '@todo/todo.type';
 import { PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
 import { copyToClipboard, gethhmmFormat, getyyyymmddDateFormat } from '@util/Common';
-import { todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { todoList } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
@@ -119,7 +119,6 @@ const TableRowHeader = ({
   setHasEditModal: Dispatch<SetStateAction<boolean>>;
 }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
-  const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
 
   const checkTodoStateHandler = (): void => {
     // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
@@ -157,22 +156,25 @@ const TableRowHeader = ({
           </div>
         );
       })}
-      <div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <Button
-          context={<img src={Update} width="40px" height="40px" alt="update" />}
+          context={<img src={Update} width="40px" height="40px" alt="update" title={'수정하기'} />}
           onClick={() => {
-            setEditingTodoId(todo.id);
             setHasEditModal(true);
           }}
         />
         <Button
-          context={<img src={Delete} width="40px" height="40px" alt="delete" />}
+          context={<img src={Delete} width="40px" height="40px" alt="delete" title={'삭제하기'} />}
           onClick={() => {
             handleOnDelete(todo.id);
           }}
         />
         <Button
-          context={<img src={Copy} width="40px" height="40px" alt="copy" />}
+          context={<img src={Copy} width="40px" height="40px" alt="copy" title={'제목 복사하기'} />}
           onClick={() => {
             copyToClipboard(todo.title);
           }}
