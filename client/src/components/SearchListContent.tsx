@@ -2,13 +2,9 @@ import { PlainTodo } from '@todo/todo.type';
 import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 
-import Text from '@components/Text';
 import Image from '@components/Image';
 import { getyyyymmddDateFormat } from '@util/Common';
-import { PRIMARY_COLORS } from '@util/Constants';
 import Search from '@images/Search.svg';
-
-const { gray } = PRIMARY_COLORS;
 
 const SearchTitleWrapper = styled.div`
   flex-grow: 2;
