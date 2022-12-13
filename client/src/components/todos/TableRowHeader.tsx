@@ -175,7 +175,7 @@ const TableRowHeader = ({
           }}
         />
         <Button
-          context={<img src={Copy} width="40px" height="40px" alt="copy" />}
+          context={<img src={Copy} width="40px" height="40px" alt="copy" title={'제목 복사하기'} />}
           onClick={() => {
             copyToClipboard(todo.title);
           }}

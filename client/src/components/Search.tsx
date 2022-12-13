@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
 `;
-const Ul = styled.ul<{ listLength: number }>`
+const Ul = styled.ul`
   position: absolute;
   z-index: 110;
   width: 100%;
@@ -69,6 +69,12 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
       });
   }, [inputValue]);
 
+  const initSearchBar = (): void => {
+    setInputValue('');
+    setSearchTodoList([]);
+    setFocusedId('');
+  };
+
   const searchBarOnInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(event.target.value);
   };
@@ -83,8 +89,7 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
       setFocusedId(focusedId);
       scrollFocusedIdList(focusedId);
     }
-    if (event.key === KEYBOARD_EVENT_KEY.ENTER) {
-      if (focusedId === '') return;
+    if (event.key === KEYBOARD_EVENT_KEY.ENTER && focusedId !== '') {
       const selectTodo = searchTodoList.find((el) => el.id === focusedId);
       onClick(selectTodo);
       initSearchBar();
@@ -97,18 +102,6 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
       : liRef.current[todoId].scrollIntoView({ block: 'center' });
   };
 
-  const initSearchBar = (): void => {
-    setInputValue('');
-    setSearchTodoList([]);
-    setFocusedId('');
-  };
-
-  const searchListOnMouseEnter = (todoId: string): void => {
-    setFocusedId(todoId);
-  };
-  const searchListOnMouseLeave = (): void => {
-    setFocusedId('');
-  };
   const listOnClick = (selectTodo: PlainTodo): void => {
     onClick(selectTodo);
     initSearchBar();
@@ -117,27 +110,24 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
   return (
     <Wrapper>
       <SearchBar inputValue={inputValue} onInput={searchBarOnInput} onKeyDown={searchBarOnKeyDown} />
-      {searchTodoList.length > 0 && (
-        <Ul listLength={searchTodoList.length}>
-          {searchTodoList.map((todo) => {
-            return (
-              <li
-                key={todo.id}
-                ref={(el) => {
-                  if (el !== null) {
-                    liRef.current[todo.id] = el;
-                  }
-                }}
-                style={{ backgroundColor: focusedId === todo.id ? lightGray : '' }}
-                onMouseEnter={() => searchListOnMouseEnter(todo.id)}
-                onMouseLeave={() => searchListOnMouseLeave}
-              >
-                <SearchListContent todo={todo} listOnClick={listOnClick} />
-              </li>
-            );
-          })}
-        </Ul>
-      )}
+      <Ul style={{ border: searchTodoList.length === 0 ? 'none' : '' }}>
+        {searchTodoList.map((todo) => {
+          return (
+            <li
+              key={todo.id}
+              ref={(el) => {
+                if (el !== null) {
+                  liRef.current[todo.id] = el;
+                }
+              }}
+              style={{ backgroundColor: focusedId === todo.id ? lightGray : '' }}
+              onClick={() => listOnClick(todo)}
+            >
+              <SearchListContent todo={todo} />
+            </li>
+          );
+        })}
+      </Ul>
     </Wrapper>
   );
 };

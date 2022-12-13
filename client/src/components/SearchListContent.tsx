@@ -27,10 +27,10 @@ const ListWrapper = styled.div`
   }
 `;
 
-const SearchListContent = ({ todo, listOnClick }: { todo: PlainTodo; listOnClick: Function }): ReactElement => {
+const SearchListContent = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const ListContentElem = useMemo(() => {
     return (
-      <ListWrapper onClick={() => listOnClick(todo)}>
+      <ListWrapper>
         <Image src={Search} />
         <SearchTitleWrapper>
           <Text text={todo.title} fontSize={'15px'} />
