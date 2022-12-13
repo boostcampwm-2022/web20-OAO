@@ -1,4 +1,4 @@
-import { FormEventHandler, ReactElement } from 'react';
+import { ChangeEvent, FormEventHandler, ReactElement } from 'react';
 import styled from 'styled-components';
 
 import Search from '@images/Search.svg';
@@ -33,10 +33,12 @@ const SearchBar = ({
   inputValue,
   onInput,
   onKeyDown,
+  onChange,
 }: {
   inputValue: string;
   onInput: FormEventHandler<HTMLInputElement>;
   onKeyDown: Function;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }): ReactElement => {
   return (
     <InputWrapper>
@@ -50,6 +52,7 @@ const SearchBar = ({
           border: 'none',
         }}
         onKeyDown={(e) => onKeyDown(e)}
+        onChange={onChange}
       />
     </InputWrapper>
   );

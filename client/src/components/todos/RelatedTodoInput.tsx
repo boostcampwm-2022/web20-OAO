@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -40,9 +40,11 @@ const InputWrapper = styled.div`
 const RelatedTodoInput = ({
   relatedType,
   editingTodoId,
+  onChange,
 }: {
   relatedType: string;
   editingTodoId?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
   const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
@@ -82,7 +84,7 @@ const RelatedTodoInput = ({
 
   return (
     <div>
-      <Search onClick={onClick} />
+      <Search onClick={onClick} onChange={onChange} />
       <RelatedTodoInputList>
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
           return (
