@@ -8,7 +8,7 @@ import Button from '@components/Button';
 import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
 
-const { black, gray, lightGray } = PRIMARY_COLORS;
+const { lightGray } = PRIMARY_COLORS;
 interface Props {
   filter: 'DONE' | 'READY' | 'WAIT';
   setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;

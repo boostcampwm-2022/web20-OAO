@@ -31,7 +31,6 @@ const Wrapper = styled.div<PropsType>`
   bottom: ${(props) => (props.active ? '0vh' : '-8vh')};
   transition-property: bottom;
   transition-duration: 1s;
-  z-index: 10000000000;
 `;
 
 const ButtonWrapper = styled.div`

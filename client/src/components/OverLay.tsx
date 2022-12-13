@@ -14,7 +14,7 @@ const StyledOverlay = styled.div<WrapperProps>`
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 10000000;
+  z-index: 100000000;
   display: flex;
   justify-content: center;
   align-items: center;

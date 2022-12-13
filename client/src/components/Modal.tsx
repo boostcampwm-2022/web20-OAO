@@ -2,14 +2,13 @@ import { memo, ReactElement, ReactNode, SetStateAction, Dispatch, MutableRefObje
 import styled from 'styled-components';
 
 import { PRIMARY_COLORS } from '@util/Constants';
+import { getModalValues } from '@util/Common';
 
 import Button from '@components/Button';
 import Text from '@components/Text';
+import OverLay from '@components/OverLay';
 
 import 'react-toastify/dist/ReactToastify.css';
-import OverLay from './OverLay';
-import wrapPromise from '@util/wrapPromise';
-import { getModalValues } from '@util/Common';
 
 const { offWhite, red, blue, darkGray, lightGray } = PRIMARY_COLORS;
 
@@ -19,8 +18,10 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   width: 50vw;
-  left: 21vw;
-  position: absolute;
+  height: max-content;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
   background-color: ${offWhite};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
@@ -72,7 +73,7 @@ const Modal = ({ modalHeader, action, setIsModalOpen, children }: ModalProps): R
       return;
     }
     const inputData = getModalValues(modalWrapper.current);
-    wrapPromise(action(inputData, setIsModalOpen));
+    action(inputData, setIsModalOpen);
   };
 
   return (
