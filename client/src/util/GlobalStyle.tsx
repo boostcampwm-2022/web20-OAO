@@ -45,7 +45,7 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
   .Toastify__toast-container {
-    z-index: 30000000;
+    z-index: 300000000;
   }
 `;
 

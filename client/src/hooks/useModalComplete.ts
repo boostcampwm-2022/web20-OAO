@@ -46,10 +46,14 @@ const useModalComplete = (type: string): any[] => {
           throw new Error('제목은 필수 값입니다!');
         }
         if (id === 'until') {
-          if (new Date(value) > new Date(MAX_DATE)) {
+          const newDate = new Date(value);
+          if (isNaN(Number(newDate))) {
+            throw new Error('유효하지 않은 날짜입니다!');
+          }
+          if (newDate > new Date(MAX_DATE)) {
             throw new Error('날짜는 2999-12-30 이후로 설정할 수 없습니다.');
           }
-          return (newData = { ...newData, [id]: new Date(value) });
+          return (newData = { ...newData, [id]: newDate });
         }
 
         if (dataset.label === 'prev' || dataset.label === 'next') {
