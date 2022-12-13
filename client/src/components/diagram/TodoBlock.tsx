@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { PRIMARY_COLORS } from '@util/Constants';
 import { Todo } from '@todo/todo';
 import Text from '@components/Text';
+import Button from '@components/Button';
+import Image from '@components/Image';
+import { getTodoStateIcon } from '@util/todos.util';
 
 const { green, yellow, gray, lightestGray, black } = PRIMARY_COLORS;
 
@@ -92,7 +95,7 @@ const TodoBlock = ({
   return (
     <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id, { x, y })}>
       <UpperRow>
-        <Marker state={todo.state} />
+        <Button context={<Image width="40px" height="40px" src={getTodoStateIcon(todo.toPlain())} />} />
         <Title
           text={todo.title}
           textAlign={'right'}

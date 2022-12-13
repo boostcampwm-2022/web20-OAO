@@ -13,11 +13,7 @@ import Image from '@components/Image';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
-import ColoredDone from '@images/ColoredDone.svg';
-import ColoredReady from '@images/ColoredReady.svg';
-import ColoredWait from '@images/ColoredWait.svg';
-import ColoredPostponed from '@images/ColoredPostponed.svg';
-import { getListInfoText } from '@util/todos.util';
+import { getListInfoText, getTodoStateIcon } from '@util/todos.util';
 
 const { lightGray } = PRIMARY_COLORS;
 
@@ -107,13 +103,6 @@ const createHeaderElementData = ({ todo, prevTodoList, nextTodoList }: HeaderEle
   ];
 };
 
-const getTodoStateIcon = (todo: PlainTodo): string => {
-  if (todo.state === 'DONE') return ColoredDone;
-  if (todo.state === 'READY') return ColoredReady;
-  if (todo.from.getTime() > new Date().getTime()) return ColoredPostponed;
-  return ColoredWait;
-};
-
 const TableRowHeader = ({
   todo,
   prevTodoList,
@@ -167,7 +156,7 @@ const TableRowHeader = ({
   return (
     <Wrapper onClick={onClick}>
       <Button
-        context={<Image width="40px" height="40px" src={getTodoStateIcon(todo)} />}
+        context={<Image width="30px" height="30px" src={getTodoStateIcon(todo)} />}
         onClick={checkTodoStateHandler}
       />
       {tableRowHeaderElemList.map((headerElem) => {

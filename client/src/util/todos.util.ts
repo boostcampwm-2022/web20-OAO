@@ -1,4 +1,8 @@
 import { PlainTodo } from '@todo/todo.type';
+import ColoredDone from '@images/ColoredDone.svg';
+import ColoredReady from '@images/ColoredReady.svg';
+import ColoredWait from '@images/ColoredWait.svg';
+import ColoredPostponed from '@images/ColoredPostponed.svg';
 
 export const getListInfoText = (todoList: PlainTodo[]): string => {
   const numberOfTitleLength = 6;
@@ -14,3 +18,10 @@ export const getListInfoText = (todoList: PlainTodo[]): string => {
 };
 
 export type FilterType = 'READY' | 'WAIT' | 'DONE';
+
+export const getTodoStateIcon = (todo: PlainTodo): string => {
+  if (todo.state === 'DONE') return ColoredDone;
+  if (todo.state === 'READY') return ColoredReady;
+  if (todo.from.getTime() > new Date().getTime()) return ColoredPostponed;
+  return ColoredWait;
+};
