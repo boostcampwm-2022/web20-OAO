@@ -222,6 +222,10 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
     getOnNewVertexClick(defaultNewVertexData)(event);
   };
 
+  const onWheel = (event: React.WheelEvent): void => {
+    setOffset((prev) => ({ x: prev.x - event.deltaX, y: prev.y - event.deltaY }));
+  };
+
   return (
     <div
       onMouseDown={onWheelDown}
@@ -229,6 +233,7 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
       onMouseMove={onMouseMove}
       onMouseLeave={onWheelLeave}
       onClick={onClick}
+      onWheel={onWheel}
       style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
     >
       <Detector />
