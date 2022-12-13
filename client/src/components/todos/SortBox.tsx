@@ -6,7 +6,7 @@ import Button from '../Button';
 
 import { PRIMARY_COLORS } from '@util/Constants';
 
-const { lightGray, black, blue, gray } = PRIMARY_COLORS;
+const { lightGray, blue, gray } = PRIMARY_COLORS;
 
 const StyledSortBox = styled.div`
   display: flex;
