@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
 import { PRIMARY_COLORS, TABLE_ROW_DETAIL_TYPE } from '@util/Constants';
@@ -65,4 +65,4 @@ const TableRowDetail = ({
     </Wrapper>
   );
 };
-export default TableRowDetail;
+export default memo(TableRowDetail);

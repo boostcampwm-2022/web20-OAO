@@ -110,3 +110,5 @@ export const IMPORTANCE_ALPHABET: ImportanceType = {
   2: 'B',
   3: 'A',
 };
+
+export const MAX_DATE = '2999-12-31T00:00:00.000Z';

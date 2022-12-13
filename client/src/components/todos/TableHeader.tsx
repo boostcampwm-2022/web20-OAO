@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, memo } from 'react';
 import styled from 'styled-components';
 
 import { PRIMARY_COLORS } from '@util/Constants';
@@ -8,7 +8,7 @@ import Button from '@components/Button';
 import FilterBox from '@components/todos/FilterBox';
 import SortBox from '@components/todos/SortBox';
 
-const { black, gray, lightGray } = PRIMARY_COLORS;
+const { lightGray } = PRIMARY_COLORS;
 interface Props {
   filter: 'DONE' | 'READY' | 'WAIT';
   setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
@@ -138,4 +138,4 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   );
 };
 
-export default TableHeader;
+export default memo(TableHeader);
