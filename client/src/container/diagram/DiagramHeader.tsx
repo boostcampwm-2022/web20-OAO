@@ -19,9 +19,8 @@ const ImageWrapper = styled.div`
 `;
 
 const HeroImage = styled(Image)`
-  z-index: 10000;
   position: absolute;
-  transform: translateY(30px);
+  transform: translateY(29px);
 `;
 
 const DiagramHeader = (): ReactElement => {

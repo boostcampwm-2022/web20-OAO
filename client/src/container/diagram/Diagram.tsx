@@ -10,6 +10,11 @@ import TodoVertexPopUp from '@components/diagram/TodoVertexPopUp';
 import NewTodoVertex from '@components/diagram/NewTodoVertex';
 import { toast } from 'react-toastify';
 import { useDiagramAnimation } from '@hooks/useDiagramAnimation';
+import EditModal from '@container/EditModal';
+import CreateModal from '@container/CreateModal';
+import Button from '@components/Button';
+import Image from '@components/Image';
+import Create from '@images/Create.svg';
 
 const { offWhite, green } = PRIMARY_COLORS;
 
@@ -48,6 +53,14 @@ const VerticalBaseLine = memo(styled.div`
   border-left: 4px dashed ${green};
   opacity: 0.5;
 `);
+
+const StyledButton = styled.div`
+  position: fixed;
+  bottom: 10vh;
+  right: 5%;
+  width: 80px;
+  height: 80px;
+`;
 
 interface ClickData {
   type: 'Todo' | 'Vertex' | 'None';
@@ -95,6 +108,9 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   const [clickData, setClickData] = useState<ClickData>(defaultClickData);
   const [newVertexData, setNewVertexData] = useState<NewVertexData>(defaultNewVertexData);
   const [isWheelDown, setIsWheelDown] = useState<boolean>(false);
+  const [editTargetId, setEditTargetId] = useState<string>('');
+  const [hasEditModal, setHasEditModal] = useState<boolean>(false);
+  const [hasCreateModal, setHasCreateModal] = useState<boolean>(false);
   const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -227,44 +243,59 @@ const Diagram = ({ showDone }: { showDone: boolean }): ReactElement => {
   };
 
   return (
-    <div
-      onMouseDown={onWheelDown}
-      onMouseUp={onWheelUp}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onWheelLeave}
-      onClick={onClick}
-      onWheel={onWheel}
-      style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
-    >
-      <Detector />
-      <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
-      <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
-      <Wrapper style={diagramStyle as React.CSSProperties} ref={domRef}>
-        {[...vertexData].map((el) => {
-          return (
-            <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
-              <TodoVertex {...el[1].props} getOnClick={getOnClick} />
-            </MemoTodoBlockWrapper>
-          );
-        })}
-        {[...todoBlockData].map((el) => {
-          return (
-            <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
-              <TodoBlock {...el[1].props} getOnClick={getOnClick} />
-            </MemoTodoBlockWrapper>
-          );
-        })}
-        {newVertexData.from === '' &&
-          (clickData.type === 'Todo' ? (
-            <TodoBlockPopUp {...clickData} getOnNewVertexClick={getOnNewVertexClick} />
-          ) : clickData.type === 'Vertex' ? (
-            <TodoVertexPopUp {...clickData} />
-          ) : (
-            ''
-          ))}
-        {newVertexData.from !== '' && <NewTodoVertex {...newVertexData} />}
-      </Wrapper>
-    </div>
+    <>
+      <div
+        onMouseDown={onWheelDown}
+        onMouseUp={onWheelUp}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onWheelLeave}
+        onClick={onClick}
+        onWheel={onWheel}
+        style={{ cursor: isWheelDown ? 'grab' : 'auto' }}
+      >
+        <Detector />
+        <HorizontalBaseLine style={horizontalLineStyle as React.CSSProperties} />
+        <VerticalBaseLine style={verticalLineStyle as React.CSSProperties} />
+        <Wrapper style={diagramStyle as React.CSSProperties} ref={domRef}>
+          {[...vertexData].map((el) => {
+            return (
+              <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
+                <TodoVertex {...el[1].props} getOnClick={getOnClick} />
+              </MemoTodoBlockWrapper>
+            );
+          })}
+          {[...todoBlockData].map((el) => {
+            return (
+              <MemoTodoBlockWrapper key={el[0]} aniState={el[1].aniState}>
+                <TodoBlock {...el[1].props} getOnClick={getOnClick} />
+              </MemoTodoBlockWrapper>
+            );
+          })}
+          {newVertexData.from === '' &&
+            (clickData.type === 'Todo' ? (
+              <TodoBlockPopUp
+                {...clickData}
+                getOnNewVertexClick={getOnNewVertexClick}
+                setEditTargetId={setEditTargetId}
+                setHasEditModal={setHasEditModal}
+              />
+            ) : clickData.type === 'Vertex' ? (
+              <TodoVertexPopUp {...clickData} />
+            ) : (
+              ''
+            ))}
+          {newVertexData.from !== '' && <NewTodoVertex {...newVertexData} />}
+        </Wrapper>
+      </div>
+      <StyledButton>
+        <Button
+          context={<Image src={Create} height={'80px;'} width={'80px;'} />}
+          onClick={() => setHasCreateModal(true)}
+        />
+      </StyledButton>
+      {hasEditModal && <EditModal setHasEditModal={setHasEditModal} editingTodoId={editTargetId} />}
+      {hasCreateModal && <CreateModal setHasCreateModal={setHasCreateModal} />}
+    </>
   );
 };
 

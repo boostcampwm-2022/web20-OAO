@@ -25,7 +25,6 @@ const Wrapper = styled.div<WrapperProps>`
   background-color: ${offWhite};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
-  z-index: 20000000;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
