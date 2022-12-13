@@ -25,20 +25,21 @@ const ListWrapper = styled.div`
   }
 `;
 
+const ListText = styled.p`
+  color: gray;
+  font-size: '15px';
+`;
+
 const SearchListContent = ({ todo }: { todo: PlainTodo }): ReactElement => {
+  const decorateTextDoneTodo = todo.state === 'DONE' ? 'line-through' : '';
   const ListContentElem = useMemo(() => {
     return (
       <ListWrapper>
         <Image src={Search} />
         <SearchTitleWrapper>
-          <Text text={todo.title} fontSize={'15px'} />
+          <p style={{ fontSize: '15px', textDecoration: decorateTextDoneTodo }}>{todo.title}</p>
         </SearchTitleWrapper>
-        <Text
-          text={'마감날짜 ' + getyyyymmddDateFormat(todo.until, '.')}
-          color={gray}
-          fontSize={'15px'}
-          fontFamily={'SanSerif'}
-        />
+        <ListText>마감날짜 {getyyyymmddDateFormat(todo.until, '.')}</ListText>
       </ListWrapper>
     );
   }, [todo]);
