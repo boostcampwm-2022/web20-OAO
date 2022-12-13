@@ -10,8 +10,6 @@ import { todoList } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
-import Unchecked from '@images/Unchecked.svg';
-import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
@@ -131,9 +129,18 @@ const TableRowHeader = ({
 }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
 
-  const checkTodoStateHandler = (): void => {
-    // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
+  const checkTodoStateHandler = (event: React.MouseEvent): void => {
     let newTodo = {};
+    event.stopPropagation();
+    if (todo.state === 'DONE') newTodo = { ...todo, state: 'READY' };
+    else if (todo.state === 'READY') newTodo = { ...todo, state: 'DONE' };
+    else if (todo.from.getTime() > new Date().getTime()) {
+      toast.error('오늘 하루 동안 보지 않기로 설정한 할일입니다.');
+      return;
+    } else {
+      toast.error('아직 먼저 할 일들이 끝나지 않은 할일입니다.');
+      return;
+    }
     newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
     todoListAtom
       .edit(todo.id, newTodo)
