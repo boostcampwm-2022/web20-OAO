@@ -23,7 +23,18 @@ const StyledSortBox = styled.div`
   gap: 20px;
   position: absolute;
   left: 50%;
+  z-index: 5;
   transform: translateX(-50%);
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background-color: transparent;
 `;
 
 interface SortProps {
@@ -52,34 +63,41 @@ const updateSort = (
 
 const SortBox = ({ type, sort, setSort, setSortDropDown }: SortProps): ReactElement => {
   return (
-    <StyledSortBox>
-      {filterOptions.map(
-        ({ text, direction }: { text: string; direction: 'NONE' | 'ASCEND' | 'DESCEND' }): ReactElement => {
-          return (
-            <Button
-              key={text}
-              context={
-                <Text
-                  text={text}
-                  color={
-                    (!sort.has(type) && direction === 'NONE') || (sort.has(type) && sort.get(type) === direction)
-                      ? blue
-                      : gray
-                  }
-                  fontFamily={'Noto Sans'}
-                  fontSize={'18px'}
-                  fontWeight={'700'}
-                />
-              }
-              onClick={() => {
-                setSort((prev) => updateSort(prev, type, direction));
-                setSortDropDown('');
-              }}
-            />
-          );
-        },
-      )}
-    </StyledSortBox>
+    <>
+      <StyledSortBox>
+        {filterOptions.map(
+          ({ text, direction }: { text: string; direction: 'NONE' | 'ASCEND' | 'DESCEND' }): ReactElement => {
+            return (
+              <Button
+                key={text}
+                context={
+                  <Text
+                    text={text}
+                    color={
+                      (!sort.has(type) && direction === 'NONE') || (sort.has(type) && sort.get(type) === direction)
+                        ? blue
+                        : gray
+                    }
+                    fontFamily={'Noto Sans'}
+                    fontSize={'18px'}
+                    fontWeight={'700'}
+                  />
+                }
+                onClick={() => {
+                  setSort((prev) => updateSort(prev, type, direction));
+                  setSortDropDown('');
+                }}
+              />
+            );
+          },
+        )}
+      </StyledSortBox>
+      <Overlay
+        onClick={() => {
+          setSortDropDown('');
+        }}
+      />
+    </>
   );
 };
 

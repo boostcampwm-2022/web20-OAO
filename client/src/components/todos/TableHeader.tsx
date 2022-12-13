@@ -32,6 +32,15 @@ const GridWrapper = styled.div`
   }
 `;
 
+const HeaderUnitWrapper = styled.div`
+  position: relative;
+`;
+
+const HeaderButtonWrapper = styled(Button)`
+  position: relative;
+  z-index: 5;
+`;
+
 const TableHeaderUnit = ({
   type,
   sort,
@@ -72,8 +81,8 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   return (
     <GridWrapper>
       <div></div>
-      <div style={{ position: 'relative' }}>
-        <Button
+      <HeaderUnitWrapper>
+        <HeaderButtonWrapper
           onClick={() => {
             setFilterDropdown(() => false);
             setSortDropdown((prev) => (prev === 'title' ? '' : 'title'));
@@ -82,24 +91,24 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
             <TableHeaderUnit type={'title'} sort={sort} />
           </Text>
-        </Button>
+        </HeaderButtonWrapper>
         {sortDropdown === 'title' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'title'} />
         )}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
+      </HeaderUnitWrapper>
+      <HeaderUnitWrapper style={{ position: 'relative' }}>
+        <HeaderButtonWrapper
           onClick={() => {
             setFilterDropdown((prev) => !prev);
             setSortDropdown(() => '');
           }}
         >
           <Text text={'상태'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-        </Button>
+        </HeaderButtonWrapper>
         {filterDropdown && <FilterBox filter={filter} setFilter={setFilter} setFilterDropDown={setFilterDropdown} />}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
+      </HeaderUnitWrapper>
+      <HeaderUnitWrapper style={{ position: 'relative' }}>
+        <HeaderButtonWrapper
           onClick={() => {
             setFilterDropdown(() => false);
             setSortDropdown((prev) => (prev === 'until' ? '' : 'until'));
@@ -108,13 +117,13 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
             <TableHeaderUnit type={'until'} sort={sort} />
           </Text>
-        </Button>
+        </HeaderButtonWrapper>
         {sortDropdown === 'until' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'until'} />
         )}
-      </div>
-      <div style={{ position: 'relative' }}>
-        <Button
+      </HeaderUnitWrapper>
+      <HeaderUnitWrapper style={{ position: 'relative' }}>
+        <HeaderButtonWrapper
           onClick={() => {
             setFilterDropdown(() => false);
             setSortDropdown((prev) => (prev === 'importance' ? '' : 'importance'));
@@ -123,17 +132,17 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
           <Text text={''} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'left'}>
             <TableHeaderUnit type={'importance'} sort={sort} />
           </Text>
-        </Button>
+        </HeaderButtonWrapper>
         {sortDropdown === 'importance' && (
           <SortBox sort={sort} setSort={setSort} setSortDropDown={setSortDropdown} type={'importance'} />
         )}
-      </div>
-      <div style={{ position: 'relative' }}>
+      </HeaderUnitWrapper>
+      <HeaderUnitWrapper style={{ position: 'relative' }}>
         <Text text={'먼저 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-      </div>
-      <div style={{ position: 'relative' }}>
+      </HeaderUnitWrapper>
+      <HeaderUnitWrapper style={{ position: 'relative' }}>
         <Text text={'이어서 할 일'} fontFamily={'Noto Sans'} fontWeight={'700'} textAlign={'center'} />
-      </div>
+      </HeaderUnitWrapper>
       <div></div>
     </GridWrapper>
   );
