@@ -61,7 +61,12 @@ const EditModal = ({
   }, []);
 
   return (
-    <Modal modalHeader="할 일 수정하기" setIsModalOpen={setHasEditModal} action={setComplete}>
+    <Modal
+      modalHeader="할 일 수정하기"
+      setIsModalOpen={setHasEditModal}
+      action={setComplete}
+      editingTodoId={editingTodoId}
+    >
       <InputWrapper ref={editModalWrapper}>
         {MODAL_INPUT_LIST.map((item) => {
           const { type, label, maxLength, placeHolder } = item;
@@ -73,6 +78,7 @@ const EditModal = ({
               maxLength={maxLength}
               type={type}
               placeHolder={placeHolder}
+              editingTodoId={editingTodoId}
             />
           );
         })}

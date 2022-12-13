@@ -1,8 +1,8 @@
 import { InputTodo } from '@todo/todo.type';
 import { TodoList } from '@todo/todoList';
+import { getTodayDate } from '@util/Common';
 import { MAX_DATE } from '@util/Constants';
-import { editingTodoIdAtom, todoList } from '@util/GlobalState';
-import { validateUuid } from '@util/modal.util';
+import { todoList } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -30,11 +30,16 @@ const COMPLETE_MESSAGE = {
   update: 'Todo가 수정되었습니다. ☘️',
 };
 
+const MODAL_CREATE = 'create';
+
 const useModalComplete = (type: string): any[] => {
-  const [editingTodoId] = useAtom(editingTodoIdAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
 
-  const setComplete = async (inputData: any[], setHasModal: Dispatch<SetStateAction<boolean>>): Promise<void> => {
+  const setComplete = async (
+    inputData: any[],
+    setHasModal: Dispatch<SetStateAction<boolean>>,
+    editingTodoId: string,
+  ): Promise<void> => {
     try {
       let newData = {};
       const prevTodoIdList: string[] = [];
@@ -53,14 +58,13 @@ const useModalComplete = (type: string): any[] => {
           if (newDate > new Date(MAX_DATE)) {
             throw new Error('날짜는 2999-12-30 이후로 설정할 수 없습니다.');
           }
+          if (type === MODAL_CREATE && newDate < new Date(getTodayDate())) {
+            throw new Error('새로 생성하는 할 일은 과거로 설정 불가능합니다.');
+          }
           return (newData = { ...newData, [id]: newDate });
         }
 
         if (dataset.label === 'prev' || dataset.label === 'next') {
-          if (dataset.id === editingTodoId)
-            throw new Error('수정하고 있는 할 일은 먼저 할 일과 나중에 할 일에 들어갈 수 없습니다');
-          validateUuid(dataset.id);
-
           return dataset.label === 'prev' ? prevTodoIdList.push(dataset.id) : nextTodoIdList.push(dataset.id);
         }
         newData = { ...newData, [id]: value };

@@ -1,6 +1,5 @@
 import { useAtom, useSetAtom } from 'jotai';
 import { ReactElement, useMemo, memo } from 'react';
-import styled from 'styled-components';
 
 import Button from '@components/Button';
 
