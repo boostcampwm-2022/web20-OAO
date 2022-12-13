@@ -63,9 +63,10 @@ interface ModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   children?: ReactNode;
   ref?: MutableRefObject<HTMLElement | undefined>;
+  editingTodoId?: string;
 }
 
-const Modal = ({ modalHeader, action, setIsModalOpen, children }: ModalProps): ReactElement => {
+const Modal = ({ modalHeader, action, setIsModalOpen, children, editingTodoId }: ModalProps): ReactElement => {
   const modalWrapper = useRef();
 
   const handleOnConfirm = (): void => {
@@ -73,7 +74,7 @@ const Modal = ({ modalHeader, action, setIsModalOpen, children }: ModalProps): R
       return;
     }
     const inputData = getModalValues(modalWrapper.current);
-    action(inputData, setIsModalOpen);
+    action(inputData, setIsModalOpen, editingTodoId);
   };
 
   return (

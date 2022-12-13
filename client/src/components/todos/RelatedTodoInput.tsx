@@ -1,13 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react';
-import SearchBar from '@components/SearchBar';
-import { PlainTodo } from '@todo/todo.type';
-import styled from 'styled-components';
-import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
-import Button from '@components/Button';
-import Cancel from '@images/Cancel.svg';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
+
+import { todoList } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
+import { PlainTodo } from '@todo/todo.type';
+
+import Button from '@components/Button';
+import Search from '@components/Search';
+
+import Cancel from '@images/Cancel.svg';
 
 const { lightestGray, blue } = PRIMARY_COLORS;
 
@@ -28,35 +31,43 @@ const InputWrapper = styled.div`
     background: none;
     margin-right: 5px;
   }
+  input {
+    text-overflow: ellipsis;
+    background: none;
+  }
 `;
 
-const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElement => {
-  const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
+const RelatedTodoInput = ({
+  relatedType,
+  editingTodoId,
+}: {
+  relatedType: string;
+  editingTodoId?: string;
+}): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
-  const [editingTodoId] = useAtom(editingTodoIdAtom);
-  const modalType = useAtomValue(modalTypeAtom);
+  const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
+
+  const getTodoListByIdList = async (idList: string[]): Promise<PlainTodo[]> => {
+    return await todoListAtom.getTodoByIdList(idList).then((todoList) => todoList);
+  };
+
+  const getRelatedTodoByIdAndType = async (id: string, type: string): Promise<string[] | null> => {
+    return await todoListAtom
+      .getTodoById(id)
+      .then((todo) => (todo !== undefined ? (type === 'prev' ? todo.prev : todo.next) : null));
+  };
 
   useEffect(() => {
-    if (modalType === TABLE_MODALS.create) return setRelatedTodoList(() => []);
-    todoListAtom
-      .getTodoById(editingTodoId)
-      .then((todo) => {
-        if (todo === undefined) return;
-        if (relatedType === 'prev') {
-          todoListAtom
-            .getTodoByIdList(todo.prev)
-            .then((prevTodoList) => setRelatedTodoList(() => [...prevTodoList]))
-            .catch((err) => toast.error(err));
-        }
-        if (relatedType === 'next') {
-          todoListAtom
-            .getTodoByIdList(todo.next)
-            .then((nextTodoList) => setRelatedTodoList(() => [...nextTodoList]))
-            .catch((err) => toast.error(err));
-        }
-      })
-      .catch((err) => toast.error(err));
-  }, [editingTodoId, modalTypeAtom]);
+    const getRelatedTodoList = async (): Promise<void> => {
+      if (editingTodoId === undefined) return setRelatedTodoList(() => []);
+
+      const relatedTodoIdList = await getRelatedTodoByIdAndType(editingTodoId, relatedType);
+      const relatedTodoList = relatedTodoIdList !== null ? await getTodoListByIdList(relatedTodoIdList) : [];
+      if (relatedTodoList.length > 0) setRelatedTodoList(() => [...relatedTodoList]);
+    };
+
+    getRelatedTodoList().catch((err) => toast.error(err));
+  }, [editingTodoId]);
 
   const onClick = (todo: PlainTodo): void => {
     const isTodoAlreadyexist =
@@ -71,7 +82,7 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
 
   return (
     <div>
-      <SearchBar onClick={onClick} />
+      <Search onClick={onClick} />
       <RelatedTodoInputList>
         {relatedTodoList.map((relatedTodo: PlainTodo) => {
           return (
@@ -82,9 +93,7 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
                 value={relatedTodo.title}
                 data-label={relatedType}
                 style={{
-                  textOverflow: 'ellipsis',
                   color: blue,
-                  background: 'none',
                   border: 'none',
                 }}
                 readOnly
