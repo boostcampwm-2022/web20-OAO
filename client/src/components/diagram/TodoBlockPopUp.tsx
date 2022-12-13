@@ -1,4 +1,4 @@
-import { ReactElement, memo, useState } from 'react';
+import { ReactElement, memo } from 'react';
 import PopUp from '@components/diagram/PopUp';
 import Button from '@components/Button';
 import Update from '@images/Update.svg';
