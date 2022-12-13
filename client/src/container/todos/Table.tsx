@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, memo } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
@@ -48,4 +48,4 @@ const Table = (): ReactElement => {
   );
 };
 
-export default Table;
+export default memo(Table);

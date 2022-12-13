@@ -1,4 +1,4 @@
-import { ReactElement, Suspense, useState } from 'react';
+import { ReactElement, Suspense, useState, memo } from 'react';
 import styled from 'styled-components';
 
 import Image from '@components/Image';
@@ -48,4 +48,4 @@ const Todos = (): ReactElement => {
   );
 };
 
-export default Todos;
+export default memo(Todos);

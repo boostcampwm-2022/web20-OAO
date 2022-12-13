@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import Waiting from '@images/Waiting.svg';
 import Image from '@components/Image';
 import Text from '@components/Text';
@@ -17,4 +17,4 @@ const TodosHeader = (): ReactElement => {
     </Wrapper>
   );
 };
-export default TodosHeader;
+export default memo(TodosHeader);

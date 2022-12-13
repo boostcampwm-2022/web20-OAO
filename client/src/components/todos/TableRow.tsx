@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect, memo } from 'react';
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -64,4 +64,4 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   );
 };
 
-export default TableRow;
+export default memo(TableRow);

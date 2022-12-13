@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, memo } from 'react';
 import styled from 'styled-components';
 
 import { PRIMARY_COLORS } from '@util/Constants';
@@ -138,4 +138,4 @@ const TableHeader = ({ filter, setFilter, sort, setSort, ...props }: Props): Rea
   );
 };
 
-export default TableHeader;
+export default memo(TableHeader);

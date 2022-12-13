@@ -1,4 +1,4 @@
-import { ReactElement, MouseEventHandler, CSSProperties, Dispatch, SetStateAction } from 'react';
+import { ReactElement, MouseEventHandler, CSSProperties, Dispatch, SetStateAction, memo } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
@@ -182,4 +182,4 @@ const TableRowHeader = ({
   );
 };
 
-export default TableRowHeader;
+export default memo(TableRowHeader);
