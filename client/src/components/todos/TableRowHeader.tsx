@@ -162,13 +162,13 @@ const TableRowHeader = ({
         }}
       >
         <Button
-          context={<img src={Update} width="40px" height="40px" alt="update" />}
+          context={<img src={Update} width="40px" height="40px" alt="update" title={'수정하기'} />}
           onClick={() => {
             setHasEditModal(true);
           }}
         />
         <Button
-          context={<img src={Delete} width="40px" height="40px" alt="delete" />}
+          context={<img src={Delete} width="40px" height="40px" alt="delete" title={'삭제하기'} />}
           onClick={() => {
             handleOnDelete(todo.id);
           }}
