@@ -5,9 +5,11 @@ import { Todo } from '@todo/todo';
 import Text from '@components/Text';
 import Button from '@components/Button';
 import Image from '@components/Image';
-import { getTodoStateIcon } from '@util/todos.util';
+import { getCheckTodoStateHandler, getTodoStateIcon } from '@util/todos.util';
+import { useAtom } from 'jotai';
+import { todoList as todoListAtom } from '@util/GlobalState';
 
-const { green, yellow, gray, lightestGray, black } = PRIMARY_COLORS;
+const { gray, lightestGray, black } = PRIMARY_COLORS;
 
 const DAY = 1000 * 60 * 60 * 24;
 
@@ -42,13 +44,6 @@ const LowerRow = styled(Text)`
   text-align: right;
   color: ${gray};
   text-overflow: ellipsis;
-`;
-
-const Marker = styled.div<{ state: 'DONE' | 'READY' | 'WAIT' }>`
-  width: 15px;
-  height: 15px;
-  border-radius: 7.5px;
-  background-color: ${(props) => (props.state === 'READY' ? green : props.state === 'WAIT' ? yellow : gray)};
 `;
 
 const Title = styled(Text)`
@@ -88,6 +83,7 @@ const TodoBlock = ({
     targetPos: { x: number; y: number },
   ) => (event: React.MouseEvent) => void;
 }): ReactElement => {
+  const [todoList, setTodoList] = useAtom(todoListAtom);
   const style = {
     '--x': `${x}px`,
     '--y': `${y}px`,
@@ -95,7 +91,10 @@ const TodoBlock = ({
   return (
     <Wrapper style={style as React.CSSProperties} onClick={getOnClick('Todo', id, { x, y })}>
       <UpperRow>
-        <Button context={<Image width="40px" height="40px" src={getTodoStateIcon(todo.toPlain())} />} />
+        <Button
+          context={<Image width="30px" height="30px" src={getTodoStateIcon(todo.toPlain())} />}
+          onClick={getCheckTodoStateHandler(todo.toPlain(), todoList, setTodoList)}
+        />
         <Title
           text={todo.title}
           textAlign={'right'}

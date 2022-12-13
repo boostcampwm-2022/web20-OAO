@@ -13,7 +13,7 @@ import Image from '@components/Image';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
-import { getListInfoText, getTodoStateIcon } from '@util/todos.util';
+import { getCheckTodoStateHandler, getListInfoText, getTodoStateIcon } from '@util/todos.util';
 
 const { lightGray } = PRIMARY_COLORS;
 
@@ -118,28 +118,6 @@ const TableRowHeader = ({
 }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
 
-  const checkTodoStateHandler = (event: React.MouseEvent): void => {
-    let newTodo = {};
-    event.stopPropagation();
-    if (todo.state === 'DONE') newTodo = { ...todo, state: 'READY' };
-    else if (todo.state === 'READY') newTodo = { ...todo, state: 'DONE' };
-    else if (todo.from.getTime() > new Date().getTime()) {
-      toast.error('오늘 하루 동안 보지 않기로 설정한 할일입니다.');
-      return;
-    } else {
-      toast.error('아직 먼저 할 일들이 끝나지 않은 할일입니다.');
-      return;
-    }
-    newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
-    todoListAtom
-      .edit(todo.id, newTodo)
-      .then((newTodoList) => {
-        setTodoListAtom(newTodoList);
-        toast.success('완료되었습니다.');
-      })
-      .catch((err) => toast.error(err));
-  };
-
   const handleOnDelete = (todoId: string): void => {
     todoListAtom
       .remove(todoId)
@@ -157,7 +135,7 @@ const TableRowHeader = ({
     <Wrapper onClick={onClick}>
       <Button
         context={<Image width="30px" height="30px" src={getTodoStateIcon(todo)} />}
-        onClick={checkTodoStateHandler}
+        onClick={getCheckTodoStateHandler(todo, todoListAtom, setTodoListAtom)}
       />
       {tableRowHeaderElemList.map((headerElem) => {
         return (
