@@ -52,8 +52,6 @@ export const elapsedTimeAtom = atom(0); // 초 단위 경과시간
 export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
 
-export const modalTypeAtom = atom(TABLE_MODALS.none);
-
 export const postpone = atom(['']);
 
 export const postponeOptionsAtom = atom(

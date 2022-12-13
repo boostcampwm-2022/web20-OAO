@@ -16,12 +16,14 @@ const TextWrapper = styled.div`
   text-align: right;
 `;
 
+const { darkGray } = PRIMARY_COLORS;
+
 const TodoTimeText = (): ReactElement => {
   const [activeTodo] = useAtom(asyncActiveTodo);
   return (
     <TextWrapper>
-      <Text text={getTodoUntilText(activeTodo?.until)} />
-      <ElapsedTimeText color={PRIMARY_COLORS.darkGray} />
+      <Text text={getTodoUntilText(activeTodo?.until)} color={darkGray} />
+      <ElapsedTimeText color={darkGray} />
     </TextWrapper>
   );
 };
