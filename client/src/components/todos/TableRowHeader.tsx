@@ -1,12 +1,12 @@
-import { ReactElement, MouseEventHandler, CSSProperties } from 'react';
+import { ReactElement, MouseEventHandler, CSSProperties, Dispatch, SetStateAction, memo } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { toast } from 'react-toastify';
 
 import { PlainTodo } from '@todo/todo.type';
-import { TABLE_MODALS, PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
+import { PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
 import { copyToClipboard, gethhmmFormat, getyyyymmddDateFormat } from '@util/Common';
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
+import { todoList, editingTodoIdAtom } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
@@ -110,13 +110,14 @@ const TableRowHeader = ({
   prevTodoList,
   nextTodoList,
   onClick,
+  setHasEditModal,
 }: {
   todo: PlainTodo;
   prevTodoList: PlainTodo[];
   nextTodoList: PlainTodo[];
   onClick: MouseEventHandler;
+  setHasEditModal: Dispatch<SetStateAction<boolean>>;
 }): ReactElement => {
-  const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
   const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
 
@@ -161,7 +162,7 @@ const TableRowHeader = ({
           context={<img src={Update} width="40px" height="40px" alt="update" />}
           onClick={() => {
             setEditingTodoId(todo.id);
-            setModalType(TABLE_MODALS.update);
+            setHasEditModal(true);
           }}
         />
         <Button
@@ -181,4 +182,4 @@ const TableRowHeader = ({
   );
 };
 
-export default TableRowHeader;
+export default memo(TableRowHeader);

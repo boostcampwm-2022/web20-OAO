@@ -44,6 +44,9 @@ const GlobalStyle = createGlobalStyle`
   button:hover {
     cursor: pointer;
   }
+  .Toastify__toast-container {
+    z-index: 300000000;
+  }
 `;
 
 export default GlobalStyle;

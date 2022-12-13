@@ -1,17 +1,14 @@
-import { ReactElement, Suspense } from 'react';
+import { ReactElement, Suspense, useState, memo } from 'react';
 import styled from 'styled-components';
-import { useAtom } from 'jotai';
 
-import { modalTypeAtom } from '@util/GlobalState';
-import { TABLE_MODALS } from '@util/Constants';
-
-import TableModal from '@container/todos/TableModal';
 import Image from '@components/Image';
 import Button from '@components/Button';
 import TodosHeader from '@container/todos/TodosHeader';
 import Table from '@container/todos/Table';
 
 import Create from '@images/Create.svg';
+
+import CreateModal from '@container/CreateModal';
 
 const Wrapper = styled.div`
   height: 78vh;
@@ -20,6 +17,7 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   position: relative;
+  overflow: hidden;
 `;
 
 const StyledButton = styled.div`
@@ -31,11 +29,7 @@ const StyledButton = styled.div`
 `;
 
 const Todos = (): ReactElement => {
-  const [modalType, setModalType] = useAtom(modalTypeAtom);
-
-  const hanldeOnClick = (): void => {
-    setModalType(TABLE_MODALS.create);
-  };
+  const [hasCreateModal, setHasCreateModal] = useState(false);
 
   return (
     <Suspense fallback={<div>loading</div>}>
@@ -43,12 +37,15 @@ const Todos = (): ReactElement => {
         <TodosHeader />
         <Table />
         <StyledButton>
-          <Button context={<Image src={Create} height={'80px;'} width={'80px;'} />} onClick={hanldeOnClick} />
+          <Button
+            context={<Image src={Create} height={'80px;'} width={'80px;'} />}
+            onClick={() => setHasCreateModal(true)}
+          />
         </StyledButton>
-        {modalType !== TABLE_MODALS.none && <TableModal />}
+        {hasCreateModal && <CreateModal setHasCreateModal={setHasCreateModal} />}
       </Wrapper>
     </Suspense>
   );
 };
 
-export default Todos;
+export default memo(Todos);
