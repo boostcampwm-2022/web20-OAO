@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect, memo } from 'react';
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { PRIMARY_COLORS } from '@util/Constants';
 
 import TableRowHeader from '@components/todos/TableRowHeader';
 import TableRowDetail from '@components/todos/TableRowDetail';
+import EditModal from '@container/EditModal';
 
 const { lightGray } = PRIMARY_COLORS;
 
@@ -23,6 +24,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   const [prevTodoList, setPrevTodo] = useState<PlainTodo[]>([]);
   const [nextTodoList, setNextTodo] = useState<PlainTodo[]>([]);
   const [displayDetail, setDisplayDetail] = useState(false);
+  const [hasEditModal, setHasEditModal] = useState(false);
 
   useEffect(() => {
     setPrevTodo(() => []);
@@ -46,16 +48,20 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
   }, [todo]);
 
   return (
-    <RowWrapper>
-      <TableRowHeader
-        todo={todo}
-        prevTodoList={prevTodoList}
-        nextTodoList={nextTodoList}
-        onClick={() => setDisplayDetail(!displayDetail)}
-      />
-      {displayDetail && <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />}
-    </RowWrapper>
+    <>
+      <RowWrapper>
+        <TableRowHeader
+          todo={todo}
+          prevTodoList={prevTodoList}
+          nextTodoList={nextTodoList}
+          onClick={() => setDisplayDetail(!displayDetail)}
+          setHasEditModal={setHasEditModal}
+        />
+        {displayDetail && <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />}
+      </RowWrapper>
+      {hasEditModal && <EditModal setHasEditModal={setHasEditModal} editingTodoId={todo.id} />}
+    </>
   );
 };
 
-export default TableRow;
+export default memo(TableRow);

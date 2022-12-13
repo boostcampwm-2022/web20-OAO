@@ -121,3 +121,4 @@ export const INDEX = {
   FIRST: 0,
   NOT_FOUND: -1,
 };
+export const MAX_DATE = '2999-12-31T00:00:00.000Z';
