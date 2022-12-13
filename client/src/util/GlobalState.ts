@@ -53,7 +53,6 @@ export const postponeClicked = atom(false);
 export const isFinishedAtom = atom(false);
 
 export const modalTypeAtom = atom(TABLE_MODALS.none);
-export const editingTodoIdAtom = atom('');
 
 export const postpone = atom(['']);
 

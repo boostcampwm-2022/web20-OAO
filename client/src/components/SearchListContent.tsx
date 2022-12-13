@@ -17,8 +17,6 @@ const ListWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  margin: 5px 0;
-
   img {
     margin: 0 5px;
   }

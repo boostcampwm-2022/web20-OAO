@@ -1,10 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { PRIMARY_COLORS, TABLE_MODALS } from '@util/Constants';
+import { todoList } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
 import { PlainTodo } from '@todo/todo.type';
 
 import Button from '@components/Button';
@@ -37,10 +37,14 @@ const InputWrapper = styled.div`
   }
 `;
 
-const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElement => {
-  const modalType = useAtomValue(modalTypeAtom);
+const RelatedTodoInput = ({
+  relatedType,
+  editingTodoId,
+}: {
+  relatedType: string;
+  editingTodoId?: string;
+}): ReactElement => {
   const todoListAtom = useAtomValue(todoList);
-  const [editingTodoId] = useAtom(editingTodoIdAtom);
   const [relatedTodoList, setRelatedTodoList] = useState<PlainTodo[]>([]);
 
   const getTodoListByIdList = async (idList: string[]): Promise<PlainTodo[]> => {
@@ -54,16 +58,16 @@ const RelatedTodoInput = ({ relatedType }: { relatedType: string }): ReactElemen
   };
 
   useEffect(() => {
-    const getrelatedTodoList = async (): Promise<void> => {
-      if (modalType === TABLE_MODALS.create) return setRelatedTodoList(() => []);
+    const getRelatedTodoList = async (): Promise<void> => {
+      if (editingTodoId === undefined) return setRelatedTodoList(() => []);
 
       const relatedTodoIdList = await getRelatedTodoByIdAndType(editingTodoId, relatedType);
       const relatedTodoList = relatedTodoIdList !== null ? await getTodoListByIdList(relatedTodoIdList) : [];
       if (relatedTodoList.length > 0) setRelatedTodoList(() => [...relatedTodoList]);
     };
 
-    getrelatedTodoList().catch((err) => toast.error(err));
-  }, [editingTodoId, modalTypeAtom]);
+    getRelatedTodoList().catch((err) => toast.error(err));
+  }, [editingTodoId]);
 
   const onClick = (todo: PlainTodo): void => {
     const isTodoAlreadyexist =

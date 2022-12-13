@@ -29,11 +29,19 @@ const Ul = styled.ul`
   border-radius: 5px;
   overflow: auto;
   max-height: 20vh;
+  list-style: none;
+  li {
+    margin: 5px 0;
+  }
   li:hover {
     cursor: pointer;
     background-color: ${lightGray};
   }
-  list-style: none;
+`;
+
+const BlankSearchListInfo = styled.li`
+  border: 1px solid #e2e2e2;
+  padding: 10px;
 `;
 
 const getNowIndexedId = (nowIndex: number, keyName: string, searchTodoList: PlainTodo[]): string => {
@@ -127,6 +135,9 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
             </li>
           );
         })}
+        {searchTodoList.length === 0 && inputValue !== '' && (
+          <BlankSearchListInfo>검색한 할 일이 없습니다</BlankSearchListInfo>
+        )}
       </Ul>
     </Wrapper>
   );
