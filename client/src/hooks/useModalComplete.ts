@@ -50,6 +50,9 @@ const useModalComplete = (type: string): any[] => {
         if (id === 'title' && value === '') {
           throw new Error('제목은 필수 값입니다!');
         }
+        if (id === 'title' && value.match(/[.*+?^${}()|[\]\\]/) !== null) {
+          throw new Error('제목은 ".*+?^${}()"의 특수문자가 허용되지 않습니다!');
+        }
         if (id === 'until') {
           const newDate = new Date(value);
           if (isNaN(Number(newDate))) {

@@ -65,7 +65,7 @@ const Search = ({ onClick }: { onClick: Function }): ReactElement => {
   const liRef = useRef<LiRefList>({});
 
   useEffect(() => {
-    if (inputValue === '') return setSearchTodoList([]);
+    if (inputValue === '' || inputValue.match(/[.*+?^${}()|[\]\\]/) !== null) return setSearchTodoList([]);
 
     todoListAtom
       .getTodoBySearchKeyword(inputValue)
