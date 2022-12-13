@@ -59,7 +59,7 @@ const TableRow = ({ todo }: { todo: PlainTodo }): ReactElement => {
         />
         {displayDetail && <TableRowDetail todo={todo} prevTodoList={prevTodoList} nextTodoList={nextTodoList} />}
       </RowWrapper>
-      {hasEditModal && <EditModal setHasEditModal={setHasEditModal} />}
+      {hasEditModal && <EditModal setHasEditModal={setHasEditModal} editingTodoId={todo.id} />}
     </>
   );
 };

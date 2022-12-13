@@ -2,7 +2,7 @@ import { memo, ReactElement, useRef, Dispatch, SetStateAction, useCallback, useE
 import { useAtom } from 'jotai';
 
 import { MODAL_INPUT_LIST, MODAL_LABEL_ID } from '@util/Constants';
-import { editingTodoIdAtom, todoList } from '@util/GlobalState';
+import { todoList } from '@util/GlobalState';
 import { getDateTimeInputFormatString, getModalValues } from '@util/Common';
 
 import LabeledInput from '@components/todos/LabeledInput';
@@ -24,9 +24,14 @@ const InputWrapper = styled.div<WrapperProps>`
 
 const MODAL_EDIT = 'update';
 
-const EditModal = ({ setHasEditModal }: { setHasEditModal: Dispatch<SetStateAction<boolean>> }): ReactElement => {
+const EditModal = ({
+  setHasEditModal,
+  editingTodoId,
+}: {
+  setHasEditModal: Dispatch<SetStateAction<boolean>>;
+  editingTodoId: string;
+}): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
-  const [editingTodoId] = useAtom(editingTodoIdAtom);
   const editModalWrapper = useRef();
   const [setComplete] = useModalComplete(MODAL_EDIT);
 
