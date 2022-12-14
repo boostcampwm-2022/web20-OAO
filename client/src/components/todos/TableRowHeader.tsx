@@ -10,12 +10,10 @@ import { todoList } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
-import Unchecked from '@images/Unchecked.svg';
-import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
 import Copy from '@images/Copy.svg';
-import { getListInfoText } from '@util/todos.util';
+import { getCheckTodoStateHandler, getListInfoText, getTodoStateIcon } from '@util/todos.util';
 
 const { lightGray } = PRIMARY_COLORS;
 
@@ -120,19 +118,6 @@ const TableRowHeader = ({
 }): ReactElement => {
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
 
-  const checkTodoStateHandler = (): void => {
-    // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
-    let newTodo = {};
-    newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
-    todoListAtom
-      .edit(todo.id, newTodo)
-      .then((newTodoList) => {
-        setTodoListAtom(newTodoList);
-        toast.success('완료되었습니다.');
-      })
-      .catch((err) => toast.error(err));
-  };
-
   const handleOnDelete = (todoId: string): void => {
     todoListAtom
       .remove(todoId)
@@ -148,7 +133,10 @@ const TableRowHeader = ({
 
   return (
     <Wrapper onClick={onClick}>
-      <Button context={<Image src={todo.state === 'DONE' ? Checked : Unchecked} />} onClick={checkTodoStateHandler} />
+      <Button
+        context={<Image width="30px" height="30px" src={getTodoStateIcon(todo)} />}
+        onClick={getCheckTodoStateHandler(todo, todoListAtom, setTodoListAtom)}
+      />
       {tableRowHeaderElemList.map((headerElem) => {
         return (
           <div key={headerElem.type} style={headerElem.style}>

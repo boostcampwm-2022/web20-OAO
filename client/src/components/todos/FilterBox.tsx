@@ -5,6 +5,7 @@ import Text from '../Text';
 import Button from '../Button';
 
 import { PRIMARY_COLORS } from '@util/Constants';
+import { FilterType } from '@util/todos.util';
 
 const { lightGray, gray, blue } = PRIMARY_COLORS;
 
@@ -23,12 +24,23 @@ const StyledFilterBox = styled.div`
   gap: 20px;
   position: absolute;
   left: 50%;
+  z-index: 5;
   transform: translateX(-50%);
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background-color: transparent;
+`;
+
 interface FilterProps {
-  filter: 'DONE' | 'READY' | 'WAIT';
-  setFilter: React.Dispatch<React.SetStateAction<'DONE' | 'READY' | 'WAIT'>>;
+  filter: Set<FilterType>;
+  setFilter: React.Dispatch<React.SetStateAction<Set<FilterType>>>;
   setFilterDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -40,28 +52,40 @@ const filterOptions: Array<{ text: string; state: 'DONE' | 'READY' | 'WAIT' }> =
 
 const FilterBox = ({ filter, setFilter, setFilterDropDown }: FilterProps): ReactElement => {
   return (
-    <StyledFilterBox>
-      {filterOptions.map(({ text, state }: { text: string; state: 'DONE' | 'READY' | 'WAIT' }): ReactElement => {
-        return (
-          <Button
-            key={text}
-            context={
-              <Text
-                text={text}
-                color={filter === state ? blue : gray}
-                fontFamily={'Noto Sans'}
-                fontSize={'18px'}
-                fontWeight={'700'}
-              />
-            }
-            onClick={() => {
-              setFilter(state);
-              setFilterDropDown(false);
-            }}
-          />
-        );
-      })}
-    </StyledFilterBox>
+    <>
+      <Overlay
+        onClick={() => {
+          setFilterDropDown(false);
+        }}
+      />
+      <StyledFilterBox>
+        {filterOptions.map(({ text, state }: { text: string; state: 'DONE' | 'READY' | 'WAIT' }): ReactElement => {
+          return (
+            <Button
+              key={text}
+              context={
+                <Text
+                  text={text}
+                  color={filter.has(state) ? blue : gray}
+                  fontFamily={'Noto Sans'}
+                  fontSize={'18px'}
+                  fontWeight={'700'}
+                />
+              }
+              onClick={() => {
+                setFilter((prev) => {
+                  const newState = new Set([...prev]);
+                  if (newState.has(state)) newState.delete(state);
+                  else newState.add(state);
+                  return newState;
+                });
+                setFilterDropDown(false);
+              }}
+            />
+          );
+        })}
+      </StyledFilterBox>
+    </>
   );
 };
 
