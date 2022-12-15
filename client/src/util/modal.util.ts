@@ -78,5 +78,5 @@ export const getCheckedInputData = (type: string, inputData: ModalValues[]): Che
     newData = { ...newData, [id]: value };
   });
 
-  return { newData, prev: prevTodoIdList, next: nextTodoIdList };
+  return { ...newData, prev: prevTodoIdList, next: nextTodoIdList };
 };
