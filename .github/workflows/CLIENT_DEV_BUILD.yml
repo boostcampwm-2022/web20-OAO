@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      
+
     paths:
       - "client/**"
 
@@ -31,6 +31,25 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn
 
+      - name: 테스트 실행
+        working-directory: ./client
+        run: |
+          yarn -s test
+
+      - name: 테스트 결과 발행
+        uses: n-ryu/test-reporter@v0.0.2
+        if: always()
+        with:
+          name: JEST Tests
+          path: client/reports/*.xml
+          reporter: jest-junit
+
+      - name: Code Coverage 리포트 발행
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests
+
       - name: Client 소스 build
         working-directory: "./client"
         run: yarn build
@@ -49,7 +68,7 @@ jobs:
           tags: ghcr.io/kumsil1006/oao-dev-client
           context: ./client
 
-      - name: Docker Compose 파일 운영 서버로 복사
+      - name: Docker Compose 파일 개발 서버로 복사
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.ANOTHER_HOST }}
@@ -59,7 +78,7 @@ jobs:
           source: "docker-compose.yml"
           target: "oao"
 
-      - name: 운영 서버에서 Docker Compose 실행
+      - name: 개발 서버에서 Docker Compose 실행
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.ANOTHER_HOST }}
@@ -69,7 +88,6 @@ jobs:
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-dev-client
-            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 
