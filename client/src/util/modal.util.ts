@@ -40,10 +40,10 @@ interface ModalValues {
 const MODAL_CREATE = 'create';
 
 interface CheckedInputData {
-  newData: any;
   prev: string[];
   next: string[];
 }
+
 export const getCheckedInputData = (type: string, inputData: ModalValues[]): CheckedInputData => {
   let newData = {};
   const prevTodoIdList: string[] = [];
