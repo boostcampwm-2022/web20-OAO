@@ -14,6 +14,7 @@ import { todoStatusText } from '@util/Common';
 
 const Wrapper = styled.div`
   width: 850px;
+  height: 280px;
   padding: 0 6px;
   display: flex;
   flex-direction: row;

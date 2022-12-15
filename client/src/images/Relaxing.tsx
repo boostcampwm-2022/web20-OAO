@@ -35,7 +35,14 @@ const Wrapper = styled.div<PropsType>`
 const Relaxing = ({ transform }: PropsType): ReactElement => {
   return (
     <Wrapper transform={transform}>
-      <svg width="600" height="280" viewBox="0 0 600 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width="600"
+        height="280"
+        viewBox="0 0 600 280"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        transform="translate(0, 4)"
+      >
         <path
           d="M86.3497 126.765C75.2497 131.105 70.3397 120.885 68.2797 117.465C66.2197 114.045 61.3797 108.775 65.8097 98.3654C70.2397 87.9554 72.2697 82.0053 77.7797 73.9453C83.2897 65.8853 97.5097 54.7954 101.94 51.8154C106.37 48.8354 116.67 38.5754 127.57 38.6854C138.47 38.7954 147.12 35.1154 150.82 54.5154C150.82 54.5154 157.83 46.7154 160.19 49.7754C162.55 52.8354 153.19 58.6154 153.19 58.6154"
           stroke="#3F3F3F"
