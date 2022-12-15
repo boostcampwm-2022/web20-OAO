@@ -1,5 +1,6 @@
 import { TodoList } from '@todo/todoList';
 import { Todo } from '@todo/todo';
+import { PlainTodo } from '@todo/todo.type';
 import Queue from '@util/queue';
 
 export interface DiagramTodo {
@@ -9,9 +10,10 @@ export interface DiagramTodo {
 }
 
 const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
-  const filter = showDone ? () => true : (el: Todo) => el.state !== 'DONE';
+  const filter = showDone ? () => true : (el: Todo | PlainTodo) => el.state !== 'DONE';
   const sortedTodoList = await todoList.getSortedListWithFilter(filter, []);
   const cloneTodoList = new Map<string, Todo>(sortedTodoList.map((el) => [el.id, new Todo(el)]));
+  // Diagram에서 사용하지 않는 선후관계 의존성 제거
   cloneTodoList.forEach((el) => {
     el.prev.forEach((prevId) => {
       if (!cloneTodoList.has(prevId)) el.prev.delete(prevId);
@@ -20,9 +22,11 @@ const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<
       if (!cloneTodoList.has(nextId)) el.next.delete(nextId);
     });
   });
+  // 결과값 템플릿 오브젝트 생성
   const resultTodoList = new Map<string, DiagramTodo>(
     sortedTodoList.map((el) => [el.id, { depth: NaN, todo: new Todo(el) }]),
   );
+  // 결과값들에서도 Diagram에서 사용하지 않는 선후관계 의존성 제거
   resultTodoList.forEach((el) => {
     el.todo.prev.forEach((prevId) => {
       if (!cloneTodoList.has(prevId)) el.todo.prev.delete(prevId);
@@ -35,18 +39,18 @@ const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<
   const updateDepth = (id: string, depth: number): void => {
     const target = resultTodoList.get(id);
     if (target !== undefined) {
-      target.depth = depth;
+      resultTodoList.set(id, { ...target, depth });
     }
   };
 
   const checkPrev = (id: string): boolean => {
     const target = cloneTodoList.get(id);
     if (target == null) throw new Error('ERROR: 찾으려는 id의 Todo가 없습니다.');
-    return [...target.prev].every((prevId) => cloneTodoList.get(prevId)?.state === 'DONE');
+    return target.prev.size === 0;
   };
 
   const zeroDepthTodoList = sortedTodoList
-    .filter((el) => (showDone ? true : el.state !== 'DONE') && checkPrev(el.id))
+    .filter((el) => filter(el) && checkPrev(el.id))
     .map((el) => ({ depth: 0, id: el.id }));
 
   const forwardQueue = new Queue(zeroDepthTodoList);
@@ -65,9 +69,8 @@ const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<
     });
   }
 
-  const activeTodo = sortedTodoList.find((el) => el.state === 'READY')?.id;
-  const baseDepth = resultTodoList.get(activeTodo as string)?.depth;
-  resultTodoList.forEach((el) => ((el.depth as number) -= baseDepth as number));
+  const baseDepth = resultTodoList.get(sortedTodoList.find((el) => el.state === 'READY')?.id as string)?.depth ?? 0;
+  resultTodoList.forEach((el) => ((el.depth as number) -= baseDepth));
 
   return resultTodoList;
 };
@@ -80,8 +83,8 @@ const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo>
     if (i !== 0 && todo.depth === arr[i - 1][1].depth) j++;
     todo.order = i + j;
   });
-  const offset = todoListArr.find((el) => el[1].depth === 0)?.[1].order;
-  return new Map(todoListArr.map((el) => [el[0], { ...el[1], order: (el[1].order as number) - (offset as number) }]));
+  const offset = todoListArr.find((el) => el[1].todo.state === 'READY')?.[1].order ?? 0;
+  return new Map(todoListArr.map((el) => [el[0], { ...el[1], order: (el[1].order as number) - offset }]));
 };
 
 export const getDiagramData = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
