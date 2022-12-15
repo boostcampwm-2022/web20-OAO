@@ -1,58 +1,17 @@
-name: dev-client CI/CD
+name: Proxy Dev Dockerfile Build
 on:
-  push:
+  pull_request:
     branches:
       - main
-
     paths:
-      - "client/**"
+      - "nginx/Dockerfile"
 
 jobs:
-  build-image:
-    name: dev-client CI/CD
+  proxy-build:
+    name: proxy-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Node 설정
-        uses: actions/setup-node@v1
-        with:
-          node-version: "18.x"
-
-      - name: node_modules 폴더 캐싱
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: "**/client/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
-
-      - name: node_modules 폴더 캐시가 없다면 dependencies 설치
-        working-directory: "./client"
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
-
-      - name: 테스트 실행
-        working-directory: ./client
-        run: |
-          yarn -s test
-
-      - name: 테스트 결과 발행
-        uses: n-ryu/test-reporter@v0.0.2
-        if: always()
-        with:
-          name: JEST Tests
-          path: client/reports/*.xml
-          reporter: jest-junit
-
-      - name: Code Coverage 리포트 발행
-        if: always()
-        uses: codecov/codecov-action@v3
-        with:
-          flags: unittests
-
-      - name: Client 소스 build
-        working-directory: "./client"
-        run: yarn build
 
       - name: GitHub Container Registry 로그인
         uses: docker/login-action@v1
@@ -65,8 +24,8 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: ghcr.io/kumsil1006/oao-dev-client
-          context: ./client
+          tags: ghcr.io/kumsil1006/oao-dev-proxy
+          context: ./nginx
 
       - name: Docker Compose 파일 개발 서버로 복사
         uses: appleboy/scp-action@master
@@ -87,13 +46,13 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-            docker pull ghcr.io/kumsil1006/oao-dev-client
+            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 
             docker-compose up -d
             docker image prune
-
+            
       - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
         uses: ./.github/actions/slack-notify
