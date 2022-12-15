@@ -87,8 +87,8 @@ const calcOrder = (todoList: Map<string, DiagramTodo>): Map<string, DiagramTodo>
     if (i !== 0 && todo.depth === arr[i - 1][1].depth) j++;
     todo.order = i + j;
   });
-  const offset = todoListArr.find((el) => el[1].depth === 0)?.[1].order;
-  return new Map(todoListArr.map((el) => [el[0], { ...el[1], order: (el[1].order as number) - (offset as number) }]));
+  const offset = todoListArr.find((el) => el[1].todo.state === 'READY')?.[1].order ?? 0;
+  return new Map(todoListArr.map((el) => [el[0], { ...el[1], order: (el[1].order as number) - offset }]));
 };
 
 export const getDiagramData = async (todoList: TodoList, showDone: boolean): Promise<Map<string, DiagramTodo>> => {
