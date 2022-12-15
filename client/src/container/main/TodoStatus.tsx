@@ -5,7 +5,7 @@ import Image from '@components/Image';
 import { isOnProgress, asyncActiveTodo } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
-import Working from '@images/Working.svg';
+import Working from '@images/Working';
 import Relaxing from '@images/Relaxing';
 
 import styled from 'styled-components';
@@ -48,7 +48,7 @@ const TodoStatus = (): ReactElement => {
           fontSize={'18px'}
           fontWeight={'700'}
         />
-        {userState === 'working' ? <Image src={Working} transform={transform} /> : <Relaxing transform={transform} />}
+        {userState === 'working' ? <Working transform={transform} /> : <Relaxing transform={transform} />}
         <BlankBox />
       </Wrapper>
       <Hr />
