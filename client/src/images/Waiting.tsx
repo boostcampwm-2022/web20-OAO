@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 const Relaxing = (): ReactElement => {
   return (
-    <svg width="602" height="280" viewBox="0 0 602 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="402" height="187" viewBox="0 0 602 280" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         vectorEffect="non-scaling-stroke"
         d="M1 234.081H601"
