@@ -45,8 +45,8 @@ const Working = ({ transform }: PropsType): ReactElement => {
             attributeName="transform"
             attributeType="XML"
             type="rotate"
-            from="0 304.65 185.589"
-            to="360 304.65 185.589"
+            values="0,304.65,185.589;15,304.65,185.589;0,304.65,185.589;"
+            keyTimes="0;0.5;1"
             dur="1s"
             repeatCount="indefinite"
           />
@@ -158,15 +158,22 @@ const Working = ({ transform }: PropsType): ReactElement => {
         />
         <path
           d="M299.513 186.318C299.513 186.318 306.302 184.985 309.749 187.325C313.196 189.665 319.434 200.897 319.097 202.879C318.761 204.861 317.073 205.122 315.117 203.502C313.16 201.881 309.013 195.659 306.322 193.884"
-          fill="white"
-        />
-        <path
-          d="M299.513 186.318C299.513 186.318 306.302 184.985 309.749 187.325C313.196 189.665 319.434 200.897 319.097 202.879C318.761 204.861 317.073 205.122 315.117 203.502C313.16 201.881 309.013 195.659 306.322 193.884"
           stroke="#3F3F3F"
+          fill="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            values="0,298.48,191.08;-10,298.48,191.08;0,298.48,191.08;"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </path>
         <path
           d="M198.8 99.1894C214.88 95.0994 221.43 109.359 220.99 112.669C220.55 115.979 222.08 125.109 219.31 131.579C216.54 138.049 220.16 152.619 224.37 157.379C228.58 162.139 238.18 170.509 249.94 170.839C261.7 171.169 282.49 171.339 284.13 171.759C284.13 171.759 276.74 178.189 275.74 187.219C274.74 196.249 279.06 201.809 279.06 201.809C279.06 201.809 278.13 202.869 276.43 203.569C274.73 204.269 239.28 202.229 228.41 200.739C217.54 199.249 197.04 195.029 192.24 192.629C187.44 190.229 175.74 185.589 169.05 168.349C162.36 151.099 166.71 141.069 169.05 135.049C171.39 129.029 178.05 104.469 198.8 99.1894V99.1894Z"
           stroke="#3F3F3F"
@@ -216,7 +223,17 @@ const Working = ({ transform }: PropsType): ReactElement => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            values="5,359.07,187.34;-10,359.07,187.34;5,359.07,187.34;"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </path>
         <path
           d="M334.26 184.699C334.26 184.699 338.18 199.079 343.08 200.679C347.98 202.279 354 203.279 354 201.269C354 199.259 351.9 197.859 349.44 197.049C346.98 196.239 346.06 194.249 346.52 192.239C346.52 192.239 351.54 192.019 355.78 194.129C360.02 196.239 357.64 206.279 361.84 205.279C366.04 204.279 363.87 197.219 362.44 192.719C361.01 188.219 353.85 185.929 350.98 185.209"
           stroke="#3F3F3F"
@@ -237,7 +254,17 @@ const Working = ({ transform }: PropsType): ReactElement => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            values="-10,359.07,187.34;5,359.07,187.34;-10,359.07,187.34;"
+            keyTimes="0;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </path>
         <path
           d="M281.83 207.179C278.75 212.309 280.16 222.649 282.97 223.499"
           stroke="#3F3F3F"
