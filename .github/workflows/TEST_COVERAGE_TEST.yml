@@ -1,0 +1,45 @@
+name: test-coverage-file-test
+on:
+  push:
+    branches:
+      - 53-fix-codecov-파일-업로드에-대한-고민-필요
+
+jobs:
+  test-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v2
+
+      - name: Node.js 세팅
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+
+      - name: Runner 타임존 설정
+        run: |
+          sudo timedatectl set-timezone 'Asia/Seoul'
+
+      - name: 패키지 설치
+        working-directory: ./client
+        run: |
+          yarn
+
+      - name: 테스트 실행
+        working-directory: ./client
+        run: |
+          yarn -s test
+
+      - name: 테스트 결과 발행
+        uses: n-ryu/test-reporter@v0.0.2
+        if: success() || failure()
+        with:
+          name: JEST Tests # Name of the check run which will be created
+          path: client/reports/*.xml # Path to test results
+          reporter: jest-junit
+
+      - name: Code Coverage 리포트 발행
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests # opti
