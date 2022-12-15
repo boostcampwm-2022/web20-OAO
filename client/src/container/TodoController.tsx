@@ -25,18 +25,31 @@ interface PropsType {
 }
 const Wrapper = styled.div<PropsType>`
   display: flex;
-  height: 8vh;
+  height: max-content;
   width: calc(100vw);
-  padding: 15px;
+  padding-inline: 15px;
+  padding-block: 0px;
   border-radius: 10px 10px 0 0;
   align-items: center;
   color: ${white};
   background-color: ${darkGray};
   justify-content: space-between;
   position: fixed;
-  bottom: ${(props) => (props.active ? '0vh' : '-8vh')};
-  transition-property: bottom;
+  bottom: 0;
+  transform: ${(props) => (props.active ? '0vh' : 'translateY(100%)')};
+  transition-property: transform;
   transition-duration: 1s;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+
+  & > p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    min-width: 10px;
+  }
 `;
 
 const ButtonWrapper = styled.div`
