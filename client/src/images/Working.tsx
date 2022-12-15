@@ -121,20 +121,28 @@ const Working = ({ transform }: PropsType): ReactElement => {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M279.38 95.9794V96.2594"
-          stroke="#3F3F3F"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M310.39 98.2194V98.5194"
-          stroke="#3F3F3F"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M279.38 95.9794V96.2594" stroke="#3F3F3F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="translate"
+            values="0,0;3,0;0,0"
+            keyTimes="0;0.95;1"
+            dur="2s"
+            repeatCount="indefinite"
+          />
+        </path>
+        <path d="M310.39 98.2194V98.5194" stroke="#3F3F3F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="translate"
+            values="0,0;3,0;0,0"
+            keyTimes="0;0.95;1"
+            dur="2s"
+            repeatCount="indefinite"
+          />
+        </path>
         <path
           d="M331.35 75.4894C331.35 75.4894 333.78 101.089 321.82 116.559C309.86 132.029 295.15 142.879 281.93 145.979C268.72 149.089 259.88 143.329 256.77 138.679"
           stroke="#3F3F3F"
