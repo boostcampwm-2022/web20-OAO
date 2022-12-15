@@ -36,7 +36,7 @@ export class TodoList {
   }
 
   private getActiveTodoAsInstance(): Todo {
-    return this.todoList.filter((el) => el.state === 'READY').sort(Todo.compare())[0];
+    return this.todoList.filter((el) => el.state === 'READY').sort(defaultCompare)[0];
   }
 
   private getActiveTodoId(): string {
