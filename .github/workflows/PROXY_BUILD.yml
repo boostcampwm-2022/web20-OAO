@@ -48,6 +48,11 @@ jobs:
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-proxy
+            
+            cd oao
+            
+            docker-compose -f docker-compose.production.yml up -d
+            docker image prune
 
       - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
