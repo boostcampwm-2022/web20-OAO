@@ -78,7 +78,18 @@ const Relaxing = (): ReactElement => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
+      >
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          type="translate"
+          begin="0s"
+          dur="6s"
+          values="2,0;2,0;-3,0;-3,0;2,0"
+          keyTimes="0;0.3;0.5;0.8;1"
+          repeatCount="indefinite"
+        />
+      </path>
       <path
         vectorEffect="non-scaling-stroke"
         d="M346.019 70.2152V70.5352"
@@ -86,7 +97,18 @@ const Relaxing = (): ReactElement => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
+      >
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          type="translate"
+          begin="0s"
+          dur="6s"
+          values="3,0;3,0;-2,0;-2,0;3,0"
+          keyTimes="0;0.3;0.5;0.8;1"
+          repeatCount="indefinite"
+        />
+      </path>
       <path
         vectorEffect="non-scaling-stroke"
         d="M319.279 81.7952L332.809 79.8652"
