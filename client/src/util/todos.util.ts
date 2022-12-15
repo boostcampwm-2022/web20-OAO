@@ -37,8 +37,8 @@ export const getCheckTodoStateHandler = (
   return (event) => {
     let newTodo = {};
     event.stopPropagation();
-    if (todo.state === 'DONE') newTodo = { ...todo, state: 'READY' };
-    else if (todo.state === 'READY') newTodo = { ...todo, state: 'DONE' };
+    if (todo.state === 'DONE') newTodo = { id: todo.id, state: 'READY' };
+    else if (todo.state === 'READY') newTodo = { id: todo.id, state: 'DONE' };
     else if (todo.from.getTime() > new Date().getTime()) {
       toast.error('오늘 하루 동안 보지 않기로 설정한 할일입니다.');
       return;
@@ -46,7 +46,6 @@ export const getCheckTodoStateHandler = (
       toast.error('아직 먼저 할 일들이 끝나지 않은 할일입니다.');
       return;
     }
-    newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
     todoListAtom
       .edit(todo.id, newTodo)
       .then((newTodoList) => {
