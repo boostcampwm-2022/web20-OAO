@@ -1,9 +1,13 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
 
 import Text from '@components/Text';
-import useElapsedTime from '../../hooks/useElapsedTime';
+import ElapsedTimeText from '@components/ElapsedTimeText';
+
 import { getTodoUntilText } from '@util/Common';
+import { asyncActiveTodo } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -12,19 +16,16 @@ const TextWrapper = styled.div`
   text-align: right;
 `;
 
-const TodoTimeText = ({ until }: { until: string }): ReactElement => {
-  const [displayTime] = useElapsedTime();
+const { darkGray } = PRIMARY_COLORS;
 
-  const todoUntilText = useMemo(() => {
-    return getTodoUntilText(until);
-  }, [until]);
-
+const TodoTimeText = (): ReactElement => {
+  const [activeTodo] = useAtom(asyncActiveTodo);
   return (
     <TextWrapper>
-      <Text text={todoUntilText} />
-      <Text text={displayTime} />
+      <Text text={getTodoUntilText(activeTodo?.until)} color={darkGray} />
+      <ElapsedTimeText color={darkGray} />
     </TextWrapper>
   );
 };
 
-export default TodoTimeText;
+export default memo(TodoTimeText);

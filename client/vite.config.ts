@@ -18,6 +18,7 @@ export default defineConfig({
       '@images': resolve(__dirname, './src/images'),
       '@page': resolve(__dirname, './src/page'),
       '@util': resolve(__dirname, './src/util'),
+      '@hooks': resolve(__dirname, './src/hooks'),
     },
   },
 });

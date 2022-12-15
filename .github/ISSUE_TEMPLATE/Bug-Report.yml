@@ -3,6 +3,17 @@ description: 기능 개선을 위해 버그를 제보해주세요.
 title: "fix: "
 labels: ["bug"]
 body: 
+- type: dropdown
+  attributes: 
+    label: 심각성
+    description: 해당 버그가 서비스에 미치는 영향의 심각성을 평가해 주세요.
+    multiple: false
+    options:
+      - A
+      - B
+      - C
+  validations:
+    required: true
 - type: textarea
   attributes: 
     label: 버그 설명

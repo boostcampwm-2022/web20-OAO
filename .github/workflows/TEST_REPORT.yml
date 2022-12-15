@@ -1,3 +1,4 @@
+name: test-report
 on:
   pull_request:
     branches:
@@ -33,8 +34,8 @@ jobs:
           yarn -s test
 
       - name: 테스트 결과 발행
-        uses: n-ryu/test-reporter@v0.0.1
-        if: success() || failure()
+        uses: n-ryu/test-reporter@v0.0.2
+        if: always()
         with:
           name: JEST Tests # Name of the check run which will be created
           path: client/reports/*.xml # Path to test results

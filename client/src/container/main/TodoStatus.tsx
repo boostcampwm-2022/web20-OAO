@@ -1,13 +1,13 @@
-import { ReactElement } from 'react';
+import { ReactElement, memo } from 'react';
 import Text from '@components/Text';
 import Image from '@components/Image';
 
-import { PlainTodo } from '@todo/todo.type';
-import { isOnProgress } from '@util/GlobalState';
+import { isOnProgress, asyncActiveTodo } from '@util/GlobalState';
 import { useAtom } from 'jotai';
 
 import Working from '@images/Working.svg';
-import Relaxing from '@images/Relaxing.svg';
+import Relaxing from '@images/Relaxing';
+
 import styled from 'styled-components';
 
 import { todoStatusText } from '@util/Common';
@@ -32,18 +32,22 @@ const BlankBox = styled.div`
   height: 21px;
 `;
 
-const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => {
+const transform = 'translateY(54px)';
+
+const TodoStatus = (): ReactElement => {
   const [userState] = useAtom(isOnProgress);
+  const [activeTodo] = useAtom(asyncActiveTodo);
+
   return (
     <>
       <Wrapper>
         <Text
-          text={todoStatusText(activeTodo.until.toString())}
+          text={todoStatusText(activeTodo?.until?.toString())}
           fontFamily={'roboto'}
           fontSize={'18px'}
           fontWeight={'700'}
         />
-        <Image src={userState === 'working' ? Working : Relaxing} transform="translateY(54px)" />
+        {userState === 'working' ? <Image src={Working} transform={transform} /> : <Relaxing transform={transform} />}
         <BlankBox />
       </Wrapper>
       <Hr />
@@ -51,4 +55,4 @@ const TodoStatus = ({ activeTodo }: { activeTodo: PlainTodo }): ReactElement => 
   );
 };
 
-export default TodoStatus;
+export default memo(TodoStatus);
