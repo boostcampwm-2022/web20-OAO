@@ -33,10 +33,6 @@ const Wrapper = styled.div<PropsType>`
   transform: ${(props) => (props.active ? '0vh' : 'translateY(100%)')};
   transition-property: transform;
   transition-duration: 1s;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  min-width: 0;
 
   & > p {
     text-overflow: ellipsis;
@@ -55,6 +51,9 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
 `;
 
 const imageButtonStyle = {
