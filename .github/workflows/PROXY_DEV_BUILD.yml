@@ -48,6 +48,11 @@ jobs:
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
+            cd oao
+
+            docker-compose up -d
+            docker image prune
+            
       - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
         uses: ./.github/actions/slack-notify
