@@ -7,13 +7,7 @@ import Text from '@components/Text';
 import ElapsedTimeText from '@components/ElapsedTimeText';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 
-import {
-  asyncActiveTodo,
-  elapsedTimeAtom,
-  isMainPageAtom,
-  needTodoControllerAtom,
-  postponeClicked,
-} from '@util/GlobalState';
+import { asyncActiveTodo, isMainPageAtom, needTodoControllerAtom, postponeClicked } from '@util/GlobalState';
 import { getTodoUntilText } from '@util/Common';
 import { PRIMARY_COLORS } from '@util/Constants';
 import PostponeBox from '@components/main/PostponeBox';
@@ -39,10 +33,6 @@ const Wrapper = styled.div<PropsType>`
   transform: ${(props) => (props.active ? '0vh' : 'translateY(100%)')};
   transition-property: transform;
   transition-duration: 1s;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  min-width: 0;
 
   & > p {
     text-overflow: ellipsis;
@@ -61,6 +51,8 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  white-space: nowrap;
+  width: max-content;
 `;
 
 const imageButtonStyle = {
@@ -71,18 +63,10 @@ const imageButtonStyle = {
 
 const TodoController = (): ReactElement => {
   const location = useLocation();
-
   const activeTodo = useAtomValue(asyncActiveTodo);
   const [needTodoController, setNeedTodoController] = useAtom(needTodoControllerAtom);
   const setIsMainPage = useSetAtom(isMainPageAtom);
   const isPostpone = useAtomValue(postponeClicked);
-  const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
-
-  useEffect(() => {
-    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime) {
-      setElapsedTime(activeTodo.elapsedTime);
-    }
-  }, [activeTodo]);
 
   useEffect(() => {
     setIsMainPage();
@@ -99,7 +83,13 @@ const TodoController = (): ReactElement => {
         <TodoInteractionButton {...imageButtonStyle} />
         {isPostpone && needTodoController && <PostponeBox isBottom={true} />}
       </ButtonWrapper>
-      <Text text={activeTodo?.title} fontFamily="Nanum Myeongjo" fontSize="24px" color={offWhite} />
+      <Text
+        text={activeTodo?.title}
+        fontFamily="Nanum Myeongjo"
+        fontSize="24px"
+        color={offWhite}
+        margin="0 40px 0 40px"
+      />
       <TextWrapper>
         <Text text={getTodoUntilText(activeTodo?.until)} fontFamily="Nanum Myeongjo" fontSize="1rem" color={offWhite} />
         <ElapsedTimeText color={offWhite} />

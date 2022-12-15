@@ -1,30 +1,17 @@
-name: dev-server CI/CD
+name: Proxy Dev Dockerfile Build
 on:
-  push:
+  pull_request:
     branches:
       - main
     paths:
-      - "server/**"
+      - "nginx/Dockerfile"
 
 jobs:
-  build-image:
-    name: dev-server CI/CD
+  proxy-build:
+    name: proxy-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Node 설정
-        uses: actions/setup-node@v1
-        with:
-          node-version: "18.x"
-
-      - name: Typescript 파일들 compile
-        working-directory: "./server"
-        env:
-          CI: ""
-        run: |
-          yarn install --immutable --immutable-cache --check-cache
-          yarn build
 
       - name: GitHub Container Registry 로그인
         uses: docker/login-action@v1
@@ -36,9 +23,9 @@ jobs:
       - name: Docker images build 및 GitHub Container Registry로 push
         uses: docker/build-push-action@v3.2.0
         with:
-          context: ./server
           push: true
-          tags: ghcr.io/kumsil1006/oao-dev-server
+          tags: ghcr.io/kumsil1006/oao-dev-proxy
+          context: ./nginx
 
       - name: Docker Compose 파일 개발 서버로 복사
         uses: appleboy/scp-action@master
@@ -59,13 +46,13 @@ jobs:
           port: ${{ secrets.ANOTHER_PORT }}
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
-            docker pull ghcr.io/kumsil1006/oao-dev-server
+            docker pull ghcr.io/kumsil1006/oao-dev-proxy
 
             cd oao
 
             docker-compose up -d
             docker image prune
-
+            
       - name: 실패시 슬랙 메시지 전송
         if: ${{ failure() }}
         uses: ./.github/actions/slack-notify

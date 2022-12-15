@@ -1,7 +1,8 @@
 import { atom } from 'jotai';
 import { createTodoList } from '@todo/todoList.js';
-import { TABLE_MODALS, POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants.js';
+import { POSTPONE_TEXTS, POSTPONE_OPTIONS } from '@util/Constants.js';
 import { isEqualDate } from '@todo/todo.util';
+import { getElapsedTimeText } from './Common';
 
 export const loginStateAtom = atom(true);
 export const isOnProgress = atom('relaxing');
@@ -95,6 +96,7 @@ export const setTimerAtom = atom(
       set(isOnProgress, 'working'); // start
       return;
     }
+
     clearInterval(timer);
     set(globalTimerAtom, -1);
     set(isOnProgress, 'relaxing'); // stop
@@ -115,11 +117,7 @@ export const displayTimeAtom = atom(
   (get) => get(displayTime),
   (get, set) => {
     const time = get(elapsedTimeAtom);
-    const hour = Math.floor(time / 60 / 60);
-    const minute = Math.floor((time % 3600) / 60);
-    const second = time % 60;
-
-    set(displayTime, `소요시간: ${hour}h ${minute}m ${second}s`);
+    set(displayTime, `소요시간: ${getElapsedTimeText(time)}`);
   },
 );
 
