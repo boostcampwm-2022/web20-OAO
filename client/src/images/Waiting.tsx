@@ -612,7 +612,7 @@ const Relaxing = (): ReactElement => {
       <path
         vectorEffect="non-scaling-stroke"
         d="M530.009 179C530.009 179 528.962 197.857 531.115 200.567"
-        stroke="#3F3F3FBB"
+        stroke="#6e6e6e"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -630,7 +630,7 @@ const Relaxing = (): ReactElement => {
       <path
         vectorEffect="non-scaling-stroke"
         d="M531.042 200.551C531.042 200.551 530.775 193.084 531.585 191"
-        stroke="#3F3F3FBB"
+        stroke="#6e6e6e"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
