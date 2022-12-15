@@ -1,16 +1,15 @@
-import { useAtom, useSetAtom } from 'jotai';
-import { ReactElement, useMemo, memo } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import { ReactElement, memo, useEffect } from 'react';
 
 import Button from '@components/Button';
 
-import Start from '@images/Start';
-import Pause from '@images/Pause';
 import Postpone from '@images/Postpone';
 import Done from '@images/Done';
 
-import { postponeClicked, isOnProgress, setTimerAtom } from '@util/GlobalState.js';
+import { asyncActiveTodo, elapsedTimeAtom, postponeClicked } from '@util/GlobalState.js';
 
 import useDone from '@hooks/useDone.js';
+import StartPauseButton from '@components/StartPauseButton';
 
 interface ImageButtonStyle {
   fill?: string;
@@ -21,18 +20,19 @@ interface ImageButtonStyle {
 
 const TodoInteractionButton = (imageButtonStyle: ImageButtonStyle): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
-  const [progressState] = useAtom(isOnProgress);
   const [setDone] = useDone();
-  const setTimer = useSetAtom(setTimerAtom);
+  const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
+  const activeTodo = useAtomValue(asyncActiveTodo);
 
-  const startPauseButton = useMemo(() => {
-    const button = progressState === 'working' ? <Pause {...imageButtonStyle} /> : <Start {...imageButtonStyle} />;
-    return <Button context={button} onClick={setTimer} />;
-  }, [progressState]);
+  useEffect(() => {
+    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime) {
+      setElapsedTime(activeTodo.elapsedTime);
+    }
+  }, [activeTodo]);
 
   return (
     <>
-      {startPauseButton}
+      <StartPauseButton {...imageButtonStyle} />
       <Button context={<Postpone {...imageButtonStyle} />} onClick={() => setIsPostpone(!isPostpone)} />
       <Button context={<Done {...imageButtonStyle} />} onClick={setDone} />
     </>

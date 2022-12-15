@@ -7,13 +7,7 @@ import Text from '@components/Text';
 import ElapsedTimeText from '@components/ElapsedTimeText';
 import TodoInteractionButton from '@components/main/TodoInteractionButton';
 
-import {
-  asyncActiveTodo,
-  elapsedTimeAtom,
-  isMainPageAtom,
-  needTodoControllerAtom,
-  postponeClicked,
-} from '@util/GlobalState';
+import { asyncActiveTodo, isMainPageAtom, needTodoControllerAtom, postponeClicked } from '@util/GlobalState';
 import { getTodoUntilText } from '@util/Common';
 import { PRIMARY_COLORS } from '@util/Constants';
 import PostponeBox from '@components/main/PostponeBox';
@@ -71,18 +65,10 @@ const imageButtonStyle = {
 
 const TodoController = (): ReactElement => {
   const location = useLocation();
-
   const activeTodo = useAtomValue(asyncActiveTodo);
   const [needTodoController, setNeedTodoController] = useAtom(needTodoControllerAtom);
   const setIsMainPage = useSetAtom(isMainPageAtom);
   const isPostpone = useAtomValue(postponeClicked);
-  const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
-
-  useEffect(() => {
-    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime) {
-      setElapsedTime(activeTodo.elapsedTime);
-    }
-  }, [activeTodo]);
 
   useEffect(() => {
     setIsMainPage();
