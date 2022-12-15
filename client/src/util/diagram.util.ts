@@ -56,7 +56,6 @@ const topologySort = async (todoList: TodoList, showDone: boolean): Promise<Map<
   const forwardQueue = new Queue(zeroDepthTodoList);
   while (!forwardQueue.isEmpty()) {
     const target = forwardQueue.pop();
-    console.log(target);
     updateDepth(target.id, target.depth);
     const todo = cloneTodoList.get(target.id);
     if (todo === undefined) continue;
