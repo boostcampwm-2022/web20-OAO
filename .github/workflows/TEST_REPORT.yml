@@ -35,7 +35,7 @@ jobs:
 
       - name: 테스트 결과 발행
         uses: n-ryu/test-reporter@v0.0.2
-        if: success() || failure()
+        if: always()
         with:
           name: JEST Tests # Name of the check run which will be created
           path: client/reports/*.xml # Path to test results
