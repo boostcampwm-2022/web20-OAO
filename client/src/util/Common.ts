@@ -1,3 +1,6 @@
+import { PlainTodo } from '@todo/todo.type';
+import { toast } from 'react-toastify';
+
 export const todoStatusText = (todoUntil: string): string => {
   return isTodoImminence(todoUntil) ? '오늘까지 해야하는 일!' : '오늘 안해도 되는 일';
 };
@@ -8,12 +11,15 @@ export const isTodoImminence = (todoUntil: string): boolean => {
   return todoDate.getDate() === today.getDate() && todoDate.getMonth() === today.getMonth();
 };
 
-export const getTodoUntilText = (todoUntil: string): string => {
-  const untilDate = new Date(todoUntil);
+export const getTodoUntilText = (todoUntil: Date): string => {
+  if (todoUntil === undefined || todoUntil === null) {
+    return '';
+  }
+
   return '마감일: '.concat(
-    isTodoImminence(todoUntil)
-      ? `오늘 ${untilDate.getHours()}시 ${untilDate.getMinutes()}분`
-      : getFormattedDate(todoUntil),
+    isTodoImminence(todoUntil.toString())
+      ? `오늘 ${todoUntil.getHours()}시 ${todoUntil.getMinutes()}분`
+      : getFormattedDate(todoUntil.toString()),
   );
 };
 
@@ -34,8 +40,9 @@ export const getyyyymmddDateFormat = (date: Date, separator: string): string => 
 };
 
 export const gethhmmFormat = (date: Date): string => {
+  const hh = date.getHours();
   const mm = date.getMinutes();
-  return [date.getHours(), (mm > 9 ? '' : '0') + `${mm}`].join(':');
+  return [(hh > 9 ? '' : '0') + `${hh}`, (mm > 9 ? '' : '0') + `${mm}`].join(':');
 };
 
 export const getModalValues = (div: Element): any[] => {
@@ -43,5 +50,33 @@ export const getModalValues = (div: Element): any[] => {
 };
 
 export const getTodayDate = (): string => {
-  return new Date().toJSON().split('T')[0];
+  const todayDate = new Date();
+  return new Date(-todayDate.getTimezoneOffset() * 60000 + todayDate.getTime()).toISOString().slice(0, -8);
+};
+
+export const getDateTimeInputFormatString = (date: Date): string => {
+  return new Date(-date.getTimezoneOffset() * 60000 + date.getTime()).toISOString().slice(0, -8);
+};
+
+export const copyToClipboard = (text: string): void => {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      toast.success('복사 성공');
+    },
+    () => {
+      toast.error('복사 실패');
+    },
+  );
+};
+
+export const isPlainTodo = (arg: any): arg is PlainTodo => {
+  return arg.content !== undefined;
+};
+
+export const getElapsedTimeText = (time: number): string => {
+  const hour = Math.floor(time / 60 / 60);
+  const minute = Math.floor((time % 3600) / 60);
+  const second = time % 60;
+
+  return `${hour}h ${minute}m ${second}s`;
 };

@@ -1,54 +1,41 @@
-import { useAtom } from 'jotai';
-import { ReactElement, useMemo, memo } from 'react';
-import styled from 'styled-components';
+import { useAtom, useAtomValue } from 'jotai';
+import { ReactElement, memo, useEffect } from 'react';
 
-import Done from '../../images/Done.svg';
-import Postpone from '../../images/Postpone.svg';
-import Button from '../Button';
-import Image from '../Image';
+import Button from '@components/Button';
 
-import { postponeClicked, isOnProgress } from '@util/GlobalState.js';
-import { ACTIVE_TODO_STATE } from '@util/Constants';
+import Postpone from '@images/Postpone';
+import Done from '@images/Done';
 
-import useElapsedTime from '../../hooks/useElapsedTime.js';
-import useDone from '../../hooks/useDone.js';
+import { asyncActiveTodo, elapsedTimeAtom, postponeClicked } from '@util/GlobalState.js';
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-interface ButtonConfig {
-  src: 'string';
-}
-interface ButtonProps {
-  buttonConfig: ButtonConfig;
-  handleOnToggle: Function;
+import useDone from '@hooks/useDone.js';
+import StartPauseButton from '@components/StartPauseButton';
+
+interface ImageButtonStyle {
+  fill?: string;
+  stroke?: string;
+  width?: string;
+  height?: string;
 }
 
-const TodoInteractionButton = ({ buttonConfig, handleOnToggle }: ButtonProps): ReactElement => {
+const TodoInteractionButton = (imageButtonStyle: ImageButtonStyle): ReactElement => {
   const [isPostpone, setIsPostpone] = useAtom(postponeClicked);
-  const [progressState] = useAtom(isOnProgress);
-  const [, , , time, setTime] = useElapsedTime();
   const [setDone] = useDone();
+  const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
+  const activeTodo = useAtomValue(asyncActiveTodo);
 
-  const startPauseButton = useMemo(() => {
-    return <Button context={<Image src={buttonConfig.src} />} onClick={() => handleOnToggle()} />;
-  }, [buttonConfig.src]);
-
-  const handleDoneClicked = (): void => {
-    setDone(time);
-    setTime(0);
-    if (progressState === ACTIVE_TODO_STATE.working) {
-      handleOnToggle();
+  useEffect(() => {
+    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime) {
+      setElapsedTime(activeTodo.elapsedTime);
     }
-  };
+  }, [activeTodo]);
 
   return (
-    <ButtonWrapper>
-      {startPauseButton}
-      <Button context={<Image src={Postpone} />} onClick={() => setIsPostpone(!isPostpone)} />
-      <Button context={<Image src={Done} />} onClick={handleDoneClicked} />
-    </ButtonWrapper>
+    <>
+      <StartPauseButton {...imageButtonStyle} />
+      <Button context={<Postpone {...imageButtonStyle} />} onClick={() => setIsPostpone(!isPostpone)} />
+      <Button context={<Done {...imageButtonStyle} />} onClick={setDone} />
+    </>
   );
 };
 

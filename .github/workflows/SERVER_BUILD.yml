@@ -53,7 +53,7 @@ jobs:
           username: ${{ secrets.RELEASE_USERNAME }}
           password: ${{ secrets.RELEASE_PASSWORD }}
           port: ${{ secrets.RELEASE_PORT }}
-          source: "docker-compose.yml"
+          source: "docker-compose.production.yml"
           target: "oao"
 
       - name: 운영 서버에서 Docker Compose 실행
@@ -66,11 +66,10 @@ jobs:
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-server
-            docker pull ghcr.io/kumsil1006/oao-proxy
 
             cd oao
 
-            docker-compose up -d
+            docker-compose -f docker-compose.production.yml up -d
             docker image prune
 
       - name: 실패시 슬랙 메시지 전송

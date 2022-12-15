@@ -1,19 +1,25 @@
 import { useAtom } from 'jotai';
-import { memo, ReactElement } from 'react';
+import { memo, ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 
-import Text from '../Text';
-import Button from '../Button';
+import Text from '@components/Text.js';
+import Button from '@components/Button.js';
 
-import { ACTIVE_TODO_STATE, PRIMARY_COLORS } from '@util/Constants';
-import { isOnProgress } from '@util/GlobalState';
+import { PRIMARY_COLORS } from '@util/Constants';
+import { postponeOptionsAtom, asyncActiveTodo } from '@util/GlobalState';
 
-const { red, white } = PRIMARY_COLORS;
+import usePostpone from '@hooks/usePostpone.js';
 
-const StyledPostponeBox = styled.div`
+const { red, white, darkGray } = PRIMARY_COLORS;
+
+interface Props {
+  isBottom: boolean;
+}
+
+const StyledPostponeBox = styled.div<Props>`
   display: flex;
   flex-direction: column;
-  background-color: ${red};
+  background-color: ${(props) => (props.isBottom ? darkGray : red)};
   line-height: 25px;
   letter-spacing: 0em;
   align-items: flex-start;
@@ -25,40 +31,41 @@ const StyledPostponeBox = styled.div`
   gap: 20px;
   position: absolute;
   left: 40px;
-  top: 60px;
+  top: ${(props) => (props.isBottom ? '' : '60px')};
+  bottom: ${(props) => (props.isBottom ? '100%' : '')};
+  transform: ${(props) => (props.isBottom ? 'translateY(-3px)' : '')};
 `;
 
-interface PostponeProps {
-  setPostpone: Function;
-  postponeOptions: string[];
-  time: number;
-  setTime: Function;
-  handleOnToggle: Function;
-}
+const PostponeBox = ({ isBottom }: { isBottom: boolean }): ReactElement => {
+  const [postponeOptions, setPostponeOptions] = useAtom(postponeOptionsAtom);
+  const [activeTodo] = useAtom(asyncActiveTodo);
+  const [setPostpone] = usePostpone();
 
-const PostponeBox = (props: PostponeProps): ReactElement => {
-  const { setPostpone, postponeOptions, time, setTime, handleOnToggle } = props;
-  const [progressState] = useAtom(isOnProgress);
+  useEffect(() => {
+    setPostponeOptions();
+  }, [activeTodo]);
 
-  const handlePosponeClicked = (text: string): void => {
-    setPostpone(time, text);
-    setTime(0);
-
-    if (progressState === ACTIVE_TODO_STATE.working) {
-      handleOnToggle();
-    }
+  const handlePosponeClicked = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    setPostpone((e.target as Element).innerHTML);
   };
 
   return (
-    <StyledPostponeBox>
+    <StyledPostponeBox isBottom={isBottom}>
       {postponeOptions.map((text: string): ReactElement => {
         return (
           <Button
             key={text}
-            context={<Text text={text} color={white} fontFamily={'Noto Sans'} fontSize={'18px'} fontWeight={'700'} />}
-            onClick={() => {
-              handlePosponeClicked(text);
-            }}
+            context={
+              <Text
+                text={text}
+                color={white}
+                fontFamily={'Noto Sans'}
+                fontSize={'18px'}
+                fontWeight={'700'}
+                textAlign={'left'}
+              />
+            }
+            onClick={handlePosponeClicked}
           />
         );
       })}

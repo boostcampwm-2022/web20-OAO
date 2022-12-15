@@ -1,85 +1,122 @@
-import { ReactElement } from 'react';
+import { ReactElement, MouseEventHandler, CSSProperties, Dispatch, SetStateAction, memo } from 'react';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
 
-import { TODO_STATE_TEXT, IMPORTANCE_ALPHABET, TABLE_MODALS } from '@util/Constants';
-import { getyyyymmddDateFormat, gethhmmFormat } from '@util/Common';
+import { PlainTodo } from '@todo/todo.type';
+import { PRIMARY_COLORS, TODO_STATE_TEXT, IMPORTANCE_ALPHABET } from '@util/Constants';
+import { copyToClipboard, gethhmmFormat, getyyyymmddDateFormat } from '@util/Common';
+import { todoList } from '@util/GlobalState';
 
 import Button from '@components/Button';
 import Image from '@components/Image';
-import Unchecked from '@images/Unchecked.svg';
-import Checked from '@images/Checked.svg';
 import Delete from '@images/Delete.svg';
 import Update from '@images/Update.svg';
+import Copy from '@images/Copy.svg';
+import { getCheckTodoStateHandler, getListInfoText, getTodoStateIcon } from '@util/todos.util';
 
-import { PlainTodo } from '@todo/todo.type';
+const { lightGray } = PRIMARY_COLORS;
 
-import { modalTypeAtom, todoList, editingTodoIdAtom } from '@util/GlobalState';
-import { toast } from 'react-toastify';
+interface HeaderElementData {
+  todo: PlainTodo;
+  prevTodoList: PlainTodo[];
+  nextTodoList: PlainTodo[];
+}
 
-const CheckWrapper = styled.div`
-  input {
-    display: none;
+interface HeaderElem {
+  type: string;
+  style: CSSProperties;
+  value: string;
+}
+
+interface DetailCssStyle {
+  text: CSSProperties;
+  title: CSSProperties;
+  content: CSSProperties;
+  null: CSSProperties;
+}
+
+const Wrapper = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 3fr 1fr 2fr 1fr 2fr 2fr 2fr;
+  border-bottom: 2px solid ${lightGray};
+  text-align: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  p {
+    margin: 10px 0;
   }
-  img {
-    cursor: pointer;
-  }
 `;
 
-const TextWrapper = styled.div`
-  overflow: hidden;
-  white-space: nowrap;
-`;
+const TABLE_ROW_DETAIL_STYLES: DetailCssStyle = {
+  text: { overflow: 'hidden', whiteSpace: 'nowrap' },
+  title: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    marginRight: '10px',
+    textOverflow: 'ellipsis',
+    textAlign: 'left',
+    fontWeight: 700,
+  },
+  content: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    margin: '0 10px',
+  },
+  null: {},
+};
 
-const TitleWrapper = styled(TextWrapper)`
-  margin-right: 10px;
-  text-overflow: ellipsis;
-  text-align: left;
-  font-weight: 700;
-`;
-
-const ContentWrapper = styled(TextWrapper)`
-  margin: 0 10px;
-`;
-
-const getListInfoText = (list: string[], firstTodoTitle: string | undefined): string => {
-  if (firstTodoTitle === undefined) return '-';
-  if (list.length > 1) {
-    return firstTodoTitle.length > 10
-      ? [firstTodoTitle.slice(0, 10), '... 외 ', list.length - 1].join('')
-      : [firstTodoTitle, '외', list.length - 1].join(' ');
-  } else if (list.length === 1) {
-    return firstTodoTitle.length > 12 ? [firstTodoTitle.slice(0, 12), '...'].join('') : firstTodoTitle;
-  }
-  return '-';
+const createHeaderElementData = ({ todo, prevTodoList, nextTodoList }: HeaderElementData): HeaderElem[] => {
+  return [
+    {
+      type: 'title',
+      style: TABLE_ROW_DETAIL_STYLES.title,
+      value: todo.title,
+    },
+    {
+      type: 'state',
+      style: TABLE_ROW_DETAIL_STYLES.text,
+      value: TODO_STATE_TEXT[todo.state],
+    },
+    {
+      type: 'until',
+      style: TABLE_ROW_DETAIL_STYLES.text,
+      value: `${getyyyymmddDateFormat(todo.until, '.')} ${gethhmmFormat(todo.until)}`,
+    },
+    {
+      type: 'importance',
+      style: TABLE_ROW_DETAIL_STYLES.null,
+      value: IMPORTANCE_ALPHABET[todo.importance],
+    },
+    {
+      type: 'prev',
+      style: TABLE_ROW_DETAIL_STYLES.content,
+      value: getListInfoText(prevTodoList),
+    },
+    {
+      type: 'next',
+      style: TABLE_ROW_DETAIL_STYLES.content,
+      value: getListInfoText(nextTodoList),
+    },
+  ];
 };
 
 const TableRowHeader = ({
   todo,
-  prevTodoTitle,
-  nextTodoTitle,
+  prevTodoList,
+  nextTodoList,
+  onClick,
+  setHasEditModal,
 }: {
   todo: PlainTodo;
-  prevTodoTitle: string;
-  nextTodoTitle: string;
+  prevTodoList: PlainTodo[];
+  nextTodoList: PlainTodo[];
+  onClick: MouseEventHandler;
+  setHasEditModal: Dispatch<SetStateAction<boolean>>;
 }): ReactElement => {
-  const [, setModalType] = useAtom(modalTypeAtom);
   const [todoListAtom, setTodoListAtom] = useAtom(todoList);
-  const [, setEditingTodoId] = useAtom(editingTodoIdAtom);
-
-  const checkTodoStateHandler = (): void => {
-    // API에서 알고리즘으로 todo state를 배정해주므로 DONE일 때는 임의로 WAIT으로 바꿔 전송 : WAIT/READY 상관없음
-
-    let newTodo = {};
-    newTodo = { ...todo, state: todo.state === 'DONE' ? 'WAIT' : 'DONE' };
-    todoListAtom
-      .edit(todo.id, newTodo)
-      .then((newTodoList) => {
-        setTodoListAtom(newTodoList);
-        toast.success('완료되었습니다.');
-      })
-      .catch((err) => toast.error(err));
-  };
 
   const handleOnDelete = (todoId: string): void => {
     todoListAtom
@@ -92,40 +129,47 @@ const TableRowHeader = ({
       });
   };
 
+  const tableRowHeaderElemList = createHeaderElementData({ todo, prevTodoList, nextTodoList });
+
   return (
-    <>
-      <CheckWrapper>
-        {todo.state === 'DONE' ? (
-          <Button context={<Image src={Checked} />} onClick={checkTodoStateHandler} />
-        ) : (
-          <Button context={<Image src={Unchecked} />} onClick={checkTodoStateHandler} />
-        )}
-      </CheckWrapper>
-      <TitleWrapper>{todo.title}</TitleWrapper>
-      <TextWrapper>{TODO_STATE_TEXT[todo.state]}</TextWrapper>
-      <TextWrapper>
-        {getyyyymmddDateFormat(todo.until, '.')} {gethhmmFormat(todo.until)}
-      </TextWrapper>
-      <div>{IMPORTANCE_ALPHABET[todo.importance]}</div>
-      <ContentWrapper>{getListInfoText(todo.prev, prevTodoTitle)}</ContentWrapper>
-      <ContentWrapper>{getListInfoText(todo.next, nextTodoTitle)}</ContentWrapper>
-      <div>
+    <Wrapper onClick={onClick}>
+      <Button
+        context={<Image width="30px" height="30px" src={getTodoStateIcon(todo)} />}
+        onClick={getCheckTodoStateHandler(todo, todoListAtom, setTodoListAtom)}
+      />
+      {tableRowHeaderElemList.map((headerElem) => {
+        return (
+          <div key={headerElem.type} style={headerElem.style}>
+            {headerElem.value}
+          </div>
+        );
+      })}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <Button
-          context={<img src={Update} />}
-          onClick={(e) => {
-            setEditingTodoId(todo.id);
-            setModalType(TABLE_MODALS.update);
+          context={<img src={Update} width="40px" height="40px" alt="update" title={'수정하기'} />}
+          onClick={() => {
+            setHasEditModal(true);
           }}
         />
         <Button
-          context={<img src={Delete} />}
-          onClick={(e) => {
+          context={<img src={Delete} width="40px" height="40px" alt="delete" title={'삭제하기'} />}
+          onClick={() => {
             handleOnDelete(todo.id);
           }}
         />
+        <Button
+          context={<img src={Copy} width="40px" height="40px" alt="copy" title={'제목 복사하기'} />}
+          onClick={() => {
+            copyToClipboard(todo.title);
+          }}
+        />
       </div>
-    </>
+    </Wrapper>
   );
 };
 
-export default TableRowHeader;
+export default memo(TableRowHeader);

@@ -1,81 +1,58 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, memo } from 'react';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
+
+import { PlainTodo } from '@todo/todo.type';
+import { todoList } from '@util/GlobalState.js';
+import { Todo } from '@todo/todo';
+
 import TableHeader from '@components/todos/TableHeader';
 import TableRow from '@components/todos/TableRow';
-import { useAtom } from 'jotai';
-import { PlainTodo } from '@todo/todo.type';
-import { todoList, displayDetailAtom } from '@util/GlobalState.js';
-import { toast } from 'react-toastify';
+import BlankTableInform from '@components/todos/BlankTableInform';
+import { FilterType } from '@util/todos.util';
 
 const Wrapper = styled.div`
   width: 85%;
+  height: 90%;
+  overflow-y: auto;
+  position: relative;
 `;
 
-const BlankTableWrapper = styled.div`
-  text-align: center;
-  margin: 10%;
-`;
-
-const GridWrapper = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 3.5fr 1fr 2fr 1fr 2fr 2fr 1fr;
-  border-bottom: 2px solid #e2e2e2;
-  text-align: center;
-  p {
-    margin: 10px 0;
-  }
-`;
-
-const GridRowWrapper = styled(GridWrapper)`
-  div:nth-child(10) {
-    grid-column: 2/9;
-  }
-`;
-const RowWrapper = styled.div`
-  ${GridWrapper}:hover {
-    background-color: #e2e2e2;
-  }
-`;
+const getFilterCallback = (filterSet: Set<FilterType>): ((todo: Todo) => boolean) => {
+  const filterArr = [...filterSet];
+  return (todo: Todo): boolean => filterArr.some((el) => todo.state === el);
+};
 
 const Table = (): ReactElement => {
   const [todoListAtom] = useAtom(todoList);
   const [todos, setTodos] = useState<PlainTodo[]>([]);
-  const [displayDetail, setDisplayDetail] = useAtom(displayDetailAtom);
+  const [filter, setFilter] = useState<Set<FilterType>>(new Set(['READY']));
+  const [sort, setSort] = useState<Map<string, 'NONE' | 'ASCEND' | 'DESCEND'>>(new Map());
 
   useEffect(() => {
     todoListAtom
-      .getSortedRTL()
+      .getSortedListWithFilter(
+        getFilterCallback(filter),
+        [...sort]
+          .map((el) => ({ type: el[0], direction: el[1] }))
+          .filter((el) => el.direction !== 'NONE')
+          .reverse(),
+      )
       .then((sortedTodoList: PlainTodo[]) => {
         setTodos(() => {
           return [...sortedTodoList];
         });
       })
       .catch((err) => toast.error(err));
-  }, [todoListAtom]);
+  }, [todoListAtom, filter, sort]);
 
-  return todos.length > 0 ? (
+  return (
     <Wrapper>
-      <GridWrapper>
-        <TableHeader />
-      </GridWrapper>
-      <RowWrapper>
-        {todos.map((todo: PlainTodo) => (
-          <GridRowWrapper
-            onClick={() => (displayDetail === todo.id ? setDisplayDetail('') : setDisplayDetail(todo.id))}
-            key={todo.id}
-          >
-            <TableRow todo={todo} />
-          </GridRowWrapper>
-        ))}
-      </RowWrapper>
+      <TableHeader filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
+      {todos.length > 0 ? todos.map((todo: PlainTodo) => <TableRow key={todo.id} todo={todo} />) : <BlankTableInform />}
     </Wrapper>
-  ) : (
-    <BlankTableWrapper>
-      <h1>Todo가 없습니다!</h1>
-      <h2>Todo를 추가해보는 건 어떨까요?</h2>
-    </BlankTableWrapper>
   );
 };
 
-export default Table;
+export default memo(Table);
