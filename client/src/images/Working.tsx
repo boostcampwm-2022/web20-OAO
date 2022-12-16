@@ -38,7 +38,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             attributeType="XML"
             type="rotate"
             dur="0.5s"
-            values="-10,302.45,178.61;10,302.45,178.61;-10,302.45,178.61;"
+            values="-10,302.45,178.61;5,302.45,178.61;-10,302.45,178.61;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -56,7 +56,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             attributeType="XML"
             type="rotate"
             dur="0.6s"
-            values="10,302.45,178.61;-10,302.45,178.61;10,302.45,178.61;"
+            values="5,302.45,178.61;-10,302.45,178.61;5,302.45,178.61;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -75,7 +75,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             type="rotate"
             dur="0.5s"
             begin="0.1s"
-            values="10,302.45,178.61;-10,302.45,178.61;10,302.45,178.61;"
+            values="5,302.45,178.61;-10,302.45,178.61;5,302.45,178.61;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -94,7 +94,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             type="rotate"
             dur="0.8s"
             begin="0.2s"
-            values="10,302.45,178.61;-10,302.45,178.61;10,302.45,178.61;"
+            values="5,302.45,178.61;-10,302.45,178.61;5,302.45,178.61;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -127,7 +127,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             type="rotate"
             dur="0.8s"
             begin="0s"
-            values="10,362.67,181.97;-10,362.67,181.97;10,362.67,181.97;"
+            values="5,362.67,181.97;-10,362.67,181.97;5,362.67,181.97;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -153,7 +153,7 @@ const Working = ({ transform }: PropsType): ReactElement => {
             type="rotate"
             dur="0.8s"
             begin="0.4s"
-            values="10,362.67,181.97;-10,362.67,181.97;10,362.67,181.97;"
+            values="5,362.67,181.97;-10,362.67,181.97;5,362.67,181.97;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -170,9 +170,9 @@ const Working = ({ transform }: PropsType): ReactElement => {
             attributeName="transform"
             attributeType="XML"
             type="rotate"
-            dur="0.5s"
+            dur="0.7s"
             begin="0.4s"
-            values="10,346.52,193.2;-10,346.52,193.2;10,346.52,193.2;"
+            values="5,346.52,193.2;-10,346.52,193.2;5,346.52,193.2;"
             keyTimes="0;0.5;1"
             repeatCount="indefinite"
           />
@@ -259,10 +259,10 @@ const Working = ({ transform }: PropsType): ReactElement => {
             attributeName="transform"
             attributeType="XML"
             type="translate"
-            dur="1.5s"
-            begin="0.4s"
-            values="0,0;3,0;0,0"
-            keyTimes="0;0.7;1"
+            dur="3s"
+            begin="0s"
+            values="0,0;5,0;0,0"
+            keyTimes="0;0.75;1"
             repeatCount="indefinite"
           />
           <path
