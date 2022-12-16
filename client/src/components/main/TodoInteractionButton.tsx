@@ -6,7 +6,7 @@ import Button from '@components/Button';
 import Postpone from '@images/Postpone';
 import Done from '@images/Done';
 
-import { asyncActiveTodo, elapsedTimeAtom, postponeClicked } from '@util/GlobalState.js';
+import { asyncActiveTodo, elapsedTimeAtom, isOnProgress, postponeClicked } from '@util/GlobalState.js';
 
 import useDone from '@hooks/useDone.js';
 import StartPauseButton from '@components/StartPauseButton';
@@ -23,9 +23,10 @@ const TodoInteractionButton = (imageButtonStyle: ImageButtonStyle): ReactElement
   const [setDone] = useDone();
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
   const activeTodo = useAtomValue(asyncActiveTodo);
+  const progressState = useAtomValue(isOnProgress);
 
   useEffect(() => {
-    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime) {
+    if (activeTodo !== undefined && activeTodo.elapsedTime !== elapsedTime && progressState !== 'working') {
       setElapsedTime(activeTodo.elapsedTime);
     }
   }, [activeTodo]);
