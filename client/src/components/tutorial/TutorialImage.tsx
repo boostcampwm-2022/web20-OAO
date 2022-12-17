@@ -46,10 +46,8 @@ const StyledCancelButton = styled(Button)`
 `;
 
 export const TutorialImage = ({
-  isTutorial,
   setIsOver,
 }: {
-  isTutorial: boolean;
   setIsOver: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactElement => {
   const [currentIndex, setCurrentIndex] = useState(0);

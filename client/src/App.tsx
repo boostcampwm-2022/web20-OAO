@@ -10,7 +10,6 @@ import Menubar from '@container/Menubar';
 import Main from '@page/Main';
 import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
-import OverLay from '@components/OverLay';
 import TodoController from '@container/TodoController';
 
 import { TutorialImage } from '@components/tutorial/TutorialImage';
@@ -82,7 +81,7 @@ const App = (): ReactElement => {
             </Routes>
           </Wrapper>
           <TodoController />
-          {isShow && <TutorialImage isTutorial={isTutorial} setIsOver={setIsOver} />}
+          {isShow && <TutorialImage setIsOver={setIsOver} />}
           {isTutorial && (
             <TutorialRadialOverlay>
               <span>
