@@ -12,7 +12,7 @@ import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
 import TodoController from '@container/TodoController';
 
-import { TutorialImage } from '@components/tutorial/TutorialImage';
+import { TutorialVideo } from '@components/tutorial/TutorialVideo';
 import { isTutorialAtom } from '@util/GlobalState';
 import { PRIMARY_COLORS } from '@util/Constants';
 
@@ -81,7 +81,7 @@ const App = (): ReactElement => {
             </Routes>
           </Wrapper>
           <TodoController />
-          {isShow && <TutorialImage setIsOver={setIsOver} />}
+          {isShow && <TutorialVideo setIsOver={setIsOver} />}
           {isTutorial && (
             <TutorialRadialOverlay>
               <span>
