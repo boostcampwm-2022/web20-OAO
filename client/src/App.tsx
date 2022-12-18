@@ -10,10 +10,9 @@ import Menubar from '@container/Menubar';
 import Main from '@page/Main';
 import Todos from '@page/Todos';
 import DiagramPage from '@page/DiagramPage';
-import OverLay from '@components/OverLay';
 import TodoController from '@container/TodoController';
 
-import { TutorialImage } from '@components/tutorial/TutorialImage';
+import { TutorialVideo } from '@components/tutorial/TutorialVideo';
 import { isTutorialAtom } from '@util/GlobalState';
 import { PRIMARY_COLORS } from '@util/Constants';
 
@@ -82,7 +81,7 @@ const App = (): ReactElement => {
             </Routes>
           </Wrapper>
           <TodoController />
-          {isShow && <TutorialImage isTutorial={isTutorial} setIsOver={setIsOver} />}
+          {isShow && <TutorialVideo setIsOver={setIsOver} />}
           {isTutorial && (
             <TutorialRadialOverlay>
               <span>
