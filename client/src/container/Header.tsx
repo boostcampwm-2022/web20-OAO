@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 
 const Header = (): ReactElement => {
   const [isTutorial, setIsTutorial] = useAtom(isTutorialAtom);
+  const url: string = isTutorial ? '/tutorials' : '/';
   const [, changeIndexedDBtoMemory] = useAtom(changeIndexedDBtoMemoryAtom);
   const [, changeMemorytoIndexedDB] = useAtom(changeMemorytoIndexedDBAtom);
   const startTutorial = (): void => {
@@ -36,7 +37,7 @@ const Header = (): ReactElement => {
   };
   return (
     <Wrapper>
-      <Link to="/">
+      <Link to={`${url}`}>
         <Image src={LongLogo} flexGrow={3} />
       </Link>
       {isTutorial ? (
