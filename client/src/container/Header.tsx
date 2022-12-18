@@ -48,7 +48,7 @@ const Header = (): ReactElement => {
                 text="튜토리얼 끝내기"
                 color={PRIMARY_COLORS.red}
                 fontWeight={'700'}
-                fontSize={'24px'}
+                fontSize={'20px'}
                 fontFamily={'Nanum Myeongjo'}
               />
             }
