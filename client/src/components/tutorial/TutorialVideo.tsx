@@ -79,6 +79,7 @@ export const TutorialVideo = ({
         onEnded={onEnded}
         onLoadedMetadata={onLoadedMetadata}
         autoPlay
+        controls
       />
       <Dots slides={videoSrcArray} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} duration={duration} />
     </StyledOverlay>
