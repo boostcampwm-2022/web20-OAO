@@ -24,7 +24,8 @@ const StyledOverlay = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: ${PRIMARY_COLORS.white};
+  background-color: ${PRIMARY_COLORS.black};
+  opacity: 0.9;
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -33,11 +34,6 @@ const StyledOverlay = styled.div`
   bottom: 0;
   right: 0;
   z-index: 10;
-
-  & > video {
-    width: 80%;
-    height: 80%;
-  }
 `;
 
 const StyledCancelButton = styled(Button)`
@@ -45,6 +41,14 @@ const StyledCancelButton = styled(Button)`
   background-color: transparent;
   top: 0px;
   right: 0px;
+`;
+
+const StyledVideo = styled.video`
+  position: relative;
+  width: max-content;
+  height: max-content;
+  max-width: 80%;
+  max-height: 80%;
 `;
 
 export const TutorialVideo = ({
@@ -73,12 +77,13 @@ export const TutorialVideo = ({
     <StyledOverlay>
       <StyledCancelButton context={<CancelIcon fill={PRIMARY_COLORS.blue} />} onClick={handleCancel} />
       <Title>{titleArray[currentIndex]}</Title>
-      <video
+      <StyledVideo
         src={videoSrcArray[currentIndex]}
         ref={ref}
         onEnded={onEnded}
         onLoadedMetadata={onLoadedMetadata}
         autoPlay
+        controls
       />
       <Dots slides={videoSrcArray} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} duration={duration} />
     </StyledOverlay>
