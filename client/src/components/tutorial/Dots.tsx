@@ -52,11 +52,9 @@ const Circle = styled.circle<{ duration: number }>`
 `;
 
 const Wrapper = styled.ul`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 25px;
   width: 100%;
 
   padding: 0;
