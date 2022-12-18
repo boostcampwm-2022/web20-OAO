@@ -44,7 +44,7 @@ const TutorialRadialOverlay = styled.div`
     position: absolute;
     left: 10vh;
     bottom: 10vh;
-    font-size: 80px;
+    font-size: 52px;
     opacity: 0.7;
     font-family: 'Roboto';
     color: ${PRIMARY_COLORS.green};
