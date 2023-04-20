@@ -1,4 +1,0 @@
-FROM nginx
-COPY ./default.production.conf /etc/nginx/conf.d/default.conf
-
-RUN apt-get update && apt-get install vim -y
