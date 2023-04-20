@@ -4,7 +4,7 @@ on:
     branches:
       - release
     paths:
-      - "nginx/Dockerfile.production"
+      - "nginx/Dockerfile"
 
 jobs:
   proxy-build:
@@ -26,7 +26,7 @@ jobs:
           push: true
           tags: ghcr.io/kumsil1006/oao-proxy
           context: ./nginx
-          file: ./nginx/Dockerfile.production
+          file: ./nginx/Dockerfile
 
       - name: Docker Compose 파일 운영 서버로 복사
         uses: appleboy/scp-action@master
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.RELEASE_USERNAME }}
           password: ${{ secrets.RELEASE_PASSWORD }}
           port: ${{ secrets.RELEASE_PORT }}
-          source: "docker-compose.production.yml"
+          source: "docker-compose.yml"
           target: "oao"
 
       - name: 운영 서버에서 Docker Compose 실행
@@ -48,10 +48,10 @@ jobs:
           script: |
             echo ${{secrets.CONTAINER_REGISTRY_TOKEN}} | docker login ghcr.io -u kumsil1006 --password-stdin
             docker pull ghcr.io/kumsil1006/oao-proxy
-            
+
             cd oao
-            
-            docker-compose -f docker-compose.production.yml up -d
+
+            docker-compose -f docker-compose.yml up -d
             docker image prune
 
       - name: 실패시 슬랙 메시지 전송
