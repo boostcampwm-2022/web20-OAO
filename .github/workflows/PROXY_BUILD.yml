@@ -20,14 +20,6 @@ jobs:
           username: kumsil1006
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Docker images build 및 GitHub Container Registry로 push
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: ghcr.io/kumsil1006/oao-proxy
-          context: ./nginx
-          file: ./nginx/Dockerfile
-
       - name: Docker Compose 파일 운영 서버로 복사
         uses: appleboy/scp-action@master
         with:
