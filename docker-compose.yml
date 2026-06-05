@@ -1,17 +1,32 @@
 version: "3.9"
 services:
   proxy:
-    image: "ghcr.io/kumsil1006/oao-dev-proxy:latest"
+    image: "nginx:latest"
     ports:
       - "80:80"
+      - "443:443"
     restart: always
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  certbot:
+    image: "certbot/certbot"
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
   frontend:
-    image: "ghcr.io/kumsil1006/oao-dev-client:latest"
+    image: "ghcr.io/kumsil1006/oao-client:latest"
     restart: always
     expose:
       - "3000"
   backend:
-    image: "ghcr.io/kumsil1006/oao-dev-server:latest"
+    image: "ghcr.io/kumsil1006/oao-server:latest"
     restart: always
     expose:
       - "8080"
